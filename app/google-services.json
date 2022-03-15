@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "658193147671",
+    "firebase_url": "https://stick-it-to-em-99f10-default-rtdb.firebaseio.com",
+    "project_id": "stick-it-to-em-99f10",
+    "storage_bucket": "stick-it-to-em-99f10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658193147671:android:242dcfba312d427a1c3952",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourse.stickittoem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658193147671-nkjn3hpdleu4imlnmq70ltkieeotqh7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeoN6w-lX_yVIwupLJLf3o1SjbwMmhZIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658193147671-nkjn3hpdleu4imlnmq70ltkieeotqh7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
