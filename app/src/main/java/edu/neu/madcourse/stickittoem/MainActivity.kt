@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import edu.neu.madcourse.stickittoem.chat.ChatActivity
 import edu.neu.madcourse.stickittoem.messages.MessagingActivity
 
 class MainActivity : AppCompatActivity() {
@@ -11,9 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.button)
+        val button = findViewById<Button>(R.id.message_btn)
         button.setOnClickListener {
             val intent = Intent(this, MessagingActivity::class.java)
+            startActivity(intent)
+        }
+
+        val chats = findViewById<Button>(R.id.chat_btn)
+        chats.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
     }
