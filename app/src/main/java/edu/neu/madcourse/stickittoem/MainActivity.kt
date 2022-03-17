@@ -11,9 +11,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var button = findViewById<Button>(R.id.button)
+        val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            var intent = Intent(this, MessagingActivity::class.java)
+            val intent = Intent(this, MessagingActivity::class.java)
             startActivity(intent)
         }
     }
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 //        // Create a new user with a first, middle, and last name
 //        val user2 = hashMapOf(
 //            "first" to "Alan",
-//            "middle" to "Mathison",
+//            "middle" to "Mathisson",
 //            "last" to "Turing",
 //            "born" to 1912
 //        )
