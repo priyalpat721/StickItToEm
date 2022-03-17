@@ -8,6 +8,9 @@
         <entry key="app/src/main/res/drawable/ic_contacts.xml" value="0.127" />
         <entry key="app/src/main/res/drawable/ic_history.xml" value="0.127" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.37083333333333335" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.335" />
       </map>
     </option>
