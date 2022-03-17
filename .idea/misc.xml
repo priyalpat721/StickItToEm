@@ -4,6 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_message_collector.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_messaging.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_received.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_received_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent_layout.xml" value="0.23278985507246377" />
       </map>
     </option>
   </component>
