@@ -14,7 +14,6 @@ class StickerChatAdapter(
     private var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    // source: https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup,%20int)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // viewType comes from the function getItemViewType it seems default is 0
 
@@ -32,7 +31,6 @@ class StickerChatAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // holder can be of two types here: received and sent so this needs to be taken into account
-        // source for :: meaning https://kotlinlang.org/docs/reflection.html
         if (holder.javaClass == StickerSentViewHolder::class.java) {
             holder as StickerSentViewHolder
             Glide.with(context).load(stickerMessageList[position].sticker).into(holder.sentSticker)
@@ -49,7 +47,7 @@ class StickerChatAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        var message = stickerMessageList[position]
+        val message = stickerMessageList[position]
 
         if (FirebaseAuth.getInstance().currentUser?.uid == message.sender) {
             return 0

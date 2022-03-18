@@ -7,8 +7,12 @@ recycler view:
 multiple view types:
  - https://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-types
  - https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#getItemViewType(int)
+ - https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup,%20int)
 
 firebase:
  - https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth#getCurrentUser()
  - https://firebase.google.com/docs/auth/android/start
+ - https://firebase.google.com/docs/auth/android/custom-auth?utm_source=studio
 
+kotlin:
+ - https://kotlinlang.org/docs/reflection.html
