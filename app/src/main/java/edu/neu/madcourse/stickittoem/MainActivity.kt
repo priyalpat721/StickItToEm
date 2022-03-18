@@ -14,13 +14,13 @@ class MainActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.message_btn)
         button.setOnClickListener {
-            val intent = Intent(this, MessagingActivity::class.java)
+            val intent = Intent(this@MainActivity, MessagingActivity::class.java)
             startActivity(intent)
         }
 
         val chats = findViewById<Button>(R.id.chat_btn)
         chats.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
+            val intent = Intent(this@MainActivity, ChatActivity::class.java)
             startActivity(intent)
         }
     }
