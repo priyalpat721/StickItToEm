@@ -14,7 +14,6 @@ import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.models.User
 
-// reference used: https://firebase.google.com/docs/auth/android/custom-auth?utm_source=studio
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var email: EditText
@@ -51,7 +50,6 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    // resource: https://firebase.google.com/docs/auth/android/start
     private fun signup(emailAddress: String, password: String, nameText: String) {
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
@@ -80,8 +78,7 @@ class SignUpActivity : AppCompatActivity() {
                             progressBar.visibility = View.GONE
                             startActivity(intent)
                         }
-                        .addOnFailureListener {
-                                e ->
+                        .addOnFailureListener { e ->
                             Log.w(TAG, "Error adding document", e)
                             progressBar.visibility = View.GONE
                             Toast.makeText(
