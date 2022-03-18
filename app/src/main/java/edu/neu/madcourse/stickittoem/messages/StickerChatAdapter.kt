@@ -48,11 +48,9 @@ class StickerChatAdapter(
         return stickerMessageList.size
     }
 
-    // resource: https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#getItemViewType(int)
     override fun getItemViewType(position: Int): Int {
         var message = stickerMessageList[position]
 
-        // resource: https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth#getCurrentUser()
         if (FirebaseAuth.getInstance().currentUser?.uid == message.sender) {
             return 0
         }

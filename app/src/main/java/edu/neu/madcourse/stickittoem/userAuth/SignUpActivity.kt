@@ -51,7 +51,6 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    // resource: https://firebase.google.com/docs/auth/android/start
     private fun signup(emailAddress: String, password: String, nameText: String) {
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
