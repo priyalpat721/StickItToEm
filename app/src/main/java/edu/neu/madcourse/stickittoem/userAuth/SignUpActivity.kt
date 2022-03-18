@@ -80,16 +80,20 @@ class SignUpActivity : AppCompatActivity() {
                             progressBar.visibility = View.GONE
                             startActivity(intent)
                         }
-                        .addOnFailureListener { e ->
+                        .addOnFailureListener {
+                                e ->
                             Log.w(TAG, "Error adding document", e)
+                            progressBar.visibility = View.GONE
                             Toast.makeText(
                                 baseContext, "Could not create an account. Please try again",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
 
-
                 } else {
+                    Thread.sleep(1000)
+                    progressBar.visibility = View.GONE
+
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
                         baseContext, "Could not create an account. Please try again",

@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
             Firebase.auth.signOut()
+            finish()
             val intent = Intent(this@MainActivity, SignUpActivity::class.java)
             startActivity(intent)
         }
