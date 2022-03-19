@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import edu.neu.madcourse.stickittoem.adapters.Adapter
 import edu.neu.madcourse.stickittoem.chat.ChatActivity
 import edu.neu.madcourse.stickittoem.messages.MessagingActivity
 import edu.neu.madcourse.stickittoem.userAuth.SignUpActivity
@@ -15,6 +19,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
+        val viewPager2 = findViewById<ViewPager2>(R.id.view_pager2)
+
+        val adapter = Adapter(supportFragmentManager, lifecycle)
+
+        viewPager2.adapter = adapter
+
+        var tabs = arrayListOf<String>();
+        tabs.add("Chat");
+        tabs.add("Contacts")
+        tabs.add("History")
+
+        TabLayoutMediator(tabLayout, viewPager2){ tab, position-> tab.text = tabs.get(position) }.attach()
+
 
         val button = findViewById<Button>(R.id.message_btn)
         button.setOnClickListener {
