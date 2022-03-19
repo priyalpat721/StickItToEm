@@ -2,17 +2,16 @@ package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import edu.neu.madcourse.stickittoem.R
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MessagingActivity : AppCompatActivity() {
     private var stickerMessageList: MutableList<StickerCard> = ArrayList()
@@ -31,7 +30,7 @@ class MessagingActivity : AppCompatActivity() {
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         // TODO Jen: add the sticker popup functionality here :)
         stickerDisplayButton.setOnClickListener {
-
+            StickerBottomSheetListDialogFragment.newInstance(30).show(supportFragmentManager, "dialog")
         }
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener{
