@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".chat.ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".messages.MessagingActivity"
             android:exported="false" />
         <activity
