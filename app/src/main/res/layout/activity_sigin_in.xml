@@ -28,6 +28,7 @@
         android:background="@drawable/border"
         android:hint="Email/username"
         android:minHeight="48dp"
+        android:paddingStart="5dp"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
-import edu.neu.madcourse.stickittoem.cards.ChatCard
+import edu.neu.madcourse.stickittoem.models.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
@@ -25,10 +25,8 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
 
     private fun getDummyData() {
-        chatList.add(ChatCard("Priyal", 16))
-        chatList.add(ChatCard("Rachit", 8))
-        chatList.add(ChatCard("Jen", 100))
-        chatList.add(ChatCard("Kash", 2))
+        chatList.add(ChatCard("Priyal", "pri@gmail.com", "rachitmehta96@gmail.com",16))
+        chatList.add(ChatCard("Rachit", "rachitmehta96@gmail.com", "pri@gmail.com",8))
     }
 
     private fun setUpResources() {

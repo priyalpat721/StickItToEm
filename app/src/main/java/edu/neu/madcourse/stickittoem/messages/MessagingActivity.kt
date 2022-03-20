@@ -2,9 +2,12 @@ package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,18 +19,31 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MessagingActivity : AppCompatActivity() {
+    private val TAG = "StickerAppMessage"
     private var stickerMessageList: MutableList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerChatAdapter? = null
     var context: Context = this
     private lateinit var stickerDisplayButton: Button
     private lateinit var sendButton: ImageButton
+    private lateinit var nameBox : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
         setUpResources()
         getDummyData()
+
+        val extras = intent.extras
+        if (extras != null) {
+            val receiverName = extras.getString("name")
+            val receiverId = extras.getString("receiverId")
+            val senderId = extras.getString("senderId")
+
+            Log.i(TAG, extras.toString())
+            nameBox = findViewById(R.id.receiver_name_box)
+            nameBox.text = receiverName;
+        }
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         // TODO Jen: add the sticker popup functionality here :)
@@ -54,39 +70,6 @@ class MessagingActivity : AppCompatActivity() {
             StickerCard("https://images.unsplash.com/photo-1603826567438-7ccb36dff6e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1842&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
                 Date()
             ), "r7YKgBnaKcVydbZeeRXPiawP5NE2", it)
-        }?.let { stickerMessageList.add(it) }
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            StickerCard("https://images.unsplash.com/photo-1647396603763-1167b14aa7ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=671&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
-                Date()
-            ),
-                it, "")
-        }?.let { stickerMessageList.add(it) }
-
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            StickerCard("https://images.unsplash.com/photo-1647377106050-9dfad031a8e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
-                Date()
-            ),
-                "r7YKgBnaKcVydbZeeRXPiawP5NE2", it)
-        }?.let { stickerMessageList.add(it) }
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            StickerCard("https://images.unsplash.com/photo-1647391004047-92f60efd8a99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
-                Date()
-            ),
-                "r7YKgBnaKcVydbZeeRXPiawP5NE2", it)
-        }?.let { stickerMessageList.add(it) }
-
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            StickerCard("https://images.unsplash.com/photo-1598362314166-a81c4a4ffa83?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=714&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
-                Date()
-            ),
-                it, "r7YKgBnaKcVydbZeeRXPiawP5NE2")
-        }?.let { stickerMessageList.add(it) }
-
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            StickerCard("https://images.unsplash.com/photo-1610140755238-fdce8f3be7a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80", SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(
-                Date()
-            ),
-                "r7YKgBnaKcVydbZeeRXPiawP5NE2", it)
         }?.let { stickerMessageList.add(it) }
     }
 

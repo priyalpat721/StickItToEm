@@ -16,3 +16,6 @@ firebase:
 
 kotlin:
  - https://kotlinlang.org/docs/reflection.html
+
+intent data:
+ - https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
