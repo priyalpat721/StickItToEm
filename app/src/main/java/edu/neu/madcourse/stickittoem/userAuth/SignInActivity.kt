@@ -55,6 +55,7 @@ class SignInActivity: AppCompatActivity() {
 
                             val intent = Intent(this@SignInActivity, MainActivity::class.java)
                             finish()
+                            //hello
                             progressBar.visibility = View.GONE
                             startActivity(intent)
                         }
