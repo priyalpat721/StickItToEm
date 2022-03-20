@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/drawable/border.xml" value="0.3675" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_chat.xml" value="0.1" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_chat.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_message_collector.xml" value="0.358695652173913" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/activity_messaging.xml" value="0.36666666666666664" />
@@ -12,6 +13,7 @@
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/chat_info_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/fragment_chat2.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/fragment_chat.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/fragment_contacts.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/fragment_history.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_received.xml" value="0.36666666666666664" />
@@ -19,6 +21,15 @@
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent_layout.xml" value="0.23278985507246377" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/menu/menu.xml" value="0.23796296296296296" />
+        <entry key="app/src/main/res/layout/activity_messaging.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.11041666666666666" />
+        <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.7135737101236979" />
+        <entry key="app/src/main/res/layout/fragment_sticker_sheet.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/sticker_received_layout.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/sticker_sent_layout.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>
