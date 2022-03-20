@@ -8,8 +8,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.neu.madcourse.stickittoem.R
 
 class BottomStickerSheetDialog : BottomSheetDialogFragment(){
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,5 +30,4 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
             Toast.makeText(context,"pressed button 1", Toast.LENGTH_LONG).show()
         }*/
     }
-
 }

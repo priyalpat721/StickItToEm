@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.adapters.StickerChatAdapter
+import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.fragments.chat
+package edu.neu.madcourse.stickittoem.viewHolder
 
 import android.view.View
 import android.widget.TextView

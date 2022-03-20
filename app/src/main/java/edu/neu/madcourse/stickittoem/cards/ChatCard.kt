@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.fragments.chat
+package edu.neu.madcourse.stickittoem.cards
 
 class ChatCard {
     //TODO make chat card have sender id and receiver id?

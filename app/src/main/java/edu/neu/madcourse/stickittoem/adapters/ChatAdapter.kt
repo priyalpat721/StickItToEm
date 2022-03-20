@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.fragments.chat
+package edu.neu.madcourse.stickittoem.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.cards.ChatCard
+import edu.neu.madcourse.stickittoem.viewHolder.ChatViewHolder
 import edu.neu.madcourse.stickittoem.messages.MessagingActivity
 
 class ChatAdapter(

@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.messages
+package edu.neu.madcourse.stickittoem.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.cards.StickerCard
+import edu.neu.madcourse.stickittoem.viewHolder.StickerReceivedViewHolder
+import edu.neu.madcourse.stickittoem.viewHolder.StickerSentViewHolder
 
 class StickerChatAdapter(
     private var stickerMessageList: MutableList<StickerCard>,

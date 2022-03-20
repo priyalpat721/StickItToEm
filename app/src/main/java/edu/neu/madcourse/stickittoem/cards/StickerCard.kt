@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.messages
+package edu.neu.madcourse.stickittoem.cards
 
 class StickerCard{
     lateinit var sticker: String

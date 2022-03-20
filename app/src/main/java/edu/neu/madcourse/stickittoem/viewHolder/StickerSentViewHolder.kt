@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.messages
+package edu.neu.madcourse.stickittoem.viewHolder
 
 import android.view.View
 import android.widget.ImageView

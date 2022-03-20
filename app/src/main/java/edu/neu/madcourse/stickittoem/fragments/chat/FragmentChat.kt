@@ -1,16 +1,13 @@
 package edu.neu.madcourse.stickittoem.fragments.chat
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.messages.MessagingActivity
+import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
+import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
