@@ -29,8 +29,9 @@ class MessagingActivity : AppCompatActivity() {
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         // TODO Jen: add the sticker popup functionality here :)
+        val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
-            StickerBottomSheetListDialogFragment.newInstance(30).show(supportFragmentManager, "dialog")
+            bottomStickerSheetDialog.show(supportFragmentManager,"sticker sheet")
         }
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener{
