@@ -1,6 +1,6 @@
-package edu.neu.madcourse.stickittoem.models
+package edu.neu.madcourse.stickittoem.cards
 
-class User {
+class UserCard {
     private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String

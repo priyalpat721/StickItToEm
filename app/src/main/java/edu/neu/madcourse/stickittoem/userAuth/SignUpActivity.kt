@@ -12,7 +12,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.models.User
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText

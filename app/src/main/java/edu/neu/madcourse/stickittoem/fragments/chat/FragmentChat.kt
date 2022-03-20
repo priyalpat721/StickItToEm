@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
-import edu.neu.madcourse.stickittoem.models.ChatCard
+import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
