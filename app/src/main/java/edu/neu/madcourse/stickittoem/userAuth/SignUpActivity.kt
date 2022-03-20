@@ -35,7 +35,7 @@ class SignUpActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         switchToLogIn.setOnClickListener {
             // TODO Change this to login activity
-            val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+            val intent = Intent(this@SignUpActivity, SignInActivity::class.java)
             finish()
             startActivity(intent)
         }
