@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,6 +16,7 @@ import edu.neu.madcourse.stickittoem.R
 class SignInActivity: AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var warning: TextView
     private lateinit var usernameOrEmail : EditText
     private lateinit var signInButton : Button
     private lateinit var progressBar: ProgressBar
@@ -30,6 +28,7 @@ class SignInActivity: AppCompatActivity() {
         setContentView(R.layout.activity_sigin_in)
 
         auth = Firebase.auth
+        warning = findViewById(R.id.warning_sign)
         usernameOrEmail = findViewById(R.id.sign_in_email)
         signInButton = findViewById(R.id.sign_in_button)
         progressBar = findViewById(R.id.progress_bar_sign_in)
@@ -55,19 +54,35 @@ class SignInActivity: AppCompatActivity() {
 
                             val intent = Intent(this@SignInActivity, MainActivity::class.java)
                             finish()
-                            //hello
                             progressBar.visibility = View.GONE
                             startActivity(intent)
                         }
                     }
                         .addOnFailureListener{e->
                             Log.w(TAG, "Error signing in", e)
-                            progressBar.visibility = View.GONE
                         }
+                } else {
+                    Thread.sleep(1000)
+                    progressBar.visibility = View.GONE
+                    warning.setText("Email is invalid! Check email or sign up by clicking here.")
+                    warning.setOnClickListener{
+                        val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+                        finish()
+                        progressBar.visibility = View.GONE
+                        startActivity(intent)
 
+                    }
 
                 }
         }
+
+    }
+
+    private fun signUpOnInvalid(view: View) {
+        val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+        finish()
+        progressBar.visibility = View.GONE
+        startActivity(intent)
     }
 
 
