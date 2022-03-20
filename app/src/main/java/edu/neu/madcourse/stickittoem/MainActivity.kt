@@ -11,7 +11,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.adapters.Adapter
-import edu.neu.madcourse.stickittoem.chat.ChatActivity
 import edu.neu.madcourse.stickittoem.messages.MessagingActivity
 import edu.neu.madcourse.stickittoem.userAuth.SignUpActivity
 
@@ -28,25 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2.adapter = adapter
 
-        var tabs = arrayListOf<String>();
+        val tabs = arrayListOf<String>();
         tabs.add("Chat");
         tabs.add("Contacts")
         tabs.add("History")
 
-        TabLayoutMediator(tabLayout, viewPager2){ tab, position-> tab.text = tabs.get(position) }.attach()
-
-
-        val button = findViewById<Button>(R.id.message_btn)
-        button.setOnClickListener {
-            val intent = Intent(this@MainActivity, MessagingActivity::class.java)
-            startActivity(intent)
-        }
-
-        val chats = findViewById<Button>(R.id.chat_btn)
-        chats.setOnClickListener {
-            val intent = Intent(this@MainActivity, ChatActivity::class.java)
-            startActivity(intent)
-        }
+        TabLayoutMediator(tabLayout, viewPager2){ tab, position-> tab.text = tabs[position] }.attach()
 
         val signOut = findViewById<Button>(R.id.sign_out)
         signOut.setOnClickListener {

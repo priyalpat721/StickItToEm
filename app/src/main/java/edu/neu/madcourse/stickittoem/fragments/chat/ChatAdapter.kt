@@ -1,4 +1,4 @@
-package edu.neu.madcourse.stickittoem.chat
+package edu.neu.madcourse.stickittoem.fragments.chat
 
 import android.content.Context
 import android.content.Intent

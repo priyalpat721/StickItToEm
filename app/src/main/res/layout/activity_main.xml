@@ -7,6 +7,21 @@
     tools:context=".MainActivity">
 
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/homeFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="683dp"
+        android:layout_marginBottom="4dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout="@layout/activity_main" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -22,32 +37,33 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#FFB703"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:backgroundTint="#FFB703"
             app:tabGravity="fill"
             app:tabInlineLabel="true"
-            app:tabTextColor="@android:color/white">
+            app:tabTextColor="@android:color/white"
+            tools:ignore="SpeakableTextPresentCheck">
 
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Chat"-->
-<!--                android:icon="@drawable/ic_chat"-->
-<!--                />-->
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Contacts"-->
-<!--                android:icon="@drawable/ic_contacts"-->
-<!--                />-->
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="History"-->
-<!--                android:icon="@drawable/ic_history"-->
-<!--                />-->
+            <!--            <com.google.android.material.tabs.TabItem-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Chat"-->
+            <!--                android:icon="@drawable/ic_chat"-->
+            <!--                />-->
+            <!--            <com.google.android.material.tabs.TabItem-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Contacts"-->
+            <!--                android:icon="@drawable/ic_contacts"-->
+            <!--                />-->
+            <!--            <com.google.android.material.tabs.TabItem-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="History"-->
+            <!--                android:icon="@drawable/ic_history"-->
+            <!--                />-->
         </com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -56,30 +72,9 @@
         android:id="@+id/view_pager2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
-        app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-        android:id="@+id/message_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="340dp"
-        android:text="Messages"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/chat_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chat"
-        app:layout_constraintBottom_toBottomOf="@+id/message_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
 
     <Button
         android:id="@+id/sign_out"
@@ -87,8 +82,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="Sign Out"
-        app:layout_constraintBottom_toBottomOf="@+id/chat_btn"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

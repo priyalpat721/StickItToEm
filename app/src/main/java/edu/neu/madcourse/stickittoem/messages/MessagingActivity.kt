@@ -39,6 +39,7 @@ class MessagingActivity : AppCompatActivity() {
         }
     }
 
+
     @SuppressLint("SimpleDateFormat")
     private fun getDummyData() {
         FirebaseAuth.getInstance().currentUser?.uid?.let {
