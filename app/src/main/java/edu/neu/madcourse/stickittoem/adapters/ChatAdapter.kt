@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.cards.ChatCard
 import edu.neu.madcourse.stickittoem.viewHolder.ChatViewHolder
-import edu.neu.madcourse.stickittoem.messages.MessagingActivity
+import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 
 class ChatAdapter(
     private var chatList: MutableList<ChatCard>,
@@ -31,7 +31,7 @@ class ChatAdapter(
         //TODO this should open a messaging history associated with user
         //TODO DO NOT WORK CORRECTLY, JUST DUMMY SET UP
         holder.chatInfoLayout.setOnClickListener{
-            val intent = Intent(context, MessagingActivity::class.java)
+            val intent = Intent(context, StickerMessagingActivity::class.java)
             Log.i(TAG, chatList[position].toString())
             intent.putExtra("name", chatList[position].name)
             intent.putExtra("receiverId", chatList[position].receiverId)

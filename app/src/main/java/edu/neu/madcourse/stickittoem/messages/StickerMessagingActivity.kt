@@ -18,7 +18,7 @@ import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessagingActivity : AppCompatActivity() {
+class StickerMessagingActivity : AppCompatActivity() {
     private val TAG = "StickerAppMessage"
     private var stickerMessageList: MutableList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
