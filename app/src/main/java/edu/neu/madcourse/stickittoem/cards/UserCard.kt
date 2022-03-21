@@ -15,5 +15,6 @@ class UserCard {
 
     override fun toString(): String {
         return "User(name='$name', totalStickersSent=$totalStickersSent, totalStickersReceived=$totalStickersReceived)"
+
     }
 }
