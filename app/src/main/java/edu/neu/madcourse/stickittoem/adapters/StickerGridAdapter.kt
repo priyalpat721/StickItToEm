@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.messages.StickerModel
@@ -40,6 +41,10 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
 
         holder.image.setImageResource(data.image)
         holder.description.text = data.description
+
+        holder.image.setOnClickListener(){
+            Toast.makeText(context,data.description.toString()+" pressed", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getItemCount() = dataList.size
