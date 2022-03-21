@@ -51,6 +51,12 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        
         adapter?.setDataList(imageList)
         /*adapter = view.findViewById(R.id.sticker_grid).also {
             it.layoutManager = gridLayoutManager

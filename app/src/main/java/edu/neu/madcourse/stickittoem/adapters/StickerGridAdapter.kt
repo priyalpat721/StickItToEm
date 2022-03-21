@@ -16,7 +16,6 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView
-
         init {
             image = itemView.findViewById(R.id.sticker_image)
         }
@@ -25,13 +24,13 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): StickerGridAdapter.ViewHolder {
+    ): ViewHolder {
         var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.sticker_grid,parent,false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: StickerGridAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var data = dataList[position]
 
         holder.image.setImageResource(data)

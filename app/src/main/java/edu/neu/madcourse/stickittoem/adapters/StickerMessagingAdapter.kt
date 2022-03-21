@@ -11,7 +11,7 @@ import edu.neu.madcourse.stickittoem.cards.StickerCard
 import edu.neu.madcourse.stickittoem.viewHolder.StickerReceivedViewHolder
 import edu.neu.madcourse.stickittoem.viewHolder.StickerSentViewHolder
 
-class StickerChatAdapter(
+class StickerMessagingAdapter(
     private var stickerMessageList: MutableList<StickerCard>,
     private var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
