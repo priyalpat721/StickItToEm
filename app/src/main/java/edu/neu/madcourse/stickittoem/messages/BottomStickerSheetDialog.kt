@@ -33,9 +33,9 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
 
         adapter = this.context?.let { StickerGridAdapter(view.context) }
         recyclerView!!.adapter = adapter
-        recyclerView!!.layoutManager = GridLayoutManager(context,3,
+        recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)
-
+        imageList.clear()
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
@@ -44,7 +44,13 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
         adapter?.setDataList(imageList)
         /*adapter = view.findViewById(R.id.sticker_grid).also {
             it.layoutManager = gridLayoutManager
