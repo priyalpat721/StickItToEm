@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
@@ -19,31 +18,31 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var image: ImageView
-        var description: TextView
+        lateinit var description: String
 
         init {
             image = itemView.findViewById(R.id.sticker_image)
-            description = itemView.findViewById(R.id.sticker_description)//set the content description
+            //description = itemView.findViewById(R.id.sticker_description)//set the content description
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): StickerGridAdapter.ViewHolder {
+    ): ViewHolder {
         var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.sticker_grid,parent,false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: StickerGridAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var data = dataList[position]
 
         holder.image.setImageResource(data.image)
-        holder.description.text = data.description
+        holder.description = data.description
 
         holder.image.setOnClickListener(){
-            Toast.makeText(context,data.description.toString()+" pressed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, holder.description +" pressed", Toast.LENGTH_SHORT).show()
         }
     }
 
