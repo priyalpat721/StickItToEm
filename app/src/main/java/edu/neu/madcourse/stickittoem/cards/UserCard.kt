@@ -1,6 +1,7 @@
 package edu.neu.madcourse.stickittoem.cards
 
 class UserCard {
+
     lateinit var name: String
     var totalStickersSent: Int = 0
     var totalStickersReceived: Int = 0
