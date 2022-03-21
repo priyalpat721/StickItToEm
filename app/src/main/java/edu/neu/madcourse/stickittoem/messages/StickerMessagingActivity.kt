@@ -2,7 +2,6 @@ package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.adapters.StickerChatAdapter
+import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +21,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private val TAG = "StickerAppMessage"
     private var stickerMessageList: MutableList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
-    private var adapter: StickerChatAdapter? = null
+    private var adapter: StickerMessagingAdapter? = null
     var context: Context = this
     private lateinit var stickerDisplayButton: Button
     private lateinit var sendButton: ImageButton
@@ -76,7 +75,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private fun setUpResources() {
         recyclerView = findViewById(R.id.message_recycler_view)
 
-        adapter = StickerChatAdapter(stickerMessageList, context)
+        adapter = StickerMessagingAdapter(stickerMessageList, context)
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
