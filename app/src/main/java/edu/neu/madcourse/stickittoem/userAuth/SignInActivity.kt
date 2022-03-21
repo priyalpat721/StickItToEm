@@ -43,6 +43,7 @@ class SignInActivity: AppCompatActivity() {
     }
 
     private fun signIn(userNameOrEmail: String, password: String) {
+        warning.setText("")
         auth.signInWithEmailAndPassword(userNameOrEmail, password)
             .addOnCompleteListener(this@SignInActivity) { task ->
                 if(task.isSuccessful) {
