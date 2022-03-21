@@ -5,56 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
+import edu.neu.madcourse.stickittoem.cards.UserCard
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class FragmentContacts : Fragment(R.layout.fragment_contacts) {
+    private val contactsList: MutableList<UserCard> = ArrayList<UserCard>()
+    private var recyclerView: RecyclerView? = null
+    var adapter: ContactAdapter? = null
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentContacts.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FragmentContacts : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view.findViewById(R.id.contact_recycler_view)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        setUpResources()
+        getDummyData()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts2, container, false)
+    private fun getDummyData(){
+        contactsList.add(UserCard("Priyal", 0, 1))
+        contactsList.add(UserCard("Rach", 1, 2))
+        contactsList.add(UserCard("Kash", 2, 3))
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentContacts.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentContacts().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setUpResources(){
+        adapter = this.context?.let { ContactAdapter(contactsList, it) }
+        recyclerView!!.adapter = adapter
+        recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
+
 }

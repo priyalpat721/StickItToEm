@@ -13,9 +13,15 @@ firebase:
  - https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth#getCurrentUser()
  - https://firebase.google.com/docs/auth/android/start
  - https://firebase.google.com/docs/auth/android/custom-auth?utm_source=studio
+ - https://firebase.google.com/docs/auth/android/start#kotlin+ktx
 
 kotlin:
  - https://kotlinlang.org/docs/reflection.html
 
 intent data:
  - https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
+
+tab layout:
+ - https://material.io/components/tabs/android
+ - https://developer.android.com/reference/kotlin/androidx/viewpager2/widget/ViewPager2.html
+ - https://developer.android.com/training/animation/vp2-migration
