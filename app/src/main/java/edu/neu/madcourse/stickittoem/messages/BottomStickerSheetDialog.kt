@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,10 +12,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerGridAdapter
 
+// sources:
+// https://pasindulaksara.medium.com/recyclerview-with-grid-layout-in-kotlin-414d780c47ae
 class BottomStickerSheetDialog : BottomSheetDialogFragment(){
-    private val imageList: MutableList<Int> = ArrayList<Int>()
+    private val imageList: MutableList<StickerModel> = ArrayList<StickerModel>()
     private var recyclerView: RecyclerView? = null
-    var adapter: StickerGridAdapter? = null
+    private var adapter: StickerGridAdapter? = null
+    private lateinit var stickerButton: ImageButton
     //private lateinit var stickerGridAdapter: StickerGridAdapter
     //private lateinit var gridLayoutManager: GridLayoutManager
 
@@ -36,22 +40,19 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)
         imageList.clear()
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
-        imageList.add(com.google.firebase.messaging.R.drawable.adaptive_icon)
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker1"))
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker2"))
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker3"))
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker4"))
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker5"))
+        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker6"))
         adapter?.setDataList(imageList)
+
+        /*stickerButton = view.findViewById(R.id.sticker_grid)
+        stickerButton.setOnClickListener{
+            // TODO get the sticker name
+            Toast.makeText(context,"pressed", Toast.LENGTH_LONG).show()
+        }*/
         /*adapter = view.findViewById(R.id.sticker_grid).also {
             it.layoutManager = gridLayoutManager
             it.setHasFixedSize(true)
@@ -75,3 +76,8 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         }*/
     }
 }
+
+data class StickerModel(
+    var image : Int,
+    var description : String
+)

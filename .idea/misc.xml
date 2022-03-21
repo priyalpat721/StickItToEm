@@ -21,11 +21,13 @@
         <entry key="app/src/main/res/layout/activity_messaging.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/chat_info_layout.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />
+        <entry key="app/src/main/res/layout/fragment_contacts2.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.11041666666666666" />
         <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.7135737101236979" />
         <entry key="app/src/main/res/layout/fragment_sticker_sheet.xml" value="0.24947916666666667" />
-        <entry key="app/src/main/res/layout/sticker_grid.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/sticker_grid.xml" value="0.4861419677734375" />
         <entry key="app/src/main/res/layout/sticker_received_layout.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/sticker_sent_layout.xml" value="0.24947916666666667" />
       </map>
