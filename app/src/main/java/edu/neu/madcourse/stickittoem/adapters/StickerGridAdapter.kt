@@ -13,7 +13,7 @@ import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 import edu.neu.madcourse.stickittoem.messages.StickerModel
 
-class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGridAdapter.ViewHolder>() {
+class StickerGridAdapter(var context: Context, var receiver : String, var sender : String) : RecyclerView.Adapter<StickerGridAdapter.ViewHolder>() {
     private var dataList = emptyList<StickerModel>()
     internal fun setDataList(dataList:List<StickerModel>) {
         this.dataList = dataList
@@ -51,12 +51,12 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
             val intent = Intent(context, StickerMessagingActivity::class.java)
             intent.putExtra("image", data.image)
             intent.putExtra("description", data.description)
+            intent.putExtra("receiver", receiver)
+            intent.putExtra("sender", sender)
             context.startActivity(intent)
         }
-
 
     }
 
     override fun getItemCount() = dataList.size
-
 }

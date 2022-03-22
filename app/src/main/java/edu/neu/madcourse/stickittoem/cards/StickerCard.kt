@@ -9,8 +9,13 @@ class StickerCard{
     lateinit var receiver : String
 
     constructor()
-    constructor(sticker: String, timestamp: FieldValue?, sender: String, receiver: String) {
-        this.sticker = sticker
+    constructor(sticker: String?, timestamp: FieldValue?, sender: String, receiver: String) {
+        if (sticker != null) {
+            this.sticker = sticker
+        }
+        else {
+            this.sticker = null.toString()
+        }
         if (timestamp != null) {
             this.timestamp = timestamp
         }
