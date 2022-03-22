@@ -38,14 +38,13 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)
         imageList.clear()
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker1"))
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker2"))
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker3"))
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker4"))
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker5"))
-        imageList.add(StickerModel(com.google.firebase.messaging.R.drawable.adaptive_icon, "sticker6"))
+        imageList.add(StickerModel(R.drawable.motivatedino, "motivated"))
+        imageList.add(StickerModel(R.drawable.happydino, "happy"))
+        imageList.add(StickerModel(R.drawable.frustratedino, "frustrated"))
+        imageList.add(StickerModel(R.drawable.exercisedino, "exercise"))
+        imageList.add(StickerModel(R.drawable.saddino, "sad"))
+        imageList.add(StickerModel(R.drawable.sleepdino2, "sleepy"))
         adapter?.setDataList(imageList)
-
     }
 }
 
