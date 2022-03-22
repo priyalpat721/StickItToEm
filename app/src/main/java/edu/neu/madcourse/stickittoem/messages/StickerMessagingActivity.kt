@@ -88,40 +88,37 @@ class StickerMessagingActivity : AppCompatActivity() {
             stickerImage = stickerIntent?.getInt("image")
             when(stickerImage){
                 2131165376->{
-//                    stringStickerImg = R.drawable.exercisedino.toString()
-                    stringStickerImg = "exercise dino sticker"
-                    println(Uri.parse("android.resource://edu.neu.madcourse.stickittoem/" + R.drawable.exercisedino))
+                    stringStickerImg = "exercisedino"
+                    url = Uri.parse("R.drawable.exercisedino")
                 }
                 2131165377->{
-//                    stringStickerImg = R.drawable.frustratedino.toString()
-                    stringStickerImg = "frustrated dino sticker"
-                    println(Uri.parse("android.resource://edu.neu.madcourse.stickittoem/" + R.drawable.frustratedino))
+                    stringStickerImg = "frustratedino"
+                    url = Uri.parse("R.drawable.frustratedino")
+
                 }
                 2131165378->{
-//                    stringStickerImg = R.drawable.happydino.toString()
-                    stringStickerImg = "happy dino sticker"
-                    url = Uri.parse("R.drawable.exercisedino")
+                    stringStickerImg = "happydino"
+                    url = Uri.parse("R.drawable.happydino")
 
 
                 }
                 2131165379->{
-//                    stringStickerImg = R.drawable.motivatedino.toString()
-                    stringStickerImg = "motivated dino sticker"
-                    println( Uri.parse("android.resource://edu.neu.madcourse.stickittoem/" + R.drawable.motivatedino))
+                    stringStickerImg = "motivatedino"
+                    url = Uri.parse("R.drawable.motivatedino")
+
                 }
                 2131165380->{
-//                    stringStickerImg = R.drawable.saddino.toString()
-                    stringStickerImg = "sad dino sticker"
-                    println(Uri.parse("android.resource://edu.neu.madcourse.stickittoem/" + R.drawable.saddino))
+                    stringStickerImg = "saddino"
+                    url = Uri.parse("R.drawable.saddino")
+
                 }
                 2131165381->{
-//                    stringStickerImg = R.drawable.sleepdino2.toString()
-                    stringStickerImg = "sleep dino sticker"
-                    println( Uri.parse("android.resource://edu.neu.madcourse.stickittoem/" + R.drawable.exercisedino))
+                    stringStickerImg = "sleepdino2"
+                    url = Uri.parse("R.drawable.sleepdino2")
+
                 }
             }
-//            stickerImgHashMap.put(stringStickerImg!!, )
-            //stringStickerImg = Integer.toString(stickerImage!!)
+            stickerImgHashMap.put(stringStickerImg!!,url!!)
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
