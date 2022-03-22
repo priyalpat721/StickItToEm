@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -21,6 +23,7 @@ import java.util.*
 
 
 class StickerMessagingActivity : AppCompatActivity() {
+    private lateinit var receiverName: String
     private lateinit var sender: String
     private lateinit var receiver: String
     private val TAG = "StickerAppMessage"
@@ -36,7 +39,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var senderId: String? = null
     private var stickerImage: String? = null
     private var stickerDescription: String? = null
-    private var fireStore = Firebase.firestore
+    private var fireStore = FirebaseFirestore.getInstance()
 
     @ServerTimestamp
     var time: FieldValue? = null
@@ -47,14 +50,15 @@ class StickerMessagingActivity : AppCompatActivity() {
         setUpResources()
         //getDummyData()
 
-        getIds()
-
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         // TODO Jen: add the sticker popup functionality here :)
+        getIds()
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
-        bottomStickerSheetDialog.receiver = receiver
-        bottomStickerSheetDialog.sender = sender
+
         stickerDisplayButton.setOnClickListener {
+            bottomStickerSheetDialog.name = receiverName
+            bottomStickerSheetDialog.receiver = receiver
+            bottomStickerSheetDialog.sender = sender
             bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
             val stickerIntent = intent.extras
@@ -63,6 +67,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                 stickerDescription = stickerIntent.getString("description")
                 receiver = stickerIntent.getString("receiver").toString()
                 sender = stickerIntent.getString("sender").toString()
+                receiverName = stickerIntent.getString("name").toString()
 
                 Log.i(TAG, receiver.toString())
                 Log.i(TAG, sender.toString())
@@ -79,6 +84,7 @@ class StickerMessagingActivity : AppCompatActivity() {
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
+            receiverName = stickerIntent?.getString("name").toString()
             addToDB()
         }
     }
@@ -86,7 +92,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private fun getIds() {
         val extras = intent.extras
         if (extras != null) {
-            val receiverName = extras.getString("name")
+            receiverName = intent.getStringExtra("name").toString()
             receiverId = intent.getStringExtra("receiverId").toString()
             receiver = receiverId.toString()
 
@@ -110,10 +116,10 @@ class StickerMessagingActivity : AppCompatActivity() {
     private fun addToDB() {
         time = FieldValue.serverTimestamp()
         val newMessage = StickerCard(stickerImage, time, sender, receiver)
-        fireStore.collection("senderChat").document("$sender-$receiver").set(newMessage)
+        fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
 
-                fireStore.collection("receiverChat").document("$receiver-$sender").set(newMessage)
+                fireStore.collection("receiverChat").document("$receiver-$sender").collection("messages").document().set(newMessage)
                 Log.d(TAG, "DocumentSnapshot added with ID: $sender + $receiver")
                 Log.d(TAG, "DocumentSnapshot added with ID: $receiver + $sender")
 

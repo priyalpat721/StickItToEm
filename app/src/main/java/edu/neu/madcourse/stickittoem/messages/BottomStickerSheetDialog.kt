@@ -15,6 +15,7 @@ import edu.neu.madcourse.stickittoem.adapters.StickerGridAdapter
 // sources:
 // https://pasindulaksara.medium.com/recyclerview-with-grid-layout-in-kotlin-414d780c47ae
 class BottomStickerSheetDialog : BottomSheetDialogFragment(){
+    lateinit var name: String
     private val imageList: MutableList<StickerModel> = ArrayList<StickerModel>()
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerGridAdapter? = null
@@ -35,7 +36,7 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.sticker_recycler)
 
-        adapter = this.context?.let { StickerGridAdapter(view.context, receiver, sender) }
+        adapter = this.context?.let { StickerGridAdapter(view.context, receiver, sender, name) }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)
