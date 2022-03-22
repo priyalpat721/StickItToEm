@@ -26,7 +26,9 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         holder.name.text = chatList[position].name
-        holder.totalStickers.text = chatList[position].totalStickers.toString()
+        var total = chatList[position].totalStickersReceived
+        total = total?.plus(chatList[position].totalStickersSent!!)
+        holder.totalStickers.text = (total.toString())
 
         //TODO this should open a messaging history associated with user
         //TODO DO NOT WORK CORRECTLY, JUST DUMMY SET UP
