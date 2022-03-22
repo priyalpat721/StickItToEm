@@ -2,7 +2,6 @@ package edu.neu.madcourse.stickittoem.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,11 +53,13 @@ class StickerGridAdapter(
             Toast.makeText(context, holder.description +" pressed", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(context, StickerMessagingActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.putExtra("image", data.image)
             intent.putExtra("description", data.description)
             intent.putExtra("receiver", receiver)
             intent.putExtra("sender", sender)
             intent.putExtra("name", name)
+
             context.startActivity(intent)
         }
 
