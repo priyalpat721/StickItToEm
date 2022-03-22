@@ -1,15 +1,19 @@
 package edu.neu.madcourse.stickittoem.cards
 
+import com.google.firebase.firestore.FieldValue
+
 class StickerCard{
     lateinit var sticker: String
-    lateinit var timestamp: String
+    lateinit var timestamp: FieldValue
     lateinit var sender: String
     lateinit var receiver : String
 
     constructor()
-    constructor(sticker: String, timestamp: String, sender: String, receiver: String) {
+    constructor(sticker: String, timestamp: FieldValue?, sender: String, receiver: String) {
         this.sticker = sticker
-        this.timestamp = timestamp
+        if (timestamp != null) {
+            this.timestamp = timestamp
+        }
         this.sender = sender
         this.receiver = receiver
     }
