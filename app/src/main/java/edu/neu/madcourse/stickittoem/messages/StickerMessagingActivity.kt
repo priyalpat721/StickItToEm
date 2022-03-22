@@ -27,6 +27,8 @@ import java.util.*
 
 
 class StickerMessagingActivity : AppCompatActivity() {
+    private lateinit var sender: String
+    private lateinit var receiver: String
     private val TAG = "StickerAppMessage"
     private var stickerMessageList: MutableList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
@@ -51,21 +53,22 @@ class StickerMessagingActivity : AppCompatActivity() {
         setUpResources()
         getDummyData()
 
-
-
         val extras = intent.extras
         if (extras != null) {
             val receiverName = extras.getString("name")
             if (savedInstanceState != null) {
                 receiverId = intent.getBundleExtra("receiverId").toString()
+                sender = senderId.toString()
             }
             if (savedInstanceState != null) {
                 senderId = intent.getBundleExtra("senderId").toString()
+                receiver = receiverId.toString()
             }
 
             Log.i(TAG, extras.toString())
             nameBox = findViewById(R.id.receiver_name_box)
             nameBox.text = receiverName;
+
         }
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
