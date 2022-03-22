@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerGridAdapter
+import edu.neu.madcourse.stickittoem.cards.StickerCard
 
-// sources:
-// https://pasindulaksara.medium.com/recyclerview-with-grid-layout-in-kotlin-414d780c47ae
+// sources: https://pasindulaksara.medium.com/recyclerview-with-grid-layout-in-kotlin-414d780c47ae
 class BottomStickerSheetDialog : BottomSheetDialogFragment(){
     lateinit var name: String
     private val imageList: MutableList<StickerModel> = ArrayList<StickerModel>()
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerGridAdapter? = null
-    private lateinit var stickerButton: ImageButton
     lateinit var receiver : String
     lateinit var sender : String
 
