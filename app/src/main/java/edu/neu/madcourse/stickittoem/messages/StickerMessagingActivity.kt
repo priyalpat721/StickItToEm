@@ -1,6 +1,7 @@
 package edu.neu.madcourse.stickittoem.messages
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -20,6 +21,7 @@ import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class StickerMessagingActivity : AppCompatActivity() {
@@ -37,9 +39,12 @@ class StickerMessagingActivity : AppCompatActivity() {
 
     private var receiverId: String? = null
     private var senderId: String? = null
-    private var stickerImage: String? = null
+    private var stringStickerImg: String? = null
+    private var url: Uri? = null
+    private var stickerImage: Int? = null
     private var stickerDescription: String? = null
     private var fireStore = FirebaseFirestore.getInstance()
+    private val stickerImgHashMap:HashMap<String, Uri> = HashMap()
 
     @ServerTimestamp
     var time: FieldValue? = null
@@ -63,7 +68,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
             val stickerIntent = intent.extras
             if (stickerIntent != null) {
-                stickerImage = stickerIntent.getString("image")
+                stickerImage = stickerIntent.getInt("image")
                 stickerDescription = stickerIntent.getString("description")
                 receiver = stickerIntent.getString("receiver").toString()
                 sender = stickerIntent.getString("sender").toString()
@@ -74,17 +79,52 @@ class StickerMessagingActivity : AppCompatActivity() {
                 Log.i(TAG, stickerImage.toString())
                 Log.i(TAG, stickerDescription.toString())
 
-                println("This is from sticker intent: \n$stickerIntent")
+//                println("This is from sticker intent: \n${stickerIntent.getString("image")}")
             }
         }
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
             val stickerIntent = intent.extras
-            stickerImage = stickerIntent?.getString("image")
+            stickerImage = stickerIntent?.getInt("image")
+            when(stickerImage){
+                2131165376->{
+                    stringStickerImg = "exercisedino"
+                    url = Uri.parse("R.drawable.exercisedino")
+                }
+                2131165377->{
+                    stringStickerImg = "frustratedino"
+                    url = Uri.parse("R.drawable.frustratedino")
+
+                }
+                2131165378->{
+                    stringStickerImg = "happydino"
+                    url = Uri.parse("R.drawable.happydino")
+
+
+                }
+                2131165379->{
+                    stringStickerImg = "motivatedino"
+                    url = Uri.parse("R.drawable.motivatedino")
+
+                }
+                2131165380->{
+                    stringStickerImg = "saddino"
+                    url = Uri.parse("R.drawable.saddino")
+
+                }
+                2131165381->{
+                    stringStickerImg = "sleepdino2"
+                    url = Uri.parse("R.drawable.sleepdino2")
+
+                }
+            }
+            stickerImgHashMap.put(stringStickerImg!!,url!!)
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
             receiverName = stickerIntent?.getString("name").toString()
+
+            println("This is from sticker intent: \n${stringStickerImg}")
             addToDB()
         }
     }
@@ -115,7 +155,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
     private fun addToDB() {
         time = FieldValue.serverTimestamp()
-        val newMessage = StickerCard(stickerImage, time, sender, receiver)
+        val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
 

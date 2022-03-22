@@ -2,15 +2,19 @@ package edu.neu.madcourse.stickittoem.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.reflect.Reflection.getPackageName
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 import edu.neu.madcourse.stickittoem.messages.StickerModel
+
 
 class StickerGridAdapter(
     var context: Context,
@@ -24,11 +28,10 @@ class StickerGridAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var image: ImageView
+        var image: ImageView = itemView.findViewById(R.id.sticker_image)
         lateinit var description: String
 
         init {
-            image = itemView.findViewById(R.id.sticker_image)
             // scales stickers to fir in grid
             image.scaleType = ImageView.ScaleType.FIT_CENTER
         }
@@ -46,7 +49,9 @@ class StickerGridAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = dataList[position]
 
+        //holder.image.setImageResource(context.getResources().getIdentifier(data.image,"drawable",getPackageName()));
         holder.image.setImageResource(data.image)
+        //holder.image = data.image.toString()
         holder.description = data.description
 
         holder.image.setOnClickListener(){
