@@ -16,7 +16,6 @@ import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
 import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
-    private val TAG: String? = "Users"
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
@@ -39,8 +38,6 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 val userData = user.data
                 val currentUser = Firebase.auth.currentUser
                 if (userData["email"].toString() != currentUser?.email) {
-                    Log.i(TAG, "Success")
-                    Log.i(TAG, userData.toString())
                     val chat = ChatCard(
                         userData["name"].toString(),
                         userData["email"].toString(),

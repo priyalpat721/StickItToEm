@@ -19,6 +19,8 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerGridAdapter? = null
     private lateinit var stickerButton: ImageButton
+    lateinit var receiver : String
+    lateinit var sender : String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +35,7 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.sticker_recycler)
 
-        adapter = this.context?.let { StickerGridAdapter(view.context) }
+        adapter = this.context?.let { StickerGridAdapter(view.context, receiver, sender) }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)
