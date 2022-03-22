@@ -11,7 +11,7 @@ import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.messages.StickerModel
 
 class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGridAdapter.ViewHolder>() {
-    var dataList = emptyList<StickerModel>()
+    private var dataList = emptyList<StickerModel>()
     internal fun setDataList(dataList:List<StickerModel>) {
         this.dataList = dataList
     }
@@ -22,7 +22,8 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
 
         init {
             image = itemView.findViewById(R.id.sticker_image)
-            //description = itemView.findViewById(R.id.sticker_description)//set the content description
+            // scales stickers to fit in grid
+            image.scaleType = ImageView.ScaleType.FIT_CENTER
         }
     }
 
@@ -30,13 +31,13 @@ class StickerGridAdapter(var context: Context) : RecyclerView.Adapter<StickerGri
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        var view = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.sticker_grid,parent,false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var data = dataList[position]
+        val data = dataList[position]
 
         holder.image.setImageResource(data.image)
         holder.description = data.description
