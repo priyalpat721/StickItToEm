@@ -1,7 +1,5 @@
 package edu.neu.madcourse.stickittoem.cards
 
-class UserCard {
-    //TODO make chat card have sender id and receiver id?
     var name: String? = null
     var receiverId: String? = null
     var senderId: String? = null
@@ -10,6 +8,7 @@ class UserCard {
     var totalStickersSent : Int? = 0
 
     constructor()
+
     constructor(
         name: String?,
         receiverId: String?,
@@ -27,7 +26,8 @@ class UserCard {
     }
 
     override fun toString(): String {
-        return "ChatCard(name=$name, receiverId=$receiverId, senderId=$senderId, email=$email, totalStickersReceived=$totalStickersReceived, totalStickersSent=$totalStickersSent)"
+        return "UserCard(name=$name, receiverId=$receiverId, senderId=$senderId, email=$email, totalStickersReceived=$totalStickersReceived, totalStickersSent=$totalStickersSent)"
+
     }
 
 }

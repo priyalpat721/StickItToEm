@@ -34,15 +34,20 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
                 val userData = user.data
                 val currentUser = Firebase.auth.currentUser
                 if (userData["email"].toString() != currentUser?.email) {
-                    val contact = UserCard(
+                    val chat = UserCard(
                         userData["name"].toString(),
-                        userData["receiverId"].toString(),
-                        userData["senderId"].toString(),
+                        userData["email"].toString(),
+                        currentUser?.email,
+
                         userData["email"].toString(),
                         Integer.parseInt(userData["totalReceived"].toString()),
                         Integer.parseInt(userData["totalSent"].toString())
                     )
+
+                    contactsList.add(chat)
+
                     contactsList.add(contact)
+
                     adapter?.notifyDataSetChanged()
                 }
             }
