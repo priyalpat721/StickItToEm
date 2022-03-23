@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem.messages
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,6 +22,7 @@ import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
+import edu.neu.madcourse.stickittoem.cards.UserCard
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -36,7 +39,6 @@ class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var stickerDisplayButton: Button
     private lateinit var sendButton: ImageButton
     private lateinit var nameBox: TextView
-
     private var receiverId: String? = null
     private var senderId: String? = null
     private var stringStickerImg: String? = null
@@ -53,13 +55,13 @@ class StickerMessagingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
         setUpResources()
-
         stickerDisplayButton = findViewById(R.id.sticker_btn)
-        // TODO Jen: add the sticker popup functionality here :)
         getIds()
+        var chatDataExists = checkChatData()
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
-        getDummyData()
-
+        if (chatDataExists) {
+            getData()
+        }
         stickerDisplayButton.setOnClickListener {
             bottomStickerSheetDialog.name = receiverName
             bottomStickerSheetDialog.receiver = receiver
@@ -74,7 +76,15 @@ class StickerMessagingActivity : AppCompatActivity() {
                 sender = stickerIntent.getString("sender").toString()
                 receiverName = stickerIntent.getString("name").toString()
 
+
                 getDummyData()
+
+                Log.i(TAG, "Receiver: "+receiver.toString())
+                Log.i(TAG, "Sender: $sender")
+                Log.i(TAG, "Sticker Image: $stickerImage")
+                Log.i(TAG, stickerDescription.toString())
+                getData()
+
             }
         }
         sendButton = findViewById(R.id.send_btn)
@@ -107,8 +117,16 @@ class StickerMessagingActivity : AppCompatActivity() {
                     url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.sleepdino2")
                 }
             }
+
             stickerImgHashMap.put(stringStickerImg!!,url!!)
             println(stickerImgHashMap.get(stringStickerImg))
+
+            Log.i(TAG, "Receiver: "+receiver.toString())
+            Log.i(TAG, "Sender: $sender")
+            Log.i(TAG, "Sticker Image: $stickerImage")
+            Log.i(TAG, stickerDescription.toString())
+            stickerImgHashMap.put(stringStickerImg!!,url!!)
+
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
@@ -120,14 +138,62 @@ class StickerMessagingActivity : AppCompatActivity() {
             Log.i(TAG, stickerDescription.toString())
             println("This is from sticker intent: \n${stringStickerImg}")
             addToDB()
+
         }
     }
 
-    private fun getDummyData() {
-        stickerMessageList.add(StickerCard("motivatedino", FieldValue.serverTimestamp(), "pri@gmail.com", "rachitmehta96@gmail.com"))
-        stickerMessageList.add(StickerCard("sleepdino2", FieldValue.serverTimestamp(), "rachitmehta96@gmail.com", "pri@gmail.com"))
+    private fun checkChatData(): Boolean {
+        var senderReceiver ="$sender-$receiver"
+        var receiverSender = "$receiver-$sender"
+        var senderVal = false
+        var receiverVal = false
+        fireStore.collection("senderChat").document(senderReceiver).get().addOnSuccessListener {
+            senderVal = true
+        }
+        fireStore.collection("senderChat").document(receiverSender).get().addOnSuccessListener {
+            receiverVal = true
+        }
+        return senderVal or receiverVal
+    }
 
-        Log.i(TAG, stickerMessageList.toString())
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getData() {
+        fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").get().addOnSuccessListener { result ->
+            for (user in result) {
+                Log.i(TAG, user.toString())
+                val userData = user.data
+                val currentUser = Firebase.auth.currentUser
+                if (userData["email"].toString() != currentUser?.email) {
+                    val chat = StickerCard(
+                        userData["sticker"].toString(),
+                        userData["timestamp"] as FieldValue?,
+                        userData["sender"].toString(),
+                        userData["receiver"].toString()
+                    )
+                    Log.i(TAG, chat.toString())
+                    stickerMessageList.add(chat)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+
+        fireStore.collection("senderChat").document("$receiver-$sender").collection("messages").get().addOnSuccessListener { result ->
+            for (user in result) {
+                val userData = user.data
+                val currentUser = Firebase.auth.currentUser
+                if (userData["email"].toString() != currentUser?.email) {
+                    val chat = StickerCard(
+                        userData["sticker"].toString(),
+                        userData["timestamp"] as FieldValue?,
+                        userData["sender"].toString(),
+                        userData["receiver"].toString()
+                    )
+                    stickerMessageList.add(chat)
+                    adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+
     }
 
     private fun getIds() {
@@ -154,6 +220,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun addToDB() {
         time = FieldValue.serverTimestamp()
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
@@ -165,6 +232,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                     baseContext, "successfully made.",
                     Toast.LENGTH_SHORT
                 ).show()
+                stickerMessageList.add(newMessage)
+                adapter?.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
