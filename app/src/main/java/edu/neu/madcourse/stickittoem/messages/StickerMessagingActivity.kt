@@ -29,7 +29,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var sender: String
     private lateinit var receiver: String
     private val TAG = "StickerAppMessage"
-    private var stickerMessageList: MutableList<StickerCard> = ArrayList()
+    private var stickerMessageList: ArrayList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerMessagingAdapter? = null
     var context: Context = this
@@ -44,7 +44,6 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
     private var fireStore = FirebaseFirestore.getInstance()
-    private val stickerImgHashMap:HashMap<String, Uri> = HashMap()
 
     @ServerTimestamp
     var time: FieldValue? = null
@@ -53,12 +52,12 @@ class StickerMessagingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
         setUpResources()
-        //getDummyData()
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         // TODO Jen: add the sticker popup functionality here :)
         getIds()
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
+        getDummyData()
 
         stickerDisplayButton.setOnClickListener {
             bottomStickerSheetDialog.name = receiverName
@@ -73,12 +72,11 @@ class StickerMessagingActivity : AppCompatActivity() {
                 receiver = stickerIntent.getString("receiver").toString()
                 sender = stickerIntent.getString("sender").toString()
                 receiverName = stickerIntent.getString("name").toString()
-
                 Log.i(TAG, receiver.toString())
                 Log.i(TAG, sender.toString())
                 Log.i(TAG, stickerImage.toString())
                 Log.i(TAG, stickerDescription.toString())
-
+                getDummyData()
 //                println("This is from sticker intent: \n${stickerIntent.getString("image")}")
             }
         }
@@ -89,31 +87,24 @@ class StickerMessagingActivity : AppCompatActivity() {
             when(stickerImage){
                 2131165376->{
                     stringStickerImg = "exercisedino"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.exercisedino")
                 }
                 2131165377->{
                     stringStickerImg = "frustratedino"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.frustratedino")
                 }
                 2131165378->{
                     stringStickerImg = "happydino"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.happydino")
                 }
                 2131165379->{
                     stringStickerImg = "motivatedino"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.motivatedino")
                 }
                 2131165380->{
                     stringStickerImg = "saddino"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.saddino")
                 }
                 2131165381->{
                     stringStickerImg = "sleepdino2"
-                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.sleepdino2")
                 }
             }
-            stickerImgHashMap.put(stringStickerImg!!,url!!)
-            println(stickerImgHashMap.get(stringStickerImg))
+
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
@@ -122,6 +113,13 @@ class StickerMessagingActivity : AppCompatActivity() {
             println("This is from sticker intent: \n${stringStickerImg}")
             addToDB()
         }
+    }
+
+    private fun getDummyData() {
+        stickerMessageList.add(StickerCard("motivatedino", FieldValue.serverTimestamp(), "pri@gmail.com", "rachitmehta96@gmail.com"))
+        stickerMessageList.add(StickerCard("sleepdino2", FieldValue.serverTimestamp(), "rachitmehta96@gmail.com", "pri@gmail.com"))
+
+        Log.i(TAG, stickerMessageList.toString())
     }
 
     private fun getIds() {
@@ -153,11 +151,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
-
-                fireStore.collection("receiverChat").document("$receiver-$sender").collection("messages").document().set(newMessage)
-                Log.d(TAG, "DocumentSnapshot added with ID: $sender + $receiver")
-                Log.d(TAG, "DocumentSnapshot added with ID: $receiver + $sender")
-
                 // Sign in success, update UI with the signed-in user's information
                 Toast.makeText(
                     baseContext, "successfully made.",
@@ -171,6 +164,5 @@ class StickerMessagingActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
     }
 }

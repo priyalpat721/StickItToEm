@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.reflect.Reflection.getPackageName
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.cards.StickerCard
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 import edu.neu.madcourse.stickittoem.messages.StickerModel
 
@@ -20,7 +21,7 @@ class StickerGridAdapter(
     var context: Context,
     var receiver: String,
     var sender: String,
-    var name: String
+    var name: String,
 ) : RecyclerView.Adapter<StickerGridAdapter.ViewHolder>() {
     private var dataList = emptyList<StickerModel>()
     internal fun setDataList(dataList:List<StickerModel>) {
@@ -58,13 +59,12 @@ class StickerGridAdapter(
             Toast.makeText(context, holder.description +" pressed", Toast.LENGTH_SHORT).show()
 
             val intent = Intent(context, StickerMessagingActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.putExtra("image", data.image)
             intent.putExtra("description", data.description)
             intent.putExtra("receiver", receiver)
             intent.putExtra("sender", sender)
             intent.putExtra("name", name)
-
             context.startActivity(intent)
         }
 
