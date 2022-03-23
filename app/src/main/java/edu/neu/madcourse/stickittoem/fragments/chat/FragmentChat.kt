@@ -26,7 +26,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.history_recycler_view)
+        recyclerView = view.findViewById(R.id.chat_recycler_view)
 
         setUpResources()
 
