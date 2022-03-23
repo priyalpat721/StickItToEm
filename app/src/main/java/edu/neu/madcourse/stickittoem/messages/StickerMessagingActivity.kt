@@ -113,11 +113,16 @@ class StickerMessagingActivity : AppCompatActivity() {
                     url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.sleepdino2")
                 }
             }
+
+            stickerImgHashMap.put(stringStickerImg!!,url!!)
+            println(stickerImgHashMap.get(stringStickerImg))
+
             Log.i(TAG, "Receiver: "+receiver.toString())
             Log.i(TAG, "Sender: $sender")
             Log.i(TAG, "Sticker Image: $stickerImage")
             Log.i(TAG, stickerDescription.toString())
             stickerImgHashMap.put(stringStickerImg!!,url!!)
+
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
@@ -213,6 +218,8 @@ class StickerMessagingActivity : AppCompatActivity() {
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
+
+
                 // Sign in success, update UI with the signed-in user's information
                 Toast.makeText(
                     baseContext, "successfully made.",
