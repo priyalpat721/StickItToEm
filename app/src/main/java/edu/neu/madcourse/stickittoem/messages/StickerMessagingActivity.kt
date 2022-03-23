@@ -85,7 +85,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         }
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
-            stickerMessageList.clear()
             val stickerIntent = intent.extras
             stickerImage = stickerIntent?.getInt("image")
             when(stickerImage){
@@ -126,7 +125,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
             println("This is from sticker intent: \n${stringStickerImg}")
             addToDB()
-            getData()
+
         }
     }
 
@@ -208,6 +207,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun addToDB() {
         time = FieldValue.serverTimestamp()
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
@@ -218,6 +218,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                     baseContext, "successfully made.",
                     Toast.LENGTH_SHORT
                 ).show()
+                stickerMessageList.add(newMessage)
+                adapter?.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
