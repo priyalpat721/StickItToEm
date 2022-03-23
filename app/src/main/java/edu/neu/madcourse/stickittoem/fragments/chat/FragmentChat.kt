@@ -66,6 +66,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
                         }
 
+                    // THIS IS THE BUG
                     db.collection("senderChat").document("$receiver-$sender")
                         .collection("messages").get().addOnSuccessListener {
                                 response ->
