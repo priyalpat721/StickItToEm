@@ -16,6 +16,7 @@ import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
 import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
+    private val TAG: String = "TEST"
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
@@ -38,16 +39,30 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 val userData = user.data
                 val currentUser = Firebase.auth.currentUser
                 if (userData["email"].toString() != currentUser?.email) {
-                    val chat = ChatCard(
-                        userData["name"].toString(),
-                        userData["email"].toString(),
-                        currentUser?.email,
-                        userData["email"].toString(),
-                        Integer.parseInt(userData["totalReceived"].toString()),
-                        Integer.parseInt(userData["totalSent"].toString())
-                    )
-                    chatList.add(chat)
-                    adapter?.notifyDataSetChanged()
+                    val sender = currentUser?.email
+                    val receiver = userData["email"].toString()
+                    Log.i(TAG, "Sender: $sender")
+                    Log.i(TAG, "Receiver: $receiver")
+                    db.collection("senderChat").document("$sender-$receiver")
+                        .collection("messages").get().addOnSuccessListener {
+                            response ->
+                            for(message in response) {
+                                if (message != null) {
+                                    Log.i(TAG, message.data.toString())
+                                    val chat = ChatCard(
+                                        userData["name"].toString(),
+                                        userData["email"].toString(),
+                                        currentUser?.email,
+                                        userData["email"].toString(),
+                                        Integer.parseInt(userData["totalReceived"].toString()),
+                                        Integer.parseInt(userData["totalSent"].toString())
+                                    )
+                                    chatList.add(chat)
+                                    adapter?.notifyDataSetChanged()
+                                }
+                            }
+
+                        }
                 }
             }
         }

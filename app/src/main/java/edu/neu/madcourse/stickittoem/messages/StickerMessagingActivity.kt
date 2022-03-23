@@ -193,7 +193,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private fun setUpResources() {
         recyclerView = findViewById(R.id.message_recycler_view)
 
-        adapter = StickerMessagingAdapter(stickerMessageList, context, senderId)
+        adapter = StickerMessagingAdapter(stickerMessageList, context)
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
