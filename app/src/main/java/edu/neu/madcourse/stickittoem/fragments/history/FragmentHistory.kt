@@ -1,60 +1,95 @@
 package edu.neu.madcourse.stickittoem.fragments.history
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
+import edu.neu.madcourse.stickittoem.adapters.HistoryAdapter
+import edu.neu.madcourse.stickittoem.cards.HistoryCard
+import edu.neu.madcourse.stickittoem.cards.UserCard
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [FragmentHistory.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentHistory : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class FragmentHistory : Fragment(R.layout.fragment_history2) {
+    private val historyList: MutableList<HistoryCard> = ArrayList<HistoryCard>()
+    private var recyclerView: RecyclerView? = null
+    var adapter: HistoryAdapter? = null
+    private var db = Firebase.firestore
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view.findViewById(R.id.history_recycler_view)
+
+        setUpResources()
+        getData()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history2, container, false)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getData() {
+//        db.collection("users").get().addOnSuccessListener { result ->
+//            for (user in result) {
+//                val userData = user.data
+//                val currentUser = Firebase.auth.currentUser
+//
+//                val newhistoryItem = HistoryCard(userData["totalSent"].get(""))
+//                if (userData["email"].toString() != currentUser?.email) {
+//                    val chat = UserCard(
+//                        userData["name"].toString(),
+//                        userData["email"].toString(),
+//                        currentUser?.email,
+//
+//                        userData["email"].toString(),
+//                        Integer.parseInt(userData["totalReceived"].toString()),
+//                        Integer.parseInt(userData["totalSent"].toString())
+//                    )
+//
+////                    historyList.add(chat)
+////
+//                    adapter?.notifyDataSetChanged()
+//                }
+//            }
+//        }
+
+        val newHistoryFrustrated = HistoryCard("frustratedino", 7)
+        val newHistoryHappy = HistoryCard("happydino", 13)
+        val newHistorySad = HistoryCard("saddino", 15)
+        val newHistoryMotivated = HistoryCard("motivatedino", 19)
+        val newHistoryExercise = HistoryCard("exercisedino", 2)
+        val newHistorySleepy = HistoryCard("sleepdino2", 90)
+
+        historyList.add(newHistoryExercise)
+        historyList.add(newHistoryFrustrated)
+        historyList.add(newHistoryHappy)
+        historyList.add(newHistorySad)
+        historyList.add(newHistoryMotivated)
+        historyList.add(newHistorySleepy)
+        historyList.add(newHistoryExercise)
+        historyList.add(newHistoryFrustrated)
+        historyList.add(newHistoryHappy)
+        historyList.add(newHistorySad)
+        historyList.add(newHistoryMotivated)
+        historyList.add(newHistorySleepy)
+        adapter?.notifyDataSetChanged()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentHistory.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentHistory().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setUpResources(){
+        adapter = this.context?.let { HistoryAdapter(historyList, it) }
+        recyclerView!!.adapter = adapter
+        recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
+
 }
