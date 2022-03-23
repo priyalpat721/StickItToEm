@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.cards.UserCard
+import edu.neu.madcourse.stickittoem.cards.ChatCard
 import edu.neu.madcourse.stickittoem.viewHolder.ChatViewHolder
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 
 class ChatAdapter(
-    private var userList: MutableList<UserCard>,
+    private var userList: ArrayList<ChatCard>,
     private var context: Context
 ) : RecyclerView.Adapter<ChatViewHolder>() {
 
