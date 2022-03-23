@@ -161,6 +161,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                 }
                 Log.i(TAG, "Stickerlist before: $tempList")
                 Collections.sort(tempList, sorter)
+                tempList.reverse()
                 stickerMessageList.addAll(tempList)
                 adapter?.notifyDataSetChanged()
             }
