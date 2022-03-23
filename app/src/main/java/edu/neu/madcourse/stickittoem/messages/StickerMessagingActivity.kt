@@ -73,10 +73,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                 receiver = stickerIntent.getString("receiver").toString()
                 sender = stickerIntent.getString("sender").toString()
                 receiverName = stickerIntent.getString("name").toString()
-                Log.i(TAG, receiver.toString())
-                Log.i(TAG, sender.toString())
-                Log.i(TAG, stickerImage.toString())
-                Log.i(TAG, stickerDescription.toString())
+
                 getDummyData()
 //                println("This is from sticker intent: \n${stickerIntent.getString("image")}")
             }
@@ -118,6 +115,10 @@ class StickerMessagingActivity : AppCompatActivity() {
             sender = stickerIntent?.getString("sender").toString()
             receiverName = stickerIntent?.getString("name").toString()
 
+            Log.i(TAG, receiver.toString())
+            Log.i(TAG, sender.toString())
+            Log.i(TAG, stickerImage.toString())
+            Log.i(TAG, stickerDescription.toString())
             println("This is from sticker intent: \n${stringStickerImg}")
             addToDB()
         }
