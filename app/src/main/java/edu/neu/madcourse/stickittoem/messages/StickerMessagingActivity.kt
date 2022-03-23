@@ -75,7 +75,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                 receiverName = stickerIntent.getString("name").toString()
 
                 getDummyData()
-//                println("This is from sticker intent: \n${stickerIntent.getString("image")}")
             }
         }
         sendButton = findViewById(R.id.send_btn)
@@ -160,7 +159,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
-
 
                 // Sign in success, update UI with the signed-in user's information
                 Toast.makeText(
