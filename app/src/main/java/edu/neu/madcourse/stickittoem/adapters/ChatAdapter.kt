@@ -30,8 +30,6 @@ class ChatAdapter(
         total = total?.plus(chatList[position].totalStickersSent!!)
         holder.totalStickers.text = (total.toString())
 
-        //TODO this should open a messaging history associated with user
-        //TODO DOES NOT WORK CORRECTLY, JUST DUMMY SET UP
         holder.chatInfoLayout.setOnClickListener{
             val intent = Intent(context, StickerMessagingActivity::class.java)
             Log.i(TAG, chatList[position].toString())
