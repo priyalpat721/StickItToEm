@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
@@ -23,7 +26,6 @@ import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
-import org.json.JSONObject.NULL
 import java.util.*
 
 class StickerMessagingActivity : AppCompatActivity() {
@@ -55,12 +57,12 @@ class StickerMessagingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_messaging)
         getIds()
         setUpResources()
+
         getData()
         adapter?.notifyDataSetChanged()
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
-
         stickerDisplayButton.setOnClickListener {
             bottomStickerSheetDialog.name = receiverName
             bottomStickerSheetDialog.receiver = receiver
@@ -74,6 +76,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                 receiver = stickerIntent.getString("receiver").toString()
                 sender = stickerIntent.getString("sender").toString()
                 receiverName = stickerIntent.getString("name").toString()
+
             }
         }
 
@@ -102,22 +105,28 @@ class StickerMessagingActivity : AppCompatActivity() {
                     stringStickerImg = "sleepdino2"
                 }
             }
+
+
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
             receiverName = stickerIntent?.getString("name").toString()
             addToDB()
+
             getData()
             adapter?.notifyDataSetChanged()
 
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+
+
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getData() {
+      
         stickerMessageList.clear()
         val tempList = ArrayList<StickerCard>()
         fireStore.collection("senderChat").document("$sender-$receiver")
@@ -166,6 +175,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                 stickerMessageList.addAll(tempList)
                 adapter?.notifyDataSetChanged()
             }
+
+
     }
 
     class ComparatorTime : Comparator<StickerCard> {
@@ -211,6 +222,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                     baseContext, "successfully made.",
                     Toast.LENGTH_SHORT
                 ).show()
+                stickerMessageList.add(newMessage)
+                adapter?.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)

@@ -38,16 +38,28 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
                         userData["name"].toString(),
                         userData["email"].toString(),
                         currentUser?.email,
+
                         userData["email"].toString(),
                         Integer.parseInt(userData["totalReceived"].toString()),
                         Integer.parseInt(userData["totalSent"].toString())
                     )
+
                     contactsList.add(chat)
+
+                    contactsList.add(contact)
+
                     adapter?.notifyDataSetChanged()
                 }
             }
         }
     }
+
+
+//    private fun getDummyData(){
+//        contactsList.add(UserCard("Priyal", 0, 1))
+//        contactsList.add(UserCard("Rach", 1, 2))
+//        contactsList.add(UserCard("Kash", 2, 3))
+//    }
 
     private fun setUpResources(){
         adapter = this.context?.let { ContactAdapter(contactsList, it) }

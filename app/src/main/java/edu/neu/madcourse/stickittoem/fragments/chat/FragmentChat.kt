@@ -2,22 +2,22 @@ package edu.neu.madcourse.stickittoem.fragments.chat
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
-import edu.neu.madcourse.stickittoem.cards.ChatCard
+import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
+
     private val TAG: String = "TEST"
     private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
+
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
     private var db = Firebase.firestore
@@ -39,6 +39,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 val userData = user.data
                 val currentUser = Firebase.auth.currentUser
                 if (userData["email"].toString() != currentUser?.email) {
+
                     val sender = currentUser?.email
                     val receiver = userData["email"].toString()
                     Log.i(TAG, "Sender: $sender")
@@ -88,13 +89,14 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                             }
 
                         }
+
                 }
             }
         }
     }
 
     private fun setUpResources() {
-        adapter = this.context?.let { ChatAdapter(chatList, it) }
+        adapter = this.context?.let { ChatAdapter(userList, it) }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
