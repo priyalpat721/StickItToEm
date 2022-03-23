@@ -10,7 +10,7 @@
         android:id="@+id/Signed_in_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Signed in as:"
+        android:text="@string/signed_in_as"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.084"
@@ -22,7 +22,7 @@
         android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="example@gmail.com"
+        android:text="@string/example_gmail_com"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -34,7 +34,7 @@
         android:id="@+id/total_stickers_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Stickers Sent:"
+        android:text="@string/total_stickers_sent"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,12 +46,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_recycler_view"
-        android:layout_width="414dp"
-        android:layout_height="611dp"
+        android:layout_width="match_parent"
+        android:layout_height="473dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_stickers_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.125" />
 </androidx.constraintlayout.widget.ConstraintLayout>

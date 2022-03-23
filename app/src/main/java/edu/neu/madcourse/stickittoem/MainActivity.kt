@@ -27,9 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2.adapter = adapter
 
-        val tabs = arrayListOf<String>();
-        tabs.add("Chat");
+        val tabs = arrayListOf<String>()
         tabs.add("Contacts")
+        tabs.add("Chat")
         tabs.add("History")
 
         TabLayoutMediator(tabLayout, viewPager2){ tab, position-> tab.text = tabs[position] }.attach()

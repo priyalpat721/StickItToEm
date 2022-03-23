@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/homeFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="683dp"
-        android:layout_marginBottom="4dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/sign_out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout="@layout/activity_main" />
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -29,10 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MainActivity">
 
-        <!--        <androidx.appcompat.widget.Toolbar-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content">-->
-        <!--        </androidx.appcompat.widget.Toolbar>-->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
@@ -46,24 +26,6 @@
             app:tabTextColor="@android:color/white"
             tools:ignore="SpeakableTextPresentCheck">
 
-            <!--            <com.google.android.material.tabs.TabItem-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Chat"-->
-            <!--                android:icon="@drawable/ic_chat"-->
-            <!--                />-->
-            <!--            <com.google.android.material.tabs.TabItem-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Contacts"-->
-            <!--                android:icon="@drawable/ic_contacts"-->
-            <!--                />-->
-            <!--            <com.google.android.material.tabs.TabItem-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="History"-->
-            <!--                android:icon="@drawable/ic_history"-->
-            <!--                />-->
         </com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -76,16 +38,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
 
+
     <Button
         android:id="@+id/sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Sign Out"
+        android:text="@string/sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="edu.neu.madcourse.stickittoem.fragments.BlankFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/sign_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_pager2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout="@layout/fragment_contacts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

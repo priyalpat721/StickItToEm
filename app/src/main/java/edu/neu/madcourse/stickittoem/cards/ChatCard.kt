@@ -1,22 +1,22 @@
 package edu.neu.madcourse.stickittoem.cards
 
 class ChatCard {
-    var name: String? = null
-    var receiverId: String? = null
-    var senderId: String? = null
-    var email: String? = null
-    var totalStickersReceived : Int? = 0
-    var totalStickersSent : Int? = 0
+    lateinit var name: String
+    lateinit var receiverId: String
+    lateinit var senderId: String
+    lateinit var email: String
+    var totalStickersReceived : Int = 0
+    var totalStickersSent : Int = 0
 
     constructor()
 
     constructor(
-        name: String?,
-        receiverId: String?,
-        senderId: String?,
-        email: String?,
-        totalStickersReceived: Int?,
-        totalStickersSent: Int?
+        name: String,
+        receiverId: String,
+        senderId: String,
+        email: String,
+        totalStickersReceived: Int,
+        totalStickersSent: Int
     ) {
         this.name = name
         this.receiverId = receiverId

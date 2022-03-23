@@ -3,27 +3,18 @@ package edu.neu.madcourse.stickittoem.fragments.history
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
 import edu.neu.madcourse.stickittoem.adapters.HistoryAdapter
 import edu.neu.madcourse.stickittoem.cards.HistoryCard
-import edu.neu.madcourse.stickittoem.cards.UserCard
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentHistory.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FragmentHistory : Fragment(R.layout.fragment_history2) {
+
+class FragmentHistory : Fragment(R.layout.fragment_history) {
     private val historyList: MutableList<HistoryCard> = ArrayList<HistoryCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: HistoryAdapter? = null
