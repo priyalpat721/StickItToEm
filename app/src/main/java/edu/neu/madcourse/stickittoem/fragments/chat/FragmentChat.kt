@@ -65,29 +65,29 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                         }
 
                     // THIS IS THE BUG
-                    db.collection("senderChat").document("$receiver-$sender")
-                        .collection("messages").get().addOnSuccessListener {
-                                response ->
-                            for(message in response) {
-                                if (message != null) {
-                                    Log.i(TAG, message.data.toString())
-                                    val chat = ChatCard(
-                                        userData["name"].toString(),
-                                        userData["email"].toString(),
-                                        currentUser?.email,
-                                        userData["email"].toString(),
-                                        Integer.parseInt(userData["totalReceived"].toString()),
-                                        Integer.parseInt(userData["totalSent"].toString())
-                                    )
-                                    if(!chatList.contains(chat)) {
-                                        chatList.add(chat)
-                                    }
-                                    adapter?.notifyDataSetChanged()
-                                    break
-                                }
-                            }
-
-                        }
+//                    db.collection("senderChat").document("$receiver-$sender")
+//                        .collection("messages").get().addOnSuccessListener {
+//                                response ->
+//                            for(message in response) {
+//                                if (message != null) {
+//                                    Log.i(TAG, message.data.toString())
+//                                    val chat = ChatCard(
+//                                        userData["name"].toString(),
+//                                        userData["email"].toString(),
+//                                        currentUser?.email,
+//                                        userData["email"].toString(),
+//                                        Integer.parseInt(userData["totalReceived"].toString()),
+//                                        Integer.parseInt(userData["totalSent"].toString())
+//                                    )
+//                                    if(!chatList.contains(chat)) {
+//                                        chatList.add(chat)
+//                                    }
+//                                    adapter?.notifyDataSetChanged()
+//                                    break
+//                                }
+//                            }
+//
+//                        }
                 }
             }
         }
