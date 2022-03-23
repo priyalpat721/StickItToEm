@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem.cards
 
+class UserCard {
     var name: String? = null
     var receiverId: String? = null
     var senderId: String? = null
