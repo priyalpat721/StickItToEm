@@ -1,7 +1,6 @@
 package edu.neu.madcourse.stickittoem.cards
 
 class ChatCard {
-    //TODO make chat card have sender id and receiver id?
     var name: String? = null
     var receiverId: String? = null
     var senderId: String? = null

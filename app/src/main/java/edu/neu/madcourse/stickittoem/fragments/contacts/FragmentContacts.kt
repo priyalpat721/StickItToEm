@@ -46,20 +46,11 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
 
                     contactsList.add(chat)
 
-                    contactsList.add(contact)
-
                     adapter?.notifyDataSetChanged()
                 }
             }
         }
     }
-
-
-//    private fun getDummyData(){
-//        contactsList.add(UserCard("Priyal", 0, 1))
-//        contactsList.add(UserCard("Rach", 1, 2))
-//        contactsList.add(UserCard("Kash", 2, 3))
-//    }
 
     private fun setUpResources(){
         adapter = this.context?.let { ContactAdapter(contactsList, it) }

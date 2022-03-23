@@ -16,7 +16,7 @@ import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
     private val TAG: String = "TEST"
-    private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
+    private val chatList: ArrayList<ChatCard> = ArrayList<ChatCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
     private var db = Firebase.firestore
