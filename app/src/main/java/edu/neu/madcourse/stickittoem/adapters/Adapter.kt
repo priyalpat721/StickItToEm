@@ -10,23 +10,23 @@ import edu.neu.madcourse.stickittoem.fragments.history.FragmentHistory
 
 class Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):FragmentStateAdapter(fragmentManager, lifecycle){
     override fun getItemCount(): Int {
-        return 3;
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
 
         return (when(position){
             0-> {
-                FragmentChat();
+                FragmentChat()
             }
             1->{
-                FragmentContacts();
+                FragmentContacts()
             }
             2-> {
-                FragmentHistory();
+                FragmentHistory()
             }
             else-> {
-                FragmentChat();
+                FragmentChat()
             }
         })
     }

@@ -44,6 +44,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
     private var fireStore = FirebaseFirestore.getInstance()
+    private val stickerImgHashMap:HashMap<String, Uri> = HashMap()
 
     @ServerTimestamp
     var time: FieldValue? = null
@@ -87,24 +88,31 @@ class StickerMessagingActivity : AppCompatActivity() {
             when(stickerImage){
                 2131165376->{
                     stringStickerImg = "exercisedino"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.exercisedino")
                 }
                 2131165377->{
                     stringStickerImg = "frustratedino"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.frustratedino")
                 }
                 2131165378->{
                     stringStickerImg = "happydino"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.happydino")
                 }
                 2131165379->{
                     stringStickerImg = "motivatedino"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.motivatedino")
                 }
                 2131165380->{
                     stringStickerImg = "saddino"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.saddino")
                 }
                 2131165381->{
                     stringStickerImg = "sleepdino2"
+                    url = Uri.parse("android.resource://edu.neu.madcourse.stickittoem.messages/drawable/R.drawable.sleepdino2")
                 }
             }
-
+            stickerImgHashMap.put(stringStickerImg!!,url!!)
+            println(stickerImgHashMap.get(stringStickerImg))
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
@@ -151,6 +159,8 @@ class StickerMessagingActivity : AppCompatActivity() {
         val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages").document().set(newMessage)
             .addOnSuccessListener {
+
+
                 // Sign in success, update UI with the signed-in user's information
                 Toast.makeText(
                     baseContext, "successfully made.",
