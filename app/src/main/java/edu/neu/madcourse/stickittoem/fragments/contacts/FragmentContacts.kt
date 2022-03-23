@@ -3,9 +3,7 @@ package edu.neu.madcourse.stickittoem.fragments.contacts
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -13,7 +11,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
-import edu.neu.madcourse.stickittoem.cards.ChatCard
 import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentContacts : Fragment(R.layout.fragment_contacts) {
@@ -39,6 +36,9 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
                 if (userData["email"].toString() != currentUser?.email) {
                     val contact = UserCard(
                         userData["name"].toString(),
+                        userData["receiverId"].toString(),
+                        userData["senderId"].toString(),
+                        userData["email"].toString(),
                         Integer.parseInt(userData["totalReceived"].toString()),
                         Integer.parseInt(userData["totalSent"].toString())
                     )

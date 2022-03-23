@@ -2,21 +2,19 @@ package edu.neu.madcourse.stickittoem.fragments.chat
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ChatAdapter
-import edu.neu.madcourse.stickittoem.cards.ChatCard
+import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
-    private val chatList: MutableList<ChatCard> = ArrayList<ChatCard>()
+    private val userList: MutableList<UserCard> = ArrayList<UserCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
     private var db = Firebase.firestore
@@ -38,7 +36,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 val userData = user.data
                 val currentUser = Firebase.auth.currentUser
                 if (userData["email"].toString() != currentUser?.email) {
-                    val chat = ChatCard(
+                    val chat = UserCard(
                         userData["name"].toString(),
                         userData["email"].toString(),
                         currentUser?.email,
@@ -46,7 +44,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                         Integer.parseInt(userData["totalReceived"].toString()),
                         Integer.parseInt(userData["totalSent"].toString())
                     )
-                    chatList.add(chat)
+                    userList.add(chat)
                     adapter?.notifyDataSetChanged()
                 }
             }
@@ -54,7 +52,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
     }
 
     private fun setUpResources() {
-        adapter = this.context?.let { ChatAdapter(chatList, it) }
+        adapter = this.context?.let { ChatAdapter(userList, it) }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
