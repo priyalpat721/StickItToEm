@@ -17,12 +17,12 @@ import edu.neu.madcourse.stickittoem.cards.ChatCard
 
 class FragmentChat : Fragment(R.layout.fragment_chat) {
     private val TAG: String = "TEST"
-    private val chatList: ArrayList<ChatCard> = ArrayList<ChatCard>()
+    private val chatList: ArrayList<ChatCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
     private var db = Firebase.firestore
-    private var senderVal = false
-    private var receiverVal = false
+
+    var cards = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +36,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getData() {
+        chatList.clear()
         db.collection("users").get().addOnSuccessListener { result ->
             for (user in result) {
                 val userData = user.data
@@ -43,22 +44,26 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 if (userData["email"].toString() != currentUser?.email) {
                     val sender = currentUser?.email
                     val receiver = userData["email"].toString()
-                    checkChatData(sender, receiver)
-                    if (senderVal && receiverVal) {
-                        getSenderMessages(userData, sender, receiver, currentUser)
-                        Log.i(TAG, "Sender1: $senderVal")
-                        Log.i(TAG, "Receiver1: $receiverVal")
-                    }
+                    val senderReceiver = "$sender-$receiver"
+                    val receiverSender = "$receiver-$sender"
+                    db.collection("senderChat").document(senderReceiver).get()
+                        .addOnSuccessListener {
+                            getSenderMessages(userData, sender, receiver, currentUser)
 
-                    else {
-                        getReceiverMessages(userData, sender, receiver, currentUser)
-                        Log.i(TAG, "Receiver2: $receiverVal")
-                        Log.i(TAG, "Sender2: $senderVal")
+                        }.addOnFailureListener {
 
-                    }
+                        }
+
+                    db.collection("senderChat").document(receiverSender).get()
+                        .addOnSuccessListener {
+                            getReceiverMessages(userData, sender, receiver, currentUser)
+                        }.addOnFailureListener {
+
+                        }
+
+                    adapter?.notifyDataSetChanged()
+                    Log.i(TAG, "IN GET DATA: $chatList")
                 }
-                adapter?.notifyDataSetChanged()
-                Log.i(TAG, "IN GET DATA: $chatList")
             }
         }
     }
@@ -70,24 +75,16 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun checkChatData(sender: String?, receiver: String?) {
-        val senderReceiver ="$sender-$receiver"
-        val receiverSender = "$receiver-$sender"
-
-        db.collection("senderChat").document(senderReceiver).get().addOnSuccessListener {
-            senderVal = true
-        }
-        db.collection("senderChat").document(receiverSender).get().addOnSuccessListener {
-            receiverVal = true
-        }
-    }
-
     @SuppressLint("NotifyDataSetChanged")
-    private fun getSenderMessages(userData: Map<String, Any>, sender: String?, receiver: String, currentUser: FirebaseUser?) {
+    private fun getSenderMessages(
+        userData: Map<String, Any>,
+        sender: String?,
+        receiver: String,
+        currentUser: FirebaseUser?
+    ) {
         db.collection("senderChat").document("$sender-$receiver")
-            .collection("messages").get().addOnSuccessListener {
-                    response ->
-                for(message in response) {
+            .collection("messages").get().addOnSuccessListener { response ->
+                for (message in response) {
                     if (message != null) {
                         Log.i(TAG, message.data.toString())
                         val chat = ChatCard(
@@ -98,23 +95,29 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                             Integer.parseInt(userData["totalReceived"].toString()),
                             Integer.parseInt(userData["totalSent"].toString())
                         )
-                        chatList.add(chat)
-                        adapter?.notifyDataSetChanged()
-                        Log.i(TAG, "IN sender message: $chatList")
-
-                        break
-
+                        if (chat.receiverId !in cards || chat.senderId !in cards) {
+                            chat.senderId?.let { cards.add(it) }
+                            chatList.add(chat)
+                            adapter?.notifyDataSetChanged()
+                            Log.i(TAG, "IN sender message: $chatList")
+                            break
+                        }
                     }
+                    break
                 }
             }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getReceiverMessages(userData: Map<String, Any>, sender: String?, receiver: String, currentUser: FirebaseUser?){
+    private fun getReceiverMessages(
+        userData: Map<String, Any>,
+        sender: String?,
+        receiver: String,
+        currentUser: FirebaseUser?
+    ) {
         db.collection("senderChat").document("$receiver-$sender")
-            .collection("messages").get().addOnSuccessListener {
-                    response ->
-                for(message in response) {
+            .collection("messages").get().addOnSuccessListener { response ->
+                for (message in response) {
                     if (message != null) {
                         Log.i(TAG, message.data.toString())
                         val chat = ChatCard(
@@ -126,15 +129,15 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                             Integer.parseInt(userData["totalSent"].toString())
                         )
 
-                        chatList.add(chat)
-
-                        adapter?.notifyDataSetChanged()
-                        Log.i(TAG, "IN receiver message: $chatList")
-
-                        break
+                        if (chat.receiverId !in cards || chat.senderId !in cards) {
+                            chat.receiverId?.let { cards.add(it) }
+                            chatList.add(chat)
+                            Log.i(TAG, "IN receiver message: $chatList")
+                            break
+                        }
                     }
+                    break
                 }
-
             }
     }
 }
