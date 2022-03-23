@@ -11,22 +11,24 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.common.io.Resources.getResource
 import com.google.common.reflect.Reflection.getPackageName
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.cards.StickerCard
+import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 import edu.neu.madcourse.stickittoem.viewHolder.StickerReceivedViewHolder
 import edu.neu.madcourse.stickittoem.viewHolder.StickerSentViewHolder
+import java.util.*
 import kotlin.properties.Delegates
 
 class StickerMessagingAdapter(
-    private var stickerMessageList: MutableList<StickerCard>,
-    private var context: Context
-
+    private  var stickerMessageList: MutableList<StickerCard>,
+    private  var context: Context,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val TAG: String = "Message"
-    private var path : String = ""
+    private var path: String = ""
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // viewType comes from the function getItemViewType it seems default is 0
-
         // sender found
         return if (viewType == 0) {
             val inflater = LayoutInflater.from(context)
@@ -40,29 +42,27 @@ class StickerMessagingAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(stickerMessageList[position].sticker){
-            "exercisedino" ->{
+        when (stickerMessageList[position].sticker) {
+            "exercisedino" -> {
                 path = "https://www.linkpicture.com/q/exercisedino.png"
             }
-            "frustratedino" ->{
+            "frustratedino" -> {
                 path = "https://www.linkpicture.com/q/frustratedino.png"
             }
-            "happydino"->{
+            "happydino" -> {
                 path = "https://www.linkpicture.com/q/happydino.png"
             }
-            "motivatedino"->{
+            "motivatedino" -> {
                 path = "https://www.linkpicture.com/q/motivatedino.png"
             }
-            "saddino"->{
+            "saddino" -> {
                 path = "https://www.linkpicture.com/q/saddino.png"
             }
-            "sleepdino2"->{
+            "sleepdino2" -> {
                 path = "https://www.linkpicture.com/q/sleepdino2.png"
             }
 
         }
-        Log.i(TAG, "Path$path")
-        println("This is from sticker path: $path")
         // holder can be of two types here: received and sent so this needs to be taken into account
         if (holder.javaClass == StickerSentViewHolder::class.java) {
             holder as StickerSentViewHolder
@@ -82,7 +82,7 @@ class StickerMessagingAdapter(
     override fun getItemViewType(position: Int): Int {
         val message = stickerMessageList[position]
 
-        if (FirebaseAuth.getInstance().currentUser?.uid == message.sender) {
+        if (Firebase.auth.currentUser?.email == message.sender) {
             return 0
         }
         return 1

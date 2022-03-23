@@ -65,6 +65,7 @@ class StickerGridAdapter(
             intent.putExtra("receiver", receiver)
             intent.putExtra("sender", sender)
             intent.putExtra("name", name)
+            intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP and Intent.FLAG_ACTIVITY_CLEAR_TOP)
             context.startActivity(intent)
         }
 

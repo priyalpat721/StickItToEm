@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.adapters.Adapter
+import edu.neu.madcourse.stickittoem.userAuth.SignInActivity
 import edu.neu.madcourse.stickittoem.userAuth.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             ).show()
             Firebase.auth.signOut()
             finish()
-            val intent = Intent(this@MainActivity, SignUpActivity::class.java)
+            val intent = Intent(this@MainActivity, SignInActivity::class.java)
             startActivity(intent)
         }
     }
