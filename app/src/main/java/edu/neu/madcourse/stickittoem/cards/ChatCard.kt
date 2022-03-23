@@ -10,6 +10,7 @@ class ChatCard {
     var totalStickersSent : Int? = 0
 
     constructor()
+
     constructor(
         name: String?,
         receiverId: String?,
