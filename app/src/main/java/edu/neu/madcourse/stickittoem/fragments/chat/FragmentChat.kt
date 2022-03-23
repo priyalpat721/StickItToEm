@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,6 +21,8 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
     private var db = Firebase.firestore
+    private var senderVal = false
+    private var receiverVal = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,62 +43,98 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 if (userData["email"].toString() != currentUser?.email) {
                     val sender = currentUser?.email
                     val receiver = userData["email"].toString()
-                    Log.i(TAG, "Sender: $sender")
-                    Log.i(TAG, "Receiver: $receiver")
-                    db.collection("senderChat").document("$sender-$receiver")
-                        .collection("messages").get().addOnSuccessListener {
-                            response ->
-                            for(message in response) {
-                                if (message != null) {
-                                    Log.i(TAG, message.data.toString())
-                                    val chat = ChatCard(
-                                        userData["name"].toString(),
-                                        userData["email"].toString(),
-                                        currentUser?.email,
-                                        userData["email"].toString(),
-                                        Integer.parseInt(userData["totalReceived"].toString()),
-                                        Integer.parseInt(userData["totalSent"].toString())
-                                    )
-                                    chatList.add(chat)
-                                    adapter?.notifyDataSetChanged()
-                                    break
-                                }
-                            }
+                    checkChatData(sender, receiver)
+                    if (senderVal && receiverVal) {
+                        getSenderMessages(userData, sender, receiver, currentUser)
+                        Log.i(TAG, "Sender1: $senderVal")
+                        Log.i(TAG, "Receiver1: $receiverVal")
+                    }
 
-                        }
+                    else {
+                        getReceiverMessages(userData, sender, receiver, currentUser)
+                        Log.i(TAG, "Receiver2: $receiverVal")
+                        Log.i(TAG, "Sender2: $senderVal")
 
-                    // THIS IS THE BUG
-//                    db.collection("senderChat").document("$receiver-$sender")
-//                        .collection("messages").get().addOnSuccessListener {
-//                                response ->
-//                            for(message in response) {
-//                                if (message != null) {
-//                                    Log.i(TAG, message.data.toString())
-//                                    val chat = ChatCard(
-//                                        userData["name"].toString(),
-//                                        userData["email"].toString(),
-//                                        currentUser?.email,
-//                                        userData["email"].toString(),
-//                                        Integer.parseInt(userData["totalReceived"].toString()),
-//                                        Integer.parseInt(userData["totalSent"].toString())
-//                                    )
-//                                    if(!chatList.contains(chat)) {
-//                                        chatList.add(chat)
-//                                    }
-//                                    adapter?.notifyDataSetChanged()
-//                                    break
-//                                }
-//                            }
-//
-//                        }
+                    }
                 }
+                adapter?.notifyDataSetChanged()
+                Log.i(TAG, "IN GET DATA: $chatList")
             }
         }
     }
+
 
     private fun setUpResources() {
         adapter = this.context?.let { ChatAdapter(chatList, it) }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
+    }
+
+    private fun checkChatData(sender: String?, receiver: String?) {
+        val senderReceiver ="$sender-$receiver"
+        val receiverSender = "$receiver-$sender"
+
+        db.collection("senderChat").document(senderReceiver).get().addOnSuccessListener {
+            senderVal = true
+        }
+        db.collection("senderChat").document(receiverSender).get().addOnSuccessListener {
+            receiverVal = true
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getSenderMessages(userData: Map<String, Any>, sender: String?, receiver: String, currentUser: FirebaseUser?) {
+        db.collection("senderChat").document("$sender-$receiver")
+            .collection("messages").get().addOnSuccessListener {
+                    response ->
+                for(message in response) {
+                    if (message != null) {
+                        Log.i(TAG, message.data.toString())
+                        val chat = ChatCard(
+                            userData["name"].toString(),
+                            userData["email"].toString(),
+                            currentUser?.email,
+                            userData["email"].toString(),
+                            Integer.parseInt(userData["totalReceived"].toString()),
+                            Integer.parseInt(userData["totalSent"].toString())
+                        )
+                        chatList.add(chat)
+                        adapter?.notifyDataSetChanged()
+                        Log.i(TAG, "IN sender message: $chatList")
+
+                        break
+
+                    }
+                }
+            }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getReceiverMessages(userData: Map<String, Any>, sender: String?, receiver: String, currentUser: FirebaseUser?){
+        db.collection("senderChat").document("$receiver-$sender")
+            .collection("messages").get().addOnSuccessListener {
+                    response ->
+                for(message in response) {
+                    if (message != null) {
+                        Log.i(TAG, message.data.toString())
+                        val chat = ChatCard(
+                            userData["name"].toString(),
+                            userData["email"].toString(),
+                            currentUser?.email,
+                            userData["email"].toString(),
+                            Integer.parseInt(userData["totalReceived"].toString()),
+                            Integer.parseInt(userData["totalSent"].toString())
+                        )
+
+                        chatList.add(chat)
+
+                        adapter?.notifyDataSetChanged()
+                        Log.i(TAG, "IN receiver message: $chatList")
+
+                        break
+                    }
+                }
+
+            }
     }
 }
