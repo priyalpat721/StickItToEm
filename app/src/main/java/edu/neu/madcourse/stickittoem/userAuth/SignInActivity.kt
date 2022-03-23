@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem.userAuth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,20 +14,22 @@ import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 
-class SignInActivity: AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var warning: TextView
-    private lateinit var usernameOrEmail : EditText
-    private lateinit var signInButton : Button
+    private lateinit var usernameOrEmail: EditText
+    private lateinit var signInButton: Button
     private lateinit var progressBar: ProgressBar
     private var fireStore = Firebase.firestore
     val TAG = "StickApp"
+    private lateinit var signUp: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sigin_in)
 
+        signUp = findViewById(R.id.to_sign_up_page)
         auth = Firebase.auth
         warning = findViewById(R.id.warning_sign)
         usernameOrEmail = findViewById(R.id.sign_in_email)
@@ -34,24 +37,32 @@ class SignInActivity: AppCompatActivity() {
         progressBar = findViewById(R.id.progress_bar_sign_in)
         progressBar.visibility = View.INVISIBLE
 
-        signInButton.setOnClickListener{
+        signInButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
-            var emailOrUsername = usernameOrEmail.text.toString()
-            signIn(emailOrUsername, "password");
+            val emailOrUsername = usernameOrEmail.text.toString()
+            signIn(emailOrUsername, "password")
+        }
+
+        signUp.setOnClickListener {
+            val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+            finish()
+            startActivity(intent)
+
         }
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun signIn(userNameOrEmail: String, password: String) {
-        warning.setText("")
+        warning.text = ""
         auth.signInWithEmailAndPassword(userNameOrEmail, password)
             .addOnCompleteListener(this@SignInActivity) { task ->
-                if(task.isSuccessful) {
+                if (task.isSuccessful) {
 
                     val userRef = fireStore.collection("users").document(userNameOrEmail)
                     userRef.get().addOnSuccessListener { document ->
                         if (document != null) {
-                            Log.d(TAG, "Successfully signed in with: ${userNameOrEmail}")
+                            Log.d(TAG, "Successfully signed in with: $userNameOrEmail")
 
                             val intent = Intent(this@SignInActivity, MainActivity::class.java)
                             finish()
@@ -59,14 +70,14 @@ class SignInActivity: AppCompatActivity() {
                             startActivity(intent)
                         }
                     }
-                        .addOnFailureListener{e->
+                        .addOnFailureListener { e ->
                             Log.w(TAG, "Error signing in", e)
                         }
                 } else {
                     Thread.sleep(1000)
                     progressBar.visibility = View.GONE
-                    warning.setText("Email is invalid! Check email or sign up by clicking here.")
-                    warning.setOnClickListener{
+                    warning.text = "Email is invalid! Check email or sign up by clicking here."
+                    warning.setOnClickListener {
                         val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
                         finish()
                         progressBar.visibility = View.GONE
@@ -75,16 +86,7 @@ class SignInActivity: AppCompatActivity() {
                     }
 
                 }
-        }
+            }
 
     }
-
-    private fun signUpOnInvalid(view: View) {
-        val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
-        finish()
-        progressBar.visibility = View.GONE
-        startActivity(intent)
-    }
-
-
 }

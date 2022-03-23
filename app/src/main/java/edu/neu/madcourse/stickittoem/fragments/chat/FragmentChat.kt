@@ -61,8 +61,6 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
                         }
 
-                    adapter?.notifyDataSetChanged()
-                    Log.i(TAG, "IN GET DATA: $chatList")
                 }
             }
         }
@@ -87,20 +85,24 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 for (message in response) {
                     if (message != null) {
                         Log.i(TAG, message.data.toString())
-                        val chat = ChatCard(
-                            userData["name"].toString(),
-                            userData["email"].toString(),
-                            currentUser?.email,
-                            userData["email"].toString(),
-                            Integer.parseInt(userData["totalReceived"].toString()),
-                            Integer.parseInt(userData["totalSent"].toString())
-                        )
-                        if (chat.receiverId !in cards || chat.senderId !in cards) {
-                            chat.senderId?.let { cards.add(it) }
-                            chatList.add(chat)
-                            adapter?.notifyDataSetChanged()
-                            Log.i(TAG, "IN sender message: $chatList")
-                            break
+                        val chat = currentUser?.email?.let {
+                            ChatCard(
+                                userData["name"].toString(),
+                                userData["email"].toString(),
+                                it,
+                                userData["email"].toString(),
+                                Integer.parseInt(userData["totalReceived"].toString()),
+                                Integer.parseInt(userData["totalSent"].toString())
+                            )
+                        }
+                        if (chat != null) {
+                            if (!cards.contains(chat.senderId)) {
+                                chat.receiverId.let { cards.add(it) }
+                                chatList.add(chat)
+                                adapter?.notifyDataSetChanged()
+                                Log.i(TAG, "IN sender message: $chatList")
+                                break
+                            }
                         }
                     }
                     break
@@ -120,20 +122,25 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 for (message in response) {
                     if (message != null) {
                         Log.i(TAG, message.data.toString())
-                        val chat = ChatCard(
-                            userData["name"].toString(),
-                            userData["email"].toString(),
-                            currentUser?.email,
-                            userData["email"].toString(),
-                            Integer.parseInt(userData["totalReceived"].toString()),
-                            Integer.parseInt(userData["totalSent"].toString())
-                        )
+                        val chat = currentUser?.email?.let {
+                            ChatCard(
+                                userData["name"].toString(),
+                                userData["email"].toString(),
+                                it,
+                                userData["email"].toString(),
+                                Integer.parseInt(userData["totalReceived"].toString()),
+                                Integer.parseInt(userData["totalSent"].toString())
+                            )
+                        }
 
-                        if (chat.receiverId !in cards || chat.senderId !in cards) {
-                            chat.receiverId?.let { cards.add(it) }
-                            chatList.add(chat)
-                            Log.i(TAG, "IN receiver message: $chatList")
-                            break
+                        if (chat != null) {
+                            if (!cards.contains(chat.receiverId)) {
+                                chat.senderId.let { cards.add(it) }
+                                chatList.add(chat)
+                                adapter?.notifyDataSetChanged()
+                                Log.i(TAG, "IN receiver message: $chatList")
+                                break
+                            }
                         }
                     }
                     break

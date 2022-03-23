@@ -17,10 +17,10 @@ class Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):FragmentSt
 
         return (when(position){
             0-> {
-                FragmentChat()
+                FragmentContacts()
             }
             1->{
-                FragmentContacts()
+                FragmentChat()
             }
             2-> {
                 FragmentHistory()
