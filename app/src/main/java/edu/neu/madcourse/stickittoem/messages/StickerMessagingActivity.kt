@@ -23,6 +23,7 @@ import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
+import org.json.JSONObject.NULL
 import java.util.*
 
 class StickerMessagingActivity : AppCompatActivity() {
@@ -205,7 +206,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         fireStore.collection("senderChat").document("$sender-$receiver").collection("messages")
             .document().set(newMessage)
             .addOnSuccessListener {
-
                 // Sign in success, update UI with the signed-in user's information
                 Toast.makeText(
                     baseContext, "successfully made.",
