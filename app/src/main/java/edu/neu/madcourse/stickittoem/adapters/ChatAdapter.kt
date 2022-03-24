@@ -12,7 +12,7 @@ import edu.neu.madcourse.stickittoem.viewHolder.ChatViewHolder
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 
 class ChatAdapter(
-    private var userList: ArrayList<ChatCard>,
+    private var chatList: ArrayList<ChatCard>,
     private var context: Context
 ) : RecyclerView.Adapter<ChatViewHolder>() {
 
@@ -25,23 +25,19 @@ class ChatAdapter(
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.name.text = userList[position].name
-        var total = userList[position].totalStickersReceived
-        total = total?.plus(userList[position].totalStickersSent!!)
-        holder.totalStickers.text = (total.toString())
+        holder.name.text = chatList[position].name
 
         holder.chatInfoLayout.setOnClickListener{
             val intent = Intent(context, StickerMessagingActivity::class.java)
-            Log.i(TAG, userList[position].toString())
-            intent.putExtra("name", userList[position].name)
-            intent.putExtra("receiverId", userList[position].receiverId)
-            intent.putExtra("senderId", userList[position].senderId)
-            Log.i(TAG, intent.getStringExtra("name").toString())
+            Log.i(TAG, chatList[position].toString())
+            intent.putExtra("name", chatList[position].name)
+            intent.putExtra("senderId", chatList[position].senderId)
+            intent.putExtra("receiverId", chatList[position].receiverId)
             context.startActivity(intent)
         }
     }
 
     override fun getItemCount(): Int {
-       return userList.size
+       return chatList.size
     }
 }

@@ -8,51 +8,63 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
+import edu.neu.madcourse.stickittoem.cards.ChatCard
 import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentContacts : Fragment(R.layout.fragment_contacts) {
     private val TAG: String = "HASHMAP"
-    private val contactsList: MutableList<UserCard> = ArrayList<UserCard>()
+    private val contactsList: MutableList<ChatCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     var adapter: ContactAdapter? = null
-    private var db = Firebase.firestore
+    private var db = Firebase.database.reference
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.contact_recycler_view)
 
         setUpResources()
-        getData()
+        listenForChanges()
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
-    private fun getData() {
-        db.collection("users").get().addOnSuccessListener { result ->
-            for (user in result) {
-                val userData = user.data
-                val currentUser = Firebase.auth.currentUser
-                if (userData["email"].toString() != currentUser?.email) {
-                    val chat = UserCard(
-                        userData["name"].toString(),
-                        userData["email"].toString(),
-                        currentUser?.email,
-
-                        userData["email"].toString(),
-                        Integer.parseInt(userData["totalReceived"].toString()),
-                        userData["totalSent"] as Map<String, Int>
-                    )
-
-                    Log.i(TAG, chat.toString())
-                    contactsList.add(chat)
-
-                    adapter?.notifyDataSetChanged()
+    private fun listenForChanges() {
+        db.child("users").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (snap in snapshot.children) {
+                    val name = snap.child("name").getValue(String::class.java)
+                    val totalReceived = snap.child("totalReceived").getValue(Int::class.java)
+                    val totalSent = snap.child("totalSent").value as Map<String, Int>
+                    val user =
+                        ChatCard(name!!,
+                            snap.key.toString(),
+                            Firebase.auth.currentUser?.uid!!,
+                            snap.key.toString(),
+                            totalReceived!!,
+                            totalSent)
+                    Log.i(TAG, "CHAT$snap")
+                    Log.i(TAG, Firebase.auth.currentUser?.uid!!)
+                    if (Firebase.auth.currentUser?.uid != snap.key) {
+                        contactsList.add(user)
+                        adapter?.notifyDataSetChanged()
+                    }
                 }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                // not implemented
+            }
+
+        })
+
     }
 
     private fun setUpResources(){
@@ -60,5 +72,4 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
-
 }

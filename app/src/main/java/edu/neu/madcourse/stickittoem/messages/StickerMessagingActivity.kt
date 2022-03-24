@@ -8,18 +8,14 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
@@ -41,12 +37,13 @@ class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var sendButton: ImageButton
     private lateinit var nameBox: TextView
     private var receiverId: String? = null
-    private var senderId: String? = null
+    private var senderId = Firebase.auth.currentUser?.uid!!
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
     private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
+    private var db = Firebase.database.reference
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -59,6 +56,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         setUpResources()
 
         getData()
+        listenForChanges()
         adapter?.notifyDataSetChanged()
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
@@ -66,7 +64,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerDisplayButton.setOnClickListener {
             bottomStickerSheetDialog.name = receiverName
             bottomStickerSheetDialog.receiver = receiver
-            bottomStickerSheetDialog.sender = sender
+            bottomStickerSheetDialog.sender = senderId
             bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
             val stickerIntent = intent.extras
@@ -77,6 +75,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                 sender = stickerIntent.getString("sender").toString()
                 receiverName = stickerIntent.getString("name").toString()
 
+                Log.i(TAG, "UPDATED: $stickerIntent")
             }
         }
 
@@ -126,58 +125,53 @@ class StickerMessagingActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getData() {
-      
-        stickerMessageList.clear()
-        val tempList = ArrayList<StickerCard>()
-        fireStore.collection("senderChat").document("$sender-$receiver")
-            .collection("messages").orderBy("timestamp", Query.Direction.ASCENDING)
+        db.child("chatLog").child("$senderId-$receiver").child("messages")
             .get().addOnSuccessListener { result ->
-                for (user in result) {
-                    Log.i(TAG, user.toString())
-                    val userData = user.data
-                    val currentUser = Firebase.auth.currentUser
-                    if (userData["email"].toString() != currentUser?.email) {
-                        val chat = StickerCard(
-                            userData["sticker"].toString(),
-                            userData["timestamp"] as Timestamp,
-                            userData["sender"].toString(),
-                            userData["receiver"].toString()
-                        )
-                        Log.i(TAG, chat.toString())
-                        tempList.add(chat)
-                        Log.i(TAG, "Stickerlist: $tempList")
-
-                    }
-                }
-            }
-
-        fireStore.collection("senderChat").document("$receiver-$sender")
-            .collection("messages").orderBy("timestamp", Query.Direction.ASCENDING)
-            .get().addOnSuccessListener { result ->
-                for (user in result) {
-                    val userData = user.data
-                    val currentUser = Firebase.auth.currentUser
-                    if (userData["email"].toString() != currentUser?.email) {
-                        val chat = StickerCard(
-                            userData["sticker"].toString(),
-                            userData["timestamp"] as Timestamp,
-                            userData["sender"].toString(),
-                            userData["receiver"].toString()
-                        )
-                        tempList.add(chat)
-                        Log.i(TAG, "Stickerlist: $tempList")
-
-                    }
-                }
-                Log.i(TAG, "Stickerlist before: $tempList")
-                Collections.sort(tempList, sorter)
-                tempList.reverse()
-                stickerMessageList.addAll(tempList)
-                adapter?.notifyDataSetChanged()
+                Log.i(TAG, "Stickerlist before: $result")
+//                val sticker = result.child("sticker").getValue(String::class.java)
+//                val timestamp = result.child("timestamp").getValue(String::class.java)
+//                val sender = result.child("sender").getValue(String::class.java)
+//                val receiver = result.child("receiver").getValue(String::class.java)
+//                val message =
+//                    StickerCard(sticker, timestamp!!, sender!!, receiver!!)
+//                stickerMessageList.add(message)
             }
 
 
+        Collections.sort(stickerMessageList, sorter)
+        stickerMessageList.reverse()
+        adapter?.notifyDataSetChanged()
     }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun listenForChanges() {
+
+        db.child("chatLog").child("$senderId-$receiver").child("messages")
+            .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (snap in snapshot.children) {
+                        Log.i(TAG, "Stickerlist before: $snap")
+                        val sticker = snap.child("sticker").getValue(String::class.java)
+                        val timestamp = snap.child("timestamp").getValue(String::class.java)
+                        val sender = snap.child("sender").getValue(String::class.java)
+                        val receiver = snap.child("receiver").getValue(String::class.java)
+                        val message =
+                            StickerCard(sticker, timestamp!!, sender!!, receiver!!)
+                        stickerMessageList.add(message)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // not implemented
+                }
+            })
+        Collections.sort(stickerMessageList, sorter)
+        stickerMessageList.reverse()
+        adapter?.notifyDataSetChanged()
+    }
+
 
     class ComparatorTime : Comparator<StickerCard> {
         override fun compare(a: StickerCard, b: StickerCard): Int {
@@ -192,9 +186,6 @@ class StickerMessagingActivity : AppCompatActivity() {
             receiverName = intent.getStringExtra("name").toString()
             receiverId = intent.getStringExtra("receiverId").toString()
             receiver = receiverId.toString()
-
-            senderId = intent.getStringExtra("senderId").toString()
-            sender = senderId.toString()
 
             Log.i(TAG, extras.toString())
             nameBox = findViewById(R.id.receiver_name_box)
@@ -213,24 +204,12 @@ class StickerMessagingActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun addToDB() {
         time = Timestamp.now()
-        val newMessage = StickerCard(stringStickerImg, time, sender, receiver)
-        fireStore.collection("senderChat").document("$sender-$receiver").collection("messages")
-            .document().set(newMessage)
-            .addOnSuccessListener {
-                // Sign in success, update UI with the signed-in user's information
-                Toast.makeText(
-                    baseContext, "successfully made.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                stickerMessageList.add(newMessage)
-                adapter?.notifyDataSetChanged()
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-                Toast.makeText(
-                    baseContext, "Could not send your sticker! you done goofed",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        val newMessage = StickerCard(stringStickerImg, time.toDate().toString(), sender, receiver)
+
+        db.child("chatLog").child("$sender-$receiver").child("messages")
+            .push().setValue(newMessage)
+
+        db.child("chatLog").child("$receiver-$sender").child("messages")
+            .push().setValue(newMessage)
     }
 }

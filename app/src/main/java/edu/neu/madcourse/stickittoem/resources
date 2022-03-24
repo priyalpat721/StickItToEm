@@ -37,3 +37,7 @@ bottom sticker sheet dialog:
 
 comparator:
  - https://www.geeksforgeeks.org/comparator-in-kotlin/
+
+Database realtime snapshots:
+ - https://firebase.google.com/docs/database/android/read-and-write?utm_source=studio
+ - https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
