@@ -2,6 +2,7 @@ package edu.neu.madcourse.stickittoem.fragments.contacts
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
 import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentContacts : Fragment(R.layout.fragment_contacts) {
+    private val TAG: String = "HASHMAP"
     private val contactsList: MutableList<UserCard> = ArrayList<UserCard>()
     private var recyclerView: RecyclerView? = null
     var adapter: ContactAdapter? = null
@@ -41,9 +43,10 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
 
                         userData["email"].toString(),
                         Integer.parseInt(userData["totalReceived"].toString()),
-                        Integer.parseInt(userData["totalSent"].toString())
+                        userData["totalSent"] as Map<String, Int>
                     )
 
+                    Log.i(TAG, chat.toString())
                     contactsList.add(chat)
 
                     adapter?.notifyDataSetChanged()

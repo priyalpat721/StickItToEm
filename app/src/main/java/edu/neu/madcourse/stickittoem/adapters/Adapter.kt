@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import edu.neu.madcourse.stickittoem.fragments.chat.FragmentChat
 import edu.neu.madcourse.stickittoem.fragments.contacts.FragmentContacts
 import edu.neu.madcourse.stickittoem.fragments.history.FragmentHistory
 
