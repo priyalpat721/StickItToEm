@@ -47,6 +47,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
+        chatList.clear()
         db.child("users").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (snap in snapshot.children) {

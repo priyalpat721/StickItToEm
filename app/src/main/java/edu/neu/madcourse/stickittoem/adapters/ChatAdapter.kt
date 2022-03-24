@@ -27,6 +27,7 @@ class ChatAdapter(
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         holder.name.text = chatList[position].name
 
+        holder.totalSent.text = chatList[position].totalStickersReceived.toString()
         holder.chatInfoLayout.setOnClickListener{
             val intent = Intent(context, StickerMessagingActivity::class.java)
             Log.i(TAG, chatList[position].toString())

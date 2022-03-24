@@ -33,9 +33,9 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
         listenForChanges()
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
+        contactsList.clear()
         db.child("users").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -50,8 +50,6 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
                             snap.key.toString(),
                             totalReceived!!,
                             totalSent)
-                    Log.i(TAG, "CHAT$snap")
-                    Log.i(TAG, Firebase.auth.currentUser?.uid!!)
                     if (Firebase.auth.currentUser?.uid != snap.key) {
                         contactsList.add(user)
                         adapter?.notifyDataSetChanged()

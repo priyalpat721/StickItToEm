@@ -9,5 +9,6 @@ import edu.neu.madcourse.stickittoem.R
 
 class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var name : TextView = itemView.findViewById(R.id.receiver_name)
+    var totalSent : TextView = itemView.findViewById(R.id.total_stickers_sent)
     var chatInfoLayout : ConstraintLayout = itemView.findViewById(R.id.chat_info_layout)
 }
