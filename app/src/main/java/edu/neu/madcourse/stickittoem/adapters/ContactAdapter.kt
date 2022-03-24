@@ -29,7 +29,7 @@ class ContactAdapter(private var contactslist: MutableList<UserCard>, private va
 
         holder.name.text = contactslist[position].name
         var total = contactslist[position].totalStickersReceived
-        total = total?.plus(contactslist[position].totalStickersSent!!)
+
 
         //TODO this should open a messaging history associated with user
         //TODO DOES NOT WORK CORRECTLY, JUST DUMMY SET UP

@@ -4,13 +4,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import edu.neu.madcourse.stickittoem.fragments.chat.FragmentChat
 import edu.neu.madcourse.stickittoem.fragments.contacts.FragmentContacts
 import edu.neu.madcourse.stickittoem.fragments.history.FragmentHistory
 
 class Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):FragmentStateAdapter(fragmentManager, lifecycle){
     override fun getItemCount(): Int {
-        return 3
+        return 2
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -20,13 +19,10 @@ class Adapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):FragmentSt
                 FragmentContacts()
             }
             1->{
-                FragmentChat()
-            }
-            2-> {
                 FragmentHistory()
             }
-            else-> {
-                FragmentChat()
+            else -> {
+                FragmentHistory()
             }
         })
     }
