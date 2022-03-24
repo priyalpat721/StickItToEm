@@ -68,10 +68,12 @@ class StickerMessagingAdapter(
             holder as StickerSentViewHolder
 
             Glide.with(context).load(path).into(holder.sentSticker)
+            holder.senderTimeStamp.text = stickerMessageList[position].timestamp.toDate().toString()
 
         } else {
             holder as StickerReceivedViewHolder
             Glide.with(context).load(path).into(holder.receivedSticker)
+            holder.receiverTimeStamp.text = stickerMessageList[position].timestamp.toDate().toString()
         }
     }
 
