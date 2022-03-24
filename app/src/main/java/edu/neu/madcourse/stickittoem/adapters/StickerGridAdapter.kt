@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class StickerGridAdapter(
     var sender: String,
     var name: String,
 ) : RecyclerView.Adapter<StickerGridAdapter.ViewHolder>() {
+    private val TAG: String = "BOX"
     private var dataList = emptyList<StickerModel>()
     internal fun setDataList(dataList:List<StickerModel>) {
         this.dataList = dataList
@@ -66,6 +68,9 @@ class StickerGridAdapter(
             intent.putExtra("sender", sender)
             intent.putExtra("name", name)
             intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP and Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+            var i = intent.extras
+            Log.i(TAG, "Stick extra: $i")
             context.startActivity(intent)
         }
 

@@ -86,22 +86,22 @@ class StickerMessagingActivity : AppCompatActivity() {
 
             stickerImage = stickerIntent?.getInt("image")
             when (stickerImage) {
-                2131165376 -> {
+                2131165311 -> {
                     stringStickerImg = "exercisedino"
                 }
-                2131165377 -> {
+                2131165312 -> {
                     stringStickerImg = "frustratedino"
                 }
-                2131165378 -> {
+                2131165317 -> {
                     stringStickerImg = "happydino"
                 }
-                2131165379 -> {
+                2131165351 -> {
                     stringStickerImg = "motivatedino"
                 }
-                2131165380 -> {
+                2131165375 -> {
                     stringStickerImg = "saddino"
                 }
-                2131165381 -> {
+                2131165377 -> {
                     stringStickerImg = "sleepdino2"
                 }
             }
