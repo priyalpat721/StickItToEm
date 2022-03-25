@@ -23,6 +23,7 @@ import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.util.*
+import kotlin.collections.HashMap
 
 class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
@@ -84,6 +85,10 @@ class StickerMessagingActivity : AppCompatActivity() {
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
+
+            val hashMap: MutableMap<Int, Int> = HashMap()
+            hashMap[1] = R.drawable.motivatedino
+
             when (stickerImage) {
                 2131165311 -> {
                     stringStickerImg = "exercisedino"
@@ -115,10 +120,11 @@ class StickerMessagingActivity : AppCompatActivity() {
             getData()
             adapter?.notifyDataSetChanged()
 
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+//            val intent = Intent(context, MainActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            startActivity(intent)
 
+            finish()
 
         }
     }

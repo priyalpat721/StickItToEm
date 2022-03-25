@@ -29,10 +29,14 @@
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/layout/sticker_sent_layout.xml" value="0.23278985507246377" />
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/menu/menu.xml" value="0.23796296296296296" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15462962962962962" />
+        <entry key="app/src/main/res/layout/activity_sigin_in.xml" value="0.32866593512935915" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3328536987304687" />
+        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.18034447821681865" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
