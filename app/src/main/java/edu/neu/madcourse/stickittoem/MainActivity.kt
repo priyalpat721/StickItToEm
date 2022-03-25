@@ -1,10 +1,12 @@
 package edu.neu.madcourse.stickittoem
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -12,13 +14,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.adapters.Adapter
 import edu.neu.madcourse.stickittoem.userAuth.SignInActivity
-import edu.neu.madcourse.stickittoem.userAuth.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
+
 
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         val viewPager2 = findViewById<ViewPager2>(R.id.view_pager2)
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
+
 }
 
 //    private val db = Firebase.firestore

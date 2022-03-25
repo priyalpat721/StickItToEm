@@ -1,6 +1,9 @@
 package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +12,15 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
@@ -52,6 +59,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
+        createNotificationChannel()
         getIds()
         setUpResources()
 
@@ -81,6 +89,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
+            sendNotification()
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
@@ -211,5 +220,48 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
+    }
+
+
+    private fun createNotificationChannel() {
+        val name: CharSequence = "channel name"
+        val description : String = "notification channel description"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("Channel ID", name, importance)
+        channel.description = description
+        // register channel
+        val notificationManager = getSystemService(
+            NotificationManager::class.java
+        )
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun sendNotification() {
+        // Prepare intent which is triggered if the
+        // notification is selected
+        val intent = Intent(this, StickerMessagingActivity::class.java)
+        val pIntent = PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), intent, 0)
+        val replyIntent = PendingIntent.getActivity(
+            this, System.currentTimeMillis().toInt(),
+            Intent(this, StickerMessagingActivity::class.java), 0
+        )
+
+        // Build notification
+        // Need to define a channel ID after Android Oreo
+        val channelId = "channel ID"
+        val notifyBuild: NotificationCompat.Builder = NotificationCompat.Builder(
+            this,
+            channelId
+        )
+            .setSmallIcon(R.drawable.exercisedino)
+            .setContentTitle("Sender name" + "New Sticker!")
+            .setContentText("New sticker Received!")
+            .setPriority(NotificationCompat.PRIORITY_HIGH) // hide the notification after its selected
+            .setAutoCancel(true)
+            .addAction(R.drawable.exercisedino, "Reply", replyIntent)
+            .setContentIntent(pIntent)
+        val notificationManager = NotificationManagerCompat.from(this)
+        // // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, notifyBuild.build())
     }
 }
