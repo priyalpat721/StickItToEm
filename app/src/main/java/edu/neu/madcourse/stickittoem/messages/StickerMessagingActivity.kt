@@ -25,7 +25,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
-import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
@@ -89,29 +88,36 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
-            sendNotification()
+
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
             when (stickerImage) {
                 2131165311 -> {
                     stringStickerImg = "exercisedino"
+                    sendNotification()
                 }
                 2131165312 -> {
                     stringStickerImg = "frustratedino"
+                    sendNotification()
                 }
                 2131165317 -> {
                     stringStickerImg = "happydino"
+                    sendNotification()
                 }
                 2131165351 -> {
                     stringStickerImg = "motivatedino"
+                    sendNotification()
                 }
                 2131165375 -> {
                     stringStickerImg = "saddino"
+                    sendNotification()
                 }
                 2131165377 -> {
                     stringStickerImg = "sleepdino2"
+                    sendNotification()
                 }
+
             }
 
 
@@ -124,9 +130,10 @@ class StickerMessagingActivity : AppCompatActivity() {
             getData()
             adapter?.notifyDataSetChanged()
 
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
+            //val intent = Intent(context, StickerMessagingActivity::class.java)
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            //startActivity(intent)
+
 
 
         }
