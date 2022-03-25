@@ -222,46 +222,46 @@ class StickerMessagingActivity : AppCompatActivity() {
             .push().setValue(newMessage)
     }
 
-
+    private val channelId = "channel ID"
     private fun createNotificationChannel() {
-        val name: CharSequence = "channel name"
-        val description : String = "notification channel description"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel("Channel ID", name, importance)
-        channel.description = description
+        val name = "channel name"
+        val descriptionText = "notification channel description"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(channelId, name, importance).apply {
+            description = descriptionText}
         // register channel
-        val notificationManager = getSystemService(
-            NotificationManager::class.java
-        )
+        val notificationManager : NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+
 
     private fun sendNotification() {
         // Prepare intent which is triggered if the
         // notification is selected
-        val intent = Intent(this, StickerMessagingActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), intent, 0)
+        val intent = Intent(this, StickerMessagingActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pIntent : PendingIntent = PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_IMMUTABLE)
         val replyIntent = PendingIntent.getActivity(
             this, System.currentTimeMillis().toInt(),
-            Intent(this, StickerMessagingActivity::class.java), 0
+            Intent(this, StickerMessagingActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Build notification
-        // Need to define a channel ID after Android Oreo
-        val channelId = "channel ID"
-        val notifyBuild: NotificationCompat.Builder = NotificationCompat.Builder(
-            this,
-            channelId
-        )
+        val builder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.exercisedino)
             .setContentTitle("Sender name" + "New Sticker!")
             .setContentText("New sticker Received!")
-            .setPriority(NotificationCompat.PRIORITY_HIGH) // hide the notification after its selected
+                //high priority for messages
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .addAction(R.drawable.exercisedino, "Reply", replyIntent)
             .setContentIntent(pIntent)
-        val notificationManager = NotificationManagerCompat.from(this)
-        // // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(0, notifyBuild.build())
+        //val notificationManager = NotificationManagerCompat.from(this)
+        // define ID
+        //notificationManager.notify(System.currentTimeMillis().toInt(), notifyBuild.build())
+        with(NotificationManagerCompat.from(this)) {
+            notify(System.currentTimeMillis().toInt(), builder.build())
+        }
     }
 }
