@@ -57,7 +57,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                     val currentUser = Firebase.auth.currentUser?.uid!!
                     val receiver = snap.key.toString()
                     val email = snap.child("email").getValue(String::class.java)
-
+                    chatList.clear()
                     db.child("chatLog").child("$currentUser-$receiver").child("messages")
                         .addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {

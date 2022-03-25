@@ -146,7 +146,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
-
+        stickerMessageList.clear()
         db.child("chatLog").child("$senderId-$receiver").child("messages")
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
