@@ -18,6 +18,7 @@ import java.util.HashMap
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var email: EditText
+    private lateinit var warning_sign_up: TextView
     private lateinit var signUp: Button
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
@@ -29,6 +30,8 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
         name = findViewById(R.id.name)
         email = findViewById(R.id.email)
         signUp = findViewById(R.id.sign_up)
@@ -52,6 +55,21 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signup(emailAddress: String, password: String, nameText: String) {
+        warning_sign_up.text = ""
+
+        if(emailAddress.equals("") || nameText.equals("")){
+            Thread.sleep(1000)
+            progressBar.visibility = View.GONE
+            if(nameText.equals("") && emailAddress.equals("")){
+                warning_sign_up.text = "Name and email fields empty. Please provide above information"
+            } else if (emailAddress.equals("")){
+                warning_sign_up.text = "Email Field empty. Please enter your Email."
+            } else {
+                warning_sign_up.text = "Name Field empty. Please enter your Name."
+            }
+
+            return
+        }
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
                 if (task.isSuccessful) {
