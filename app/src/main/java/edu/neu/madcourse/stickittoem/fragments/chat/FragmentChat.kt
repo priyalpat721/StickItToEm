@@ -44,7 +44,6 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
 
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
         chatList.clear()

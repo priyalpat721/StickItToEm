@@ -35,10 +35,10 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
-        contactsList.clear()
         db.child("users").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
+                contactsList.clear()
                 for (snap in snapshot.children) {
                     val name = snap.child("name").getValue(String::class.java)
                     val totalReceived = snap.child("totalReceived").getValue(Int::class.java)
