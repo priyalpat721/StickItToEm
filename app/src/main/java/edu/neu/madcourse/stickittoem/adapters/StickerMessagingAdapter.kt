@@ -68,12 +68,12 @@ class StickerMessagingAdapter(
             holder as StickerSentViewHolder
 
             Glide.with(context).load(path).into(holder.sentSticker)
-            holder.senderTimeStamp.text = stickerMessageList[position].timestamp.toDate().toString()
+            holder.senderTimeStamp.text = stickerMessageList[position].timestamp
 
         } else {
             holder as StickerReceivedViewHolder
             Glide.with(context).load(path).into(holder.receivedSticker)
-            holder.receiverTimeStamp.text = stickerMessageList[position].timestamp.toDate().toString()
+            holder.receiverTimeStamp.text = stickerMessageList[position].timestamp
         }
     }
 
@@ -84,7 +84,7 @@ class StickerMessagingAdapter(
     override fun getItemViewType(position: Int): Int {
         val message = stickerMessageList[position]
 
-        if (Firebase.auth.currentUser?.email == message.sender) {
+        if (Firebase.auth.currentUser?.uid == message.sender) {
             return 0
         }
         return 1

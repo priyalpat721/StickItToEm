@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
@@ -22,6 +23,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var signInButton: Button
     private lateinit var progressBar: ProgressBar
     private var fireStore = Firebase.firestore
+    private var db = Firebase.database.reference
     val TAG = "StickApp"
     private lateinit var signUp: Button
 
@@ -59,7 +61,7 @@ class SignInActivity : AppCompatActivity() {
             .addOnCompleteListener(this@SignInActivity) { task ->
                 if (task.isSuccessful) {
 
-                    val userRef = fireStore.collection("users").document(userNameOrEmail)
+                    val userRef = db.child("users")
                     userRef.get().addOnSuccessListener { document ->
                         if (document != null) {
                             Log.d(TAG, "Successfully signed in with: $userNameOrEmail")

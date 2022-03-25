@@ -2,15 +2,17 @@ package edu.neu.madcourse.stickittoem.cards
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
+import java.time.LocalDateTime
+import java.util.*
 
 class StickerCard{
     lateinit var sticker: String
-    lateinit var timestamp: Timestamp
+    lateinit var timestamp: String
     lateinit var sender: String
     lateinit var receiver : String
 
     constructor()
-    constructor(sticker: String?, timestamp: Timestamp, sender: String, receiver: String) {
+    constructor(sticker: String?, timestamp: String, sender: String, receiver: String) {
         if (sticker != null) {
             this.sticker = sticker
         }

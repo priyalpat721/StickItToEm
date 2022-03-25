@@ -45,6 +45,10 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         imageList.add(StickerModel(R.drawable.sleepdino2, "sleepy"))
         adapter?.setDataList(imageList)
     }
+
+    override fun toString(): String {
+        return "BottomStickerSheetDialog(name='$name', imageList=$imageList, recyclerView=$recyclerView, adapter=$adapter, receiver='$receiver', sender='$sender')"
+    }
 }
 
 data class StickerModel(
