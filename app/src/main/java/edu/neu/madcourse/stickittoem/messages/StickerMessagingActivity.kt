@@ -2,7 +2,6 @@ package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -15,10 +14,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
-import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
@@ -42,10 +39,12 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
-    private var fireStore = FirebaseFirestore.getInstance()
+    //private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
+
+    private var flag: Boolean = true
 
 
     @ServerTimestamp
@@ -55,12 +54,12 @@ class StickerMessagingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
-        stickerIDMap.put(R.drawable.exercisedino, "exercisedino")
-        stickerIDMap.put(R.drawable.frustratedino, "frustratedino")
-        stickerIDMap.put(R.drawable.happydino, "happydino")
-        stickerIDMap.put(R.drawable.motivatedino, "motivatedino")
-        stickerIDMap.put(R.drawable.saddino, "saddino")
-        stickerIDMap.put(R.drawable.sleepdino2, "sleepdino2")
+        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
+        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
+        stickerIDMap[R.drawable.happydino] = "happydino"
+        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
+        stickerIDMap[R.drawable.saddino] = "saddino"
+        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
         getIds()
         setUpResources()
 
@@ -71,20 +70,24 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
-            bottomStickerSheetDialog.name = receiverName
-            bottomStickerSheetDialog.receiver = receiver
-            bottomStickerSheetDialog.sender = senderId
-            bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
+            flag = true
+            if(flag) {
+                bottomStickerSheetDialog.name = receiverName
+                bottomStickerSheetDialog.receiver = receiver
+                bottomStickerSheetDialog.sender = senderId
+                bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
-            val stickerIntent = intent.extras
-            if (stickerIntent != null) {
-                stickerImage = stickerIntent.getInt("image")
-                stickerDescription = stickerIntent.getString("description")
-                receiver = stickerIntent.getString("receiver").toString()
-                sender = stickerIntent.getString("sender").toString()
-                receiverName = stickerIntent.getString("name").toString()
+                val stickerIntent = intent.extras
+                if (stickerIntent != null) {
+                    stickerImage = stickerIntent.getInt("image")
+                    stickerDescription = stickerIntent.getString("description")
+                    receiver = stickerIntent.getString("receiver").toString()
+                    sender = stickerIntent.getString("sender").toString()
+                    receiverName = stickerIntent.getString("name").toString()
 
-                Log.i(TAG, "UPDATED: $stickerIntent")
+                    Log.i(TAG, "UPDATED: $stickerIntent")
+                    flag = false
+                }
             }
         }
 
@@ -93,7 +96,7 @@ class StickerMessagingActivity : AppCompatActivity() {
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
-            stringStickerImg = stickerIDMap.get(stickerImage)
+            stringStickerImg = stickerIDMap[stickerImage]
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
@@ -103,10 +106,34 @@ class StickerMessagingActivity : AppCompatActivity() {
             getData()
             adapter?.notifyDataSetChanged()
 
+            stringStickerImg?.let { it1 ->
+                db.child("users").child(senderId).child("totalSent").child(it1).runTransaction(object: Transaction.Handler{
+                    override fun doTransaction(currentData: MutableData): Transaction.Result {
+                        //var map: MutableMap<String, Long> = HashMap()
+                        val example = db.child("users").child(senderId).child("totalSent")
+
+                        val currentValue = currentData.value
+                        val newValue = currentValue.toString()
+                        val longVal = newValue.toLong() + 1
+
+                        currentData.value = longVal
+                        return Transaction.success(currentData)
+
+                    }
+
+                    override fun onComplete(
+                        error: DatabaseError?,
+                        committed: Boolean,
+                        currentData: DataSnapshot?
+                    ) {
+
+                    }
+
+                })
+            }
 //            val intent = Intent(context, MainActivity::class.java)
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //            startActivity(intent)
-
             finish()
 
         }

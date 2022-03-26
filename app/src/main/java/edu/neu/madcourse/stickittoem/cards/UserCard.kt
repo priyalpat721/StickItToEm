@@ -5,7 +5,7 @@ class UserCard {
     lateinit var receiverId: String
     lateinit var senderId: String
     var totalStickersReceived : Int = 0
-    private var totalStickersSent : Map<String, Int>? = null
+    private var totalStickersSent : Map<String, Long>? = null
 
     constructor()
 
@@ -14,7 +14,7 @@ class UserCard {
         receiverId: String,
         senderId: String,
         totalStickersReceived: Int,
-        totalStickersSent: Map<String, Int>
+        totalStickersSent: Map<String, Long>
     ) {
         this.name = name
         this.receiverId = receiverId
