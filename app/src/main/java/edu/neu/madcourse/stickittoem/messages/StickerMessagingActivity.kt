@@ -70,8 +70,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
-            flag = true
-            if(flag) {
                 bottomStickerSheetDialog.name = receiverName
                 bottomStickerSheetDialog.receiver = receiver
                 bottomStickerSheetDialog.sender = senderId
@@ -86,9 +84,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                     receiverName = stickerIntent.getString("name").toString()
 
                     Log.i(TAG, "UPDATED: $stickerIntent")
-                    flag = false
                 }
-            }
+
         }
 
         sendButton = findViewById(R.id.send_btn)
