@@ -42,7 +42,7 @@ class FragmentContacts : Fragment(R.layout.fragment_contacts) {
                 for (snap in snapshot.children) {
                     val name = snap.child("name").getValue(String::class.java)
                     val totalReceived = snap.child("totalReceived").getValue(Int::class.java)
-                    val totalSent = snap.child("totalSent").value as Map<String, Int>
+                    val totalSent = snap.child("totalSent").value as Map<String, Long>
                     val user =
                         ChatCard(name!!,
                             snap.key.toString(),
