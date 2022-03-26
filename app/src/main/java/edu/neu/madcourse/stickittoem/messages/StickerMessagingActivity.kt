@@ -44,6 +44,8 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
 
+    private var flag: Boolean = true
+
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -68,20 +70,24 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
-            bottomStickerSheetDialog.name = receiverName
-            bottomStickerSheetDialog.receiver = receiver
-            bottomStickerSheetDialog.sender = senderId
-            bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
+            flag = true
+            if(flag) {
+                bottomStickerSheetDialog.name = receiverName
+                bottomStickerSheetDialog.receiver = receiver
+                bottomStickerSheetDialog.sender = senderId
+                bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
-            val stickerIntent = intent.extras
-            if (stickerIntent != null) {
-                stickerImage = stickerIntent.getInt("image")
-                stickerDescription = stickerIntent.getString("description")
-                receiver = stickerIntent.getString("receiver").toString()
-                sender = stickerIntent.getString("sender").toString()
-                receiverName = stickerIntent.getString("name").toString()
+                val stickerIntent = intent.extras
+                if (stickerIntent != null) {
+                    stickerImage = stickerIntent.getInt("image")
+                    stickerDescription = stickerIntent.getString("description")
+                    receiver = stickerIntent.getString("receiver").toString()
+                    sender = stickerIntent.getString("sender").toString()
+                    receiverName = stickerIntent.getString("name").toString()
 
-                Log.i(TAG, "UPDATED: $stickerIntent")
+                    Log.i(TAG, "UPDATED: $stickerIntent")
+                    flag = false
+                }
             }
         }
 
@@ -128,7 +134,6 @@ class StickerMessagingActivity : AppCompatActivity() {
 //            val intent = Intent(context, MainActivity::class.java)
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //            startActivity(intent)
-
             finish()
 
         }
