@@ -2,8 +2,6 @@ package edu.neu.madcourse.stickittoem.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.google.common.reflect.Reflection.getPackageName
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.cards.StickerCard
 import edu.neu.madcourse.stickittoem.messages.StickerMessagingActivity
 import edu.neu.madcourse.stickittoem.messages.StickerModel
 

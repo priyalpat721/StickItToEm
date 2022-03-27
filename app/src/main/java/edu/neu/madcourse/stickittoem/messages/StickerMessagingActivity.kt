@@ -1,29 +1,23 @@
 package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
@@ -49,9 +43,9 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
-    private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
+    private var stickerIDMap = HashMap<Int, String>()
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -60,102 +54,81 @@ class StickerMessagingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
-        createNotificationChannel()
-        getIds()
-        setUpResources()
-
-        getData()
-        listenForChanges()
-        adapter?.notifyDataSetChanged()
+        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
+        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
+        stickerIDMap[R.drawable.happydino] = "happydino"
+        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
+        stickerIDMap[R.drawable.saddino] = "saddino"
+        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
 
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
+        val broadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+
+                //do something based on the intent's action
+                stickerImage = intent.getIntExtra("image", 0)
+                stringStickerImg = stickerIDMap[stickerImage]
+                stickerDescription = intent?.getStringExtra("description")
+                receiver = intent?.getStringExtra("receiver").toString()
+                sender = intent?.getStringExtra("sender").toString()
+                receiverName = intent?.getStringExtra("name").toString()
+                bottomStickerSheetDialog.dismiss()
+            }
+        }
+
+        val filter = IntentFilter("com.stickerclicked.stickerInformation")
+        registerReceiver(broadcast, filter)
+        getIds()
+        setUpResources()
+
+        listenForChanges()
+        adapter?.notifyDataSetChanged()
+
         stickerDisplayButton.setOnClickListener {
             bottomStickerSheetDialog.name = receiverName
             bottomStickerSheetDialog.receiver = receiver
             bottomStickerSheetDialog.sender = senderId
             bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
-            val stickerIntent = intent.extras
-            if (stickerIntent != null) {
-                stickerImage = stickerIntent.getInt("image")
-                stickerDescription = stickerIntent.getString("description")
-                receiver = stickerIntent.getString("receiver").toString()
-                sender = stickerIntent.getString("sender").toString()
-                receiverName = stickerIntent.getString("name").toString()
-
-                Log.i(TAG, "UPDATED: $stickerIntent")
-            }
         }
 
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
 
-            val stickerIntent = intent.extras
-
-            stickerImage = stickerIntent?.getInt("image")
-            when (stickerImage) {
-                2131165311 -> {
-                    stringStickerImg = "exercisedino"
-
-                }
-                2131165312 -> {
-                    stringStickerImg = "frustratedino"
-                }
-                2131165317 -> {
-                    stringStickerImg = "happydino"
-                }
-                2131165351 -> {
-                    stringStickerImg = "motivatedino"
-                }
-                2131165375 -> {
-                    stringStickerImg = "saddino"
-                }
-                2131165377 -> {
-                    stringStickerImg = "sleepdino2"
-                }
-
-            }
-
-
-            stickerDescription = stickerIntent?.getString("description")
-            receiver = stickerIntent?.getString("receiver").toString()
-            sender = stickerIntent?.getString("sender").toString()
-            receiverName = stickerIntent?.getString("name").toString()
             addToDB()
 
-            getData()
-            adapter?.notifyDataSetChanged()
+            stringStickerImg?.let { it1 ->
 
+                db.child("users").child(senderId).child("totalSent").child(it1)
+                    .runTransaction(object : Transaction.Handler {
+                        override fun doTransaction(currentData: MutableData): Transaction.Result {
+                            val currentValue = currentData.value
+                            val newValue = currentValue.toString()
+                            val longVal = newValue.toLong() + 1
+
+                            currentData.value = longVal
+                            return Transaction.success(currentData)
+
+                        }
+
+                        override fun onComplete(
+                            error: DatabaseError?,
+                            committed: Boolean,
+                            currentData: DataSnapshot?
+                        ) {
+
+                        }
+
+                    })
+            }
+            Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            //startActivity(intent)
-            sendNotification()
-
-
+            unregisterReceiver(broadcast)
+            startActivity(intent)
         }
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun getData() {
-        db.child("chatLog").child("$senderId-$receiver").child("messages")
-            .get().addOnSuccessListener { result ->
-                Log.i(TAG, "Stickerlist before: $result")
-//                val sticker = result.child("sticker").getValue(String::class.java)
-//                val timestamp = result.child("timestamp").getValue(String::class.java)
-//                val sender = result.child("sender").getValue(String::class.java)
-//                val receiver = result.child("receiver").getValue(String::class.java)
-//                val message =
-//                    StickerCard(sticker, timestamp!!, sender!!, receiver!!)
-//                stickerMessageList.add(message)
-            }
-
-
-        Collections.sort(stickerMessageList, sorter)
-        stickerMessageList.reverse()
-        adapter?.notifyDataSetChanged()
-    }
-
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
@@ -211,7 +184,11 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         adapter = StickerMessagingAdapter(stickerMessageList, context)
         recyclerView!!.adapter = adapter
-        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        val linear = LinearLayoutManager(context)
+        linear.stackFromEnd = true
+        linear.reverseLayout = false
+        recyclerView!!.layoutManager = linear
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -224,54 +201,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
+
     }
 
-    private val channelId = "channel ID"
-    private fun createNotificationChannel() {
-        val name = "channel name"
-        val descriptionText = "notification channel description"
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(channelId, name, importance).apply {
-            description = descriptionText}
-        // register channel
-        val notificationManager : NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-
-
-    private fun sendNotification() {
-        // Prepare intent which is triggered if the
-        // notification is selected
-        val intent = Intent(this, StickerMessagingActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pIntent : PendingIntent = PendingIntent.getActivity(this, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_IMMUTABLE)
-        val replyIntent = PendingIntent.getActivity(
-            this, System.currentTimeMillis().toInt(),
-            Intent(this, StickerMessagingActivity::class.java), PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.exercisedino)
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    context.getResources(),
-                    R.drawable.exercisedino
-                )
-            )
-            .setContentTitle("Sender name")
-            .setContentText("New sticker Received!")
-                //high priority for messages
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .addAction(R.drawable.exercisedino, "Reply", replyIntent)
-            .setContentIntent(pIntent)
-        //val notificationManager = NotificationManagerCompat.from(this)
-        // define ID
-        //notificationManager.notify(System.currentTimeMillis().toInt(), notifyBuild.build())
-        with(NotificationManagerCompat.from(this)) {
-            notify(System.currentTimeMillis().toInt(), builder.build())
-        }
-    }
 }
