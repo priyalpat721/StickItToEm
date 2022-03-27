@@ -18,13 +18,11 @@ import java.util.HashMap
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var email: EditText
-    private lateinit var warning_sign_up: TextView
     private lateinit var signUp: Button
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
     private lateinit var warning_sign_up: TextView
-    private var fireStore = Firebase.firestore
     private var db = Firebase.database.reference
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
