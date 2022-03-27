@@ -9,15 +9,17 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import edu.neu.madcourse.stickittoem.R
 
 class PushNotificationService : FirebaseMessagingService() {
-    /*lateinit var currentToken : String
+    lateinit var currentToken : String
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val messageReceived : String = message.data["message"]!!
         Log.d("TAG", "Message received: $messageReceived")
         passMessageToActivity(messageReceived)
+        //passMessageToActivity(currentToken)
         createNotificationChannel()
     }
 
@@ -27,7 +29,7 @@ class PushNotificationService : FirebaseMessagingService() {
             putExtra("message", messageReceived)
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-    }*/
+    }
 
     companion object {
         const val INTENT_ACTION_SEND_MESSAGE = "INTENT_ACTION_SEND_MESSAGE"
@@ -35,15 +37,19 @@ class PushNotificationService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         Log.d("TAG", "The token refreshed: $token")
+        currentToken = token
         //super.onNewToken(token)
         // need to save this token somewhere
-        passTokenToActivity(token)
+        //passTokenToActivity(token)
+
+
     }
     private fun passTokenToActivity(token: String) {
         val intent : Intent = Intent().apply {
             action = INTENT_ACTION_SEND_MESSAGE
             putExtra("token", token)
         }
+        //startActivity(intent)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -68,8 +74,8 @@ class PushNotificationService : FirebaseMessagingService() {
                     R.drawable.exercisedino
                 )
             )*/
-            .setContentTitle("Sender name")
-            .setContentText("New sticker Received!")
+            .setContentTitle("TEST")
+            .setContentText("TEST NOTIFICATION")
             //high priority for messages
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -79,4 +85,9 @@ class PushNotificationService : FirebaseMessagingService() {
             notify(System.currentTimeMillis().toInt(), builder.build())
         }
     }
+
+    /*override fun onCreate() {
+        passTokenToActivity(currentToken)
+        super.onCreate()
+    }*/
 }
