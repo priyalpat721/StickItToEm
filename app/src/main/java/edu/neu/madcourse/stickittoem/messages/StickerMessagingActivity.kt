@@ -22,7 +22,6 @@ import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
-import edu.neu.madcourse.stickittoem.StickerInfoReceiver
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.util.*
@@ -75,11 +74,9 @@ class StickerMessagingActivity : AppCompatActivity() {
                 sender = intent?.getStringExtra("sender").toString()
                 receiverName = intent?.getStringExtra("name").toString()
                 bottomStickerSheetDialog.dismiss()
-
             }
         }
 
-        val br: BroadcastReceiver = StickerInfoReceiver()
         val filter = IntentFilter("com.stickerclicked.stickerInformation")
         registerReceiver(broadcast, filter)
         getIds()
@@ -100,7 +97,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
 
             addToDB()
-            
+
             stringStickerImg?.let { it1 ->
 
                 db.child("users").child(senderId).child("totalSent").child(it1)
@@ -126,7 +123,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                     })
             }
             Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
-            //adapter?.notifyDataSetChanged()
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             unregisterReceiver(broadcast)
@@ -188,7 +184,11 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         adapter = StickerMessagingAdapter(stickerMessageList, context)
         recyclerView!!.adapter = adapter
-        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        val linear = LinearLayoutManager(context)
+        linear.stackFromEnd = true
+        linear.reverseLayout = false
+        recyclerView!!.layoutManager = linear
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -202,25 +202,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
 
-        db.child("users").child(receiver).child("totalReceived")
-            .runTransaction(object : Transaction.Handler {
-                override fun doTransaction(currentData: MutableData): Transaction.Result {
-                    val currentValue = currentData.value
-                    val newValue = currentValue.toString()
-                    val longVal = newValue.toInt() + 1
-
-                    currentData.value = longVal
-                    return Transaction.success(currentData)
-                }
-
-                override fun onComplete(
-                    error: DatabaseError?,
-                    committed: Boolean,
-                    currentData: DataSnapshot?
-                ) {
-                    //Not implemented
-                }
-            })
     }
 
 }

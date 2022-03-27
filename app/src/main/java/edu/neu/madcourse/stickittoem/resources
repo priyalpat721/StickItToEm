@@ -41,3 +41,6 @@ comparator:
 Database realtime snapshots:
  - https://firebase.google.com/docs/database/android/read-and-write?utm_source=studio
  - https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
+
+Autoscroll in recycler view:
+ - https://stackoverflow.com/questions/44912239/automatically-scroll-to-bottom-of-recyclerview
