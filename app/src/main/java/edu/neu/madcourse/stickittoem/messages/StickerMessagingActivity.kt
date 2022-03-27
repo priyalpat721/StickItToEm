@@ -100,11 +100,38 @@ class StickerMessagingActivity : AppCompatActivity() {
 
             adapter?.notifyDataSetChanged()
 
+            stringStickerImg?.let { it1 ->
+                db.child("users").child(senderId).child("totalSent").child(it1)
+                    .runTransaction(object : Transaction.Handler {
+                        override fun doTransaction(currentData: MutableData): Transaction.Result {
+
+                            var map: MutableMap<String, Long> = HashMap()
+
+
+                            val example = db.child("users").child(senderId).child("totalSent")
+
+                            val currentValue = currentData.value
+                            val newValue = currentValue.toString()
+                            val longVal = newValue.toLong() + 1
+
+                            currentData.value = longVal
+                            return Transaction.success(currentData)
+
+                        }
+
+                        override fun onComplete(
+                            error: DatabaseError?,
+                            committed: Boolean,
+                            currentData: DataSnapshot?
+                        ) {
+
+                        }
+
+                    })
+            }
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
-
-
         }
     }
 
