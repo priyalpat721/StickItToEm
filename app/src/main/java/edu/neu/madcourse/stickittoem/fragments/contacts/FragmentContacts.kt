@@ -2,7 +2,6 @@ package edu.neu.madcourse.stickittoem.fragments.contacts
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +15,8 @@ import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.ContactAdapter
 import edu.neu.madcourse.stickittoem.cards.ChatCard
-import edu.neu.madcourse.stickittoem.cards.UserCard
 
 class FragmentContacts : Fragment(R.layout.fragment_contacts) {
-    private val TAG: String = "HASHMAP"
     private val contactsList: MutableList<ChatCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     var adapter: ContactAdapter? = null

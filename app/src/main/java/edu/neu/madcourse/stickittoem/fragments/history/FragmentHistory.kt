@@ -19,7 +19,7 @@ import edu.neu.madcourse.stickittoem.cards.HistoryCard
 
 
 class FragmentHistory : Fragment(R.layout.fragment_history) {
-    private val historyList: MutableList<HistoryCard> = ArrayList<HistoryCard>()
+    private val historyList: MutableList<HistoryCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
     var adapter: HistoryAdapter? = null
     private var db = Firebase.database.reference
@@ -77,7 +77,6 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
 
                         adapter?.notifyDataSetChanged()
 
-                       // adapter?.notifyDataSetChanged()
                     }
                 }
             }

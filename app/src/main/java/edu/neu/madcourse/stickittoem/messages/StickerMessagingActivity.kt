@@ -61,13 +61,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         getIds()
         setUpResources()
 
-        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
-        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
-        stickerIDMap[R.drawable.happydino] = "happydino"
-        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
-        stickerIDMap[R.drawable.saddino] = "saddino"
-        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
-
         listenForChanges()
         adapter?.notifyDataSetChanged()
 
@@ -111,13 +104,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                 db.child("users").child(senderId).child("totalSent").child(it1)
                     .runTransaction(object : Transaction.Handler {
                         override fun doTransaction(currentData: MutableData): Transaction.Result {
-
-                            var map: MutableMap<String, Long> = HashMap()
-
-
-
-                            val example = db.child("users").child(senderId).child("totalSent")
-
                             val currentValue = currentData.value
                             val newValue = currentValue.toString()
                             val longVal = newValue.toLong() + 1

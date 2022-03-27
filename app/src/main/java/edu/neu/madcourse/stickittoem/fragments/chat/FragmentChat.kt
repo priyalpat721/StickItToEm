@@ -26,7 +26,6 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
 
-    //private var db = Firebase.firestore
     private var db = Firebase.database.reference
 
     var cards = ArrayList<String>()
@@ -36,12 +35,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
         recyclerView = view.findViewById(R.id.chat_recycler_view)
 
         setUpResources()
-        getData()
         listenForChanges()
-    }
-
-    private fun getData() {
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
