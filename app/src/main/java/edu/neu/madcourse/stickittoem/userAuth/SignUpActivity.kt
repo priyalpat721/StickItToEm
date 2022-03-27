@@ -23,12 +23,15 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
+    private lateinit var warning_sign_up: TextView
     private var fireStore = Firebase.firestore
     private var db = Firebase.database.reference
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
 
         warning_sign_up = findViewById(R.id.warning_sign_up)
         warning_sign_up.text = ""
@@ -70,6 +73,7 @@ class SignUpActivity : AppCompatActivity() {
 
             return
         }
+
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
                 if (task.isSuccessful) {

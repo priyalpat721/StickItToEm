@@ -45,6 +45,7 @@
         android:paddingStart="5dp"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -63,7 +64,7 @@
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.553" />
+        app:layout_constraintVertical_bias="0.593" />
 
     <Button
         android:id="@+id/sign_in_button"

@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem.messages
 
+import kotlin.collections.HashMap
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
@@ -39,13 +40,9 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
-    //private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
-
-    private var flag: Boolean = true
-
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -63,7 +60,13 @@ class StickerMessagingActivity : AppCompatActivity() {
         getIds()
         setUpResources()
 
-        getData()
+        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
+        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
+        stickerIDMap[R.drawable.happydino] = "happydino"
+        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
+        stickerIDMap[R.drawable.saddino] = "saddino"
+        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
+
         listenForChanges()
         adapter?.notifyDataSetChanged()
 
@@ -100,60 +103,43 @@ class StickerMessagingActivity : AppCompatActivity() {
             receiverName = stickerIntent?.getString("name").toString()
             addToDB()
 
-            getData()
             adapter?.notifyDataSetChanged()
 
             stringStickerImg?.let { it1 ->
-                db.child("users").child(senderId).child("totalSent").child(it1).runTransaction(object: Transaction.Handler{
-                    override fun doTransaction(currentData: MutableData): Transaction.Result {
-                        //var map: MutableMap<String, Long> = HashMap()
-                        val example = db.child("users").child(senderId).child("totalSent")
 
-                        val currentValue = currentData.value
-                        val newValue = currentValue.toString()
-                        val longVal = newValue.toLong() + 1
+                db.child("users").child(senderId).child("totalSent").child(it1)
+                    .runTransaction(object : Transaction.Handler {
+                        override fun doTransaction(currentData: MutableData): Transaction.Result {
 
-                        currentData.value = longVal
-                        return Transaction.success(currentData)
+                            var map: MutableMap<String, Long> = HashMap()
 
-                    }
 
-                    override fun onComplete(
-                        error: DatabaseError?,
-                        committed: Boolean,
-                        currentData: DataSnapshot?
-                    ) {
 
-                    }
+                            val example = db.child("users").child(senderId).child("totalSent")
 
-                })
+                            val currentValue = currentData.value
+                            val newValue = currentValue.toString()
+                            val longVal = newValue.toLong() + 1
+
+                            currentData.value = longVal
+                            return Transaction.success(currentData)
+
+                        }
+
+                        override fun onComplete(
+                            error: DatabaseError?,
+                            committed: Boolean,
+                            currentData: DataSnapshot?
+                        ) {
+
+                        }
+
+                    })
             }
-//            val intent = Intent(context, MainActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            startActivity(intent)
-            finish()
-
+            val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun getData() {
-        db.child("chatLog").child("$senderId-$receiver").child("messages")
-            .get().addOnSuccessListener { result ->
-                Log.i(TAG, "Stickerlist before: $result")
-//                val sticker = result.child("sticker").getValue(String::class.java)
-//                val timestamp = result.child("timestamp").getValue(String::class.java)
-//                val sender = result.child("sender").getValue(String::class.java)
-//                val receiver = result.child("receiver").getValue(String::class.java)
-//                val message =
-//                    StickerCard(sticker, timestamp!!, sender!!, receiver!!)
-//                stickerMessageList.add(message)
-            }
-
-
-        Collections.sort(stickerMessageList, sorter)
-        stickerMessageList.reverse()
-        adapter?.notifyDataSetChanged()
     }
 
 
