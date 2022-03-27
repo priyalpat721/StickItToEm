@@ -6,6 +6,7 @@ class UserCard {
     lateinit var senderId: String
     var totalStickersReceived : Int = 0
     private var totalStickersSent : Map<String, Int>? = null
+    var userToken : String? = null
 
     constructor()
 
@@ -14,13 +15,15 @@ class UserCard {
         receiverId: String,
         senderId: String,
         totalStickersReceived: Int,
-        totalStickersSent: Map<String, Int>
+        totalStickersSent: Map<String, Int>,
+        user_token: String
     ) {
         this.name = name
         this.receiverId = receiverId
         this.senderId = senderId
         this.totalStickersReceived = totalStickersReceived
         this.totalStickersSent = totalStickersSent
+        this.userToken = user_token
     }
 
     override fun toString(): String {

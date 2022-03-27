@@ -21,7 +21,7 @@
         <entry key="app/src/main/res/layout/activity_messaging.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/activity_sigin_in.xml" value="0.17046203613281252" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.12997007268063274" />
-        <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.1" />
         <entry key="app/src/main/res/layout/chat_info_layout.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/contact_info_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />
