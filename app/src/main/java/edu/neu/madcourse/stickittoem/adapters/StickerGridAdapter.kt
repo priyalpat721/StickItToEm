@@ -60,7 +60,11 @@ class StickerGridAdapter(
         holder.image.setOnClickListener(){
             Toast.makeText(context, holder.description +" pressed", Toast.LENGTH_SHORT).show()
 
-            val intent = Intent(context, StickerMessagingActivity::class.java)
+//            val intent = Intent(context, StickerMessagingActivity::class.java)
+            val intent = Intent()
+
+            intent.action = "com.stickerclicked.stickerInformation"
+            //intent.setFlags(Intent.Flag)
             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.putExtra("image", data.image)
             intent.putExtra("description", data.description)
@@ -71,7 +75,8 @@ class StickerGridAdapter(
 
             var i = intent.extras
             Log.i(TAG, "Stick extra: $i")
-            context.startActivity(intent)
+            //context.startActivity(intent)
+            context.sendBroadcast(intent)
         }
 
     }

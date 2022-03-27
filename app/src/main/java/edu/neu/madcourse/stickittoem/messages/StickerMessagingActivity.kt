@@ -1,13 +1,16 @@
 package edu.neu.madcourse.stickittoem.messages
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +22,10 @@ import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
+import edu.neu.madcourse.stickittoem.StickerInfoReceiver
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.util.*
-import kotlin.collections.HashMap
 
 class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
@@ -58,46 +61,48 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerIDMap[R.drawable.motivatedino] = "motivatedino"
         stickerIDMap[R.drawable.saddino] = "saddino"
         stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
+
+        stickerDisplayButton = findViewById(R.id.sticker_btn)
+        val bottomStickerSheetDialog = BottomStickerSheetDialog()
+        val broadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+
+                //do something based on the intent's action
+                stickerImage = intent.getIntExtra("image" ,0)
+                stringStickerImg = stickerIDMap[stickerImage]
+                stickerDescription = intent?.getStringExtra("description")
+                receiver = intent?.getStringExtra("receiver").toString()
+                sender = intent?.getStringExtra("sender").toString()
+                receiverName = intent?.getStringExtra("name").toString()
+                bottomStickerSheetDialog.dismiss()
+
+            }
+        }
+
+        val br: BroadcastReceiver = StickerInfoReceiver()
+        val filter = IntentFilter("com.stickerclicked.stickerInformation")
+        registerReceiver(broadcast, filter)
         getIds()
         setUpResources()
 
         listenForChanges()
         adapter?.notifyDataSetChanged()
 
-        stickerDisplayButton = findViewById(R.id.sticker_btn)
-        val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
                 bottomStickerSheetDialog.name = receiverName
                 bottomStickerSheetDialog.receiver = receiver
                 bottomStickerSheetDialog.sender = senderId
                 bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
-                val stickerIntent = intent.extras
-                if (stickerIntent != null) {
-                    stickerImage = stickerIntent.getInt("image")
-                    stickerDescription = stickerIntent.getString("description")
-                    receiver = stickerIntent.getString("receiver").toString()
-                    sender = stickerIntent.getString("sender").toString()
-                    receiverName = stickerIntent.getString("name").toString()
-
-                    Log.i(TAG, "UPDATED: $stickerIntent")
-                }
-
         }
 
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
-            val stickerIntent = intent.extras
 
-            stickerImage = stickerIntent?.getInt("image")
-            stringStickerImg = stickerIDMap[stickerImage]
-            stickerDescription = stickerIntent?.getString("description")
-            receiver = stickerIntent?.getString("receiver").toString()
-            sender = stickerIntent?.getString("sender").toString()
-            receiverName = stickerIntent?.getString("name").toString()
             addToDB()
 
-            adapter?.notifyDataSetChanged()
+            //adapter?.notifyDataSetChanged()
+            //adapter?.notifyItemInserted(stickerMessageList.size - 1)
 
             stringStickerImg?.let { it1 ->
 
@@ -112,7 +117,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                             return Transaction.success(currentData)
 
                         }
-
                         override fun onComplete(
                             error: DatabaseError?,
                             committed: Boolean,
@@ -123,12 +127,14 @@ class StickerMessagingActivity : AppCompatActivity() {
 
                     })
             }
+            Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
+            //adapter?.notifyDataSetChanged()
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+
         }
     }
-
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listenForChanges() {
@@ -198,4 +204,5 @@ class StickerMessagingActivity : AppCompatActivity() {
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
     }
+
 }
