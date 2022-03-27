@@ -73,7 +73,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                 receiver = intent?.getStringExtra("receiver").toString()
                 sender = intent?.getStringExtra("sender").toString()
                 receiverName = intent?.getStringExtra("name").toString()
-                bottomStickerSheetDialog.dismiss()
             }
         }
 
@@ -97,6 +96,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
 
             addToDB()
+            adapter?.notifyDataSetChanged()
 
             stringStickerImg?.let { it1 ->
 
@@ -123,10 +123,6 @@ class StickerMessagingActivity : AppCompatActivity() {
                     })
             }
             Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            unregisterReceiver(broadcast)
-            startActivity(intent)
         }
     }
 
@@ -137,6 +133,7 @@ class StickerMessagingActivity : AppCompatActivity() {
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    stickerMessageList.clear()
                     for (snap in snapshot.children) {
                         Log.i(TAG, "Stickerlist before: $snap")
                         val sticker = snap.child("sticker").getValue(String::class.java)
@@ -146,6 +143,8 @@ class StickerMessagingActivity : AppCompatActivity() {
                         val message =
                             StickerCard(sticker, timestamp!!, sender!!, receiver!!)
                         stickerMessageList.add(message)
+                        adapter?.notifyDataSetChanged()
+                        recyclerView?.smoothScrollToPosition(stickerMessageList.size)
                     }
                 }
 
@@ -184,11 +183,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         adapter = StickerMessagingAdapter(stickerMessageList, context)
         recyclerView!!.adapter = adapter
-        val linear = LinearLayoutManager(context)
-        linear.stackFromEnd = true
-        linear.reverseLayout = false
-        recyclerView!!.layoutManager = linear
-
+        recyclerView!!.layoutManager = LinearLayoutManager(context)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -201,7 +196,7 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
-
+        adapter?.notifyDataSetChanged()
     }
 
 }
