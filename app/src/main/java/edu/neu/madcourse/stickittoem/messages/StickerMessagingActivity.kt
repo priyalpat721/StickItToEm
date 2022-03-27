@@ -42,7 +42,6 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
-    private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
@@ -64,7 +63,6 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerIDMap[R.drawable.saddino] = "saddino"
         stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
 
-        getData()
         listenForChanges()
         adapter?.notifyDataSetChanged()
 
@@ -93,14 +91,13 @@ class StickerMessagingActivity : AppCompatActivity() {
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
-            stringStickerImg = stickerIDMap.get(stickerImage)
+            stringStickerImg = stickerIDMap[stickerImage]
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()
             receiverName = stickerIntent?.getString("name").toString()
             addToDB()
 
-            getData()
             adapter?.notifyDataSetChanged()
 
             val intent = Intent(context, MainActivity::class.java)
@@ -109,26 +106,6 @@ class StickerMessagingActivity : AppCompatActivity() {
 
 
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun getData() {
-        db.child("chatLog").child("$senderId-$receiver").child("messages")
-            .get().addOnSuccessListener { result ->
-                Log.i(TAG, "Stickerlist before: $result")
-//                val sticker = result.child("sticker").getValue(String::class.java)
-//                val timestamp = result.child("timestamp").getValue(String::class.java)
-//                val sender = result.child("sender").getValue(String::class.java)
-//                val receiver = result.child("receiver").getValue(String::class.java)
-//                val message =
-//                    StickerCard(sticker, timestamp!!, sender!!, receiver!!)
-//                stickerMessageList.add(message)
-            }
-
-
-        Collections.sort(stickerMessageList, sorter)
-        stickerMessageList.reverse()
-        adapter?.notifyDataSetChanged()
     }
 
 

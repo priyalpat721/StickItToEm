@@ -52,7 +52,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 for (snap in snapshot.children) {
                     val name = snap.child("name").getValue(String::class.java)
                     val totalReceived = snap.child("totalReceived").getValue(Int::class.java)
-                    val totalSent = snap.child("totalSent").value as Map<String, Int>
+                    val totalSent = snap.child("totalSent").value as Map<String, Long>
                     val currentUser = Firebase.auth.currentUser?.uid!!
                     val receiver = snap.key.toString()
                     val email = snap.child("email").getValue(String::class.java)

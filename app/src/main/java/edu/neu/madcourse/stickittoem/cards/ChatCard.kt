@@ -6,7 +6,7 @@ class ChatCard {
     lateinit var senderId: String
     lateinit var email: String
     var totalStickersReceived : Int = 0
-    private lateinit var totalStickersSent : Map<String, Int>
+    private lateinit var totalStickersSent : Map<String, Long>
 
     constructor()
 
@@ -16,7 +16,7 @@ class ChatCard {
         senderId: String,
         email: String,
         totalStickersReceived: Int,
-        totalStickersSent: Map<String, Int>
+        totalStickersSent: Map<String, Long>
     ) {
         this.name = name
         this.receiverId = receiverId
