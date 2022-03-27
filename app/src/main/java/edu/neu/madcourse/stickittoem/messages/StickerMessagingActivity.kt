@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem.messages
 
+import kotlin.collections.HashMap
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -44,6 +45,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var fireStore = FirebaseFirestore.getInstance()
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
+    private var stickerIDMap = HashMap<Int, String>()
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -54,6 +56,13 @@ class StickerMessagingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_messaging)
         getIds()
         setUpResources()
+
+        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
+        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
+        stickerIDMap[R.drawable.happydino] = "happydino"
+        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
+        stickerIDMap[R.drawable.saddino] = "saddino"
+        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
 
         getData()
         listenForChanges()
@@ -84,28 +93,7 @@ class StickerMessagingActivity : AppCompatActivity() {
             val stickerIntent = intent.extras
 
             stickerImage = stickerIntent?.getInt("image")
-            when (stickerImage) {
-                2131165311 -> {
-                    stringStickerImg = "exercisedino"
-                }
-                2131165312 -> {
-                    stringStickerImg = "frustratedino"
-                }
-                2131165317 -> {
-                    stringStickerImg = "happydino"
-                }
-                2131165351 -> {
-                    stringStickerImg = "motivatedino"
-                }
-                2131165375 -> {
-                    stringStickerImg = "saddino"
-                }
-                2131165377 -> {
-                    stringStickerImg = "sleepdino2"
-                }
-            }
-
-
+            stringStickerImg = stickerIDMap.get(stickerImage)
             stickerDescription = stickerIntent?.getString("description")
             receiver = stickerIntent?.getString("receiver").toString()
             sender = stickerIntent?.getString("sender").toString()

@@ -22,12 +22,15 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
+    private lateinit var warning_sign_up: TextView
     private var fireStore = Firebase.firestore
     private var db = Firebase.database.reference
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
 
         name = findViewById(R.id.name)
         email = findViewById(R.id.email)
@@ -52,6 +55,22 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signup(emailAddress: String, password: String, nameText: String) {
+        warning_sign_up.text = ""
+
+        if(emailAddress.equals("") || nameText.equals("")){
+            Thread.sleep(1000)
+            progressBar.visibility = View.GONE
+            if(nameText.equals("") && emailAddress.equals("")){
+                warning_sign_up.text = "Name and email fields empty. Please provide above information"
+            } else if (emailAddress.equals("")){
+                warning_sign_up.text = "Email Field empty. Please enter your Email."
+            } else {
+                warning_sign_up.text = "Name Field empty. Please enter your Name."
+            }
+
+            return
+        }
+
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
                 if (task.isSuccessful) {
