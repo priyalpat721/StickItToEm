@@ -18,6 +18,7 @@ import java.util.HashMap
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var email: EditText
+    private lateinit var warning_sign_up: TextView
     private lateinit var signUp: Button
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
@@ -32,6 +33,8 @@ class SignUpActivity : AppCompatActivity() {
         warning_sign_up = findViewById(R.id.warning_sign_up)
         warning_sign_up.text = ""
 
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
         name = findViewById(R.id.name)
         email = findViewById(R.id.email)
         signUp = findViewById(R.id.sign_up)

@@ -56,6 +56,7 @@ class SignInActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun signIn(userNameOrEmail: String, password: String) {
+
         warning.text = ""
 
         if(userNameOrEmail.equals("")){
@@ -65,7 +66,7 @@ class SignInActivity : AppCompatActivity() {
             warning.text = "You don't have any text in the Email field. Please try again."
             return
         }
-
+        
         auth.signInWithEmailAndPassword(userNameOrEmail, password)
             .addOnCompleteListener(this@SignInActivity) { task ->
                 if (task.isSuccessful) {

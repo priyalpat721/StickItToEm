@@ -3,7 +3,6 @@ package edu.neu.madcourse.stickittoem.messages
 import kotlin.collections.HashMap
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,14 +15,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
-import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
 import java.util.*
+import kotlin.collections.HashMap
 
 class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
@@ -53,6 +51,12 @@ class StickerMessagingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
+        stickerIDMap[R.drawable.exercisedino] = "exercisedino"
+        stickerIDMap[R.drawable.frustratedino] = "frustratedino"
+        stickerIDMap[R.drawable.happydino] = "happydino"
+        stickerIDMap[R.drawable.motivatedino] = "motivatedino"
+        stickerIDMap[R.drawable.saddino] = "saddino"
+        stickerIDMap[R.drawable.sleepdino2] = "sleepdino2"
         getIds()
         setUpResources()
 
@@ -69,21 +73,22 @@ class StickerMessagingActivity : AppCompatActivity() {
         stickerDisplayButton = findViewById(R.id.sticker_btn)
         val bottomStickerSheetDialog = BottomStickerSheetDialog()
         stickerDisplayButton.setOnClickListener {
-            bottomStickerSheetDialog.name = receiverName
-            bottomStickerSheetDialog.receiver = receiver
-            bottomStickerSheetDialog.sender = senderId
-            bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
+                bottomStickerSheetDialog.name = receiverName
+                bottomStickerSheetDialog.receiver = receiver
+                bottomStickerSheetDialog.sender = senderId
+                bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
-            val stickerIntent = intent.extras
-            if (stickerIntent != null) {
-                stickerImage = stickerIntent.getInt("image")
-                stickerDescription = stickerIntent.getString("description")
-                receiver = stickerIntent.getString("receiver").toString()
-                sender = stickerIntent.getString("sender").toString()
-                receiverName = stickerIntent.getString("name").toString()
+                val stickerIntent = intent.extras
+                if (stickerIntent != null) {
+                    stickerImage = stickerIntent.getInt("image")
+                    stickerDescription = stickerIntent.getString("description")
+                    receiver = stickerIntent.getString("receiver").toString()
+                    sender = stickerIntent.getString("sender").toString()
+                    receiverName = stickerIntent.getString("name").toString()
 
-                Log.i(TAG, "UPDATED: $stickerIntent")
-            }
+                    Log.i(TAG, "UPDATED: $stickerIntent")
+                }
+
         }
 
         sendButton = findViewById(R.id.send_btn)
@@ -101,11 +106,13 @@ class StickerMessagingActivity : AppCompatActivity() {
             adapter?.notifyDataSetChanged()
 
             stringStickerImg?.let { it1 ->
+
                 db.child("users").child(senderId).child("totalSent").child(it1)
                     .runTransaction(object : Transaction.Handler {
                         override fun doTransaction(currentData: MutableData): Transaction.Result {
 
                             var map: MutableMap<String, Long> = HashMap()
+
 
 
                             val example = db.child("users").child(senderId).child("totalSent")
