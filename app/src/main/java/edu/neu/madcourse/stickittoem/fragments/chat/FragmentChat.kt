@@ -26,7 +26,6 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
     private var recyclerView: RecyclerView? = null
     var adapter: ChatAdapter? = null
 
-    //private var db = Firebase.firestore
     private var db = Firebase.database.reference
 
     var cards = ArrayList<String>()
@@ -36,12 +35,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
         recyclerView = view.findViewById(R.id.chat_recycler_view)
 
         setUpResources()
-        getData()
         listenForChanges()
-    }
-
-    private fun getData() {
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,7 +46,7 @@ class FragmentChat : Fragment(R.layout.fragment_chat) {
                 for (snap in snapshot.children) {
                     val name = snap.child("name").getValue(String::class.java)
                     val totalReceived = snap.child("totalReceived").getValue(Int::class.java)
-                    val totalSent = snap.child("totalSent").value as Map<String, Int>
+                    val totalSent = snap.child("totalSent").value as Map<String, Long>
                     val currentUser = Firebase.auth.currentUser?.uid!!
                     val receiver = snap.key.toString()
                     val email = snap.child("email").getValue(String::class.java)

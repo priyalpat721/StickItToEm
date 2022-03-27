@@ -6,6 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.cards.ChatCard
 import edu.neu.madcourse.stickittoem.viewHolder.ChatViewHolder
@@ -16,6 +22,7 @@ class ChatAdapter(
     private var context: Context
 ) : RecyclerView.Adapter<ChatViewHolder>() {
 
+    private var db = Firebase.database.reference
     private val TAG = "ChatAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
@@ -26,9 +33,35 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         holder.name.text = chatList[position].name
+        val sender = chatList[position].senderId
+        val receiver = chatList[position].receiverId
+        var count = 0
+        Log.i(TAG, "Current sender: $sender")
+        Log.i(TAG, "Current receiver: $receiver")
+        db.child("chatLog").child("$sender-$receiver").child("messages")
+            .runTransaction(object : Transaction.Handler {
+                override fun doTransaction(currentData: MutableData): Transaction.Result {
 
-        holder.totalSent.text = chatList[position].totalStickersReceived.toString()
-        holder.chatInfoLayout.setOnClickListener{
+                    currentData.children.forEach { result ->
+                        Log.i(TAG, "Current data: ${result.value}")
+                        count++
+                    }
+                    Log.i(TAG, "Current data: $count")
+                    holder.totalSent.text = count.toString()
+
+                    return Transaction.success(currentData)
+                }
+
+                override fun onComplete(
+                    error: DatabaseError?,
+                    committed: Boolean,
+                    currentData: DataSnapshot?
+                ) {
+                    //Not implemented
+                }
+            })
+
+        holder.chatInfoLayout.setOnClickListener {
             val intent = Intent(context, StickerMessagingActivity::class.java)
             Log.i(TAG, chatList[position].toString())
             intent.putExtra("name", chatList[position].name)
@@ -39,6 +72,6 @@ class ChatAdapter(
     }
 
     override fun getItemCount(): Int {
-       return chatList.size
+        return chatList.size
     }
 }

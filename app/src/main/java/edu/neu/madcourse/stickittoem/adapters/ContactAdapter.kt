@@ -39,16 +39,16 @@ class ContactAdapter(private var contactslist: MutableList<ChatCard>, private va
             context.startActivity(intent)
         }
 
-        holder.contactInfoLayout.setOnClickListener{
-            val intent = Intent(context, StickerMessagingActivity::class.java)
-            Log.i(TAG, contactslist[position].toString())
-            intent.putExtra("name", contactslist[position].name)
-            intent.putExtra("senderId", contactslist[position].senderId)
-            intent.putExtra("receiverId", contactslist[position].receiverId)
-            Log.i(TAG, "Intent" + intent.getStringExtra("receiverId").toString())
-            Log.i(TAG, "Intent" + intent.getStringExtra("senderId").toString())
-            context.startActivity(intent)
-        }
+//        holder.contactInfoLayout.setOnClickListener{
+//            val intent = Intent(context, StickerMessagingActivity::class.java)
+//            Log.i(TAG, contactslist[position].toString())
+//            intent.putExtra("name", contactslist[position].name)
+//            intent.putExtra("senderId", contactslist[position].senderId)
+//            intent.putExtra("receiverId", contactslist[position].receiverId)
+//            Log.i(TAG, "Intent" + intent.getStringExtra("receiverId").toString())
+//            Log.i(TAG, "Intent" + intent.getStringExtra("senderId").toString())
+//            context.startActivity(intent)
+//        }
     }
 
     override fun getItemCount(): Int {
