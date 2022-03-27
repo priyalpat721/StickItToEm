@@ -1,7 +1,5 @@
 package edu.neu.madcourse.stickittoem
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -16,9 +14,15 @@ import edu.neu.madcourse.stickittoem.adapters.Adapter
 import edu.neu.madcourse.stickittoem.userAuth.SignInActivity
 
 class MainActivity : AppCompatActivity() {
+    // server key from firebase https://console.firebase.google.com/project/stick-it-to-em-99f10/settings/cloudmessaging
+    private val SERVER_KEY: String = "key = AAAAmT9eZxc:APA91bEUzh4cD0qqeNqzvMQv4EScFoTOcwBllfKVMjuPHWPkD5F8EVng6wE3UGxrpVAapsD336oGzp6dNUuK3rMYb1ZY7AQIjp0wo0cZEhAujwlnukmXTQQVQMoZ-vLaa6Zrq0GbY0xF"
+    private val CLIENT_REGISTRATION_TOKEN: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //CLIENT_REGISTRATION_TOKEN = FirebaseInstanceId.getInstance().getInstanceId()
 
 
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
