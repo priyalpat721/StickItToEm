@@ -29,19 +29,27 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var fireStore = Firebase.firestore
     private var db = Firebase.database.reference
+    lateinit var currentToken : String
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        /*receiver = object : BroadcastReceiver() {
-            override fun onReceive(p0: Context?, p1: Intent?) {
-                val token : String? = intent.getStringExtra("token")
-
-                Log.d("Sign Up", "token : $token")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
             }
 
-        }*/
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            val msg = token.toString()
+            Log.d(TAG, msg)
+            currentToken = msg
+            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+        })
 
         val token : String? = intent.getStringExtra("token")
         Log.d("Sign In", "token : $token")
@@ -66,20 +74,7 @@ class SignUpActivity : AppCompatActivity() {
         }
         auth = Firebase.auth
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
 
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            val msg = token.toString()
-            Log.d(TAG, msg)
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-        })
     }
 
 
@@ -101,6 +96,7 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val newUser = hashMapOf(
                         "name" to nameText,
+                        "token" to currentToken,
                         "password" to password,
                         "email" to emailAddress,
                         "totalReceived" to 0,

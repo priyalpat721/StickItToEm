@@ -26,6 +26,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private var fireStore = Firebase.firestore
     private var db = Firebase.database.reference
+    lateinit var currentToken : String
     val TAG = "StickApp"
     private lateinit var signUp: Button
 
@@ -45,6 +46,7 @@ class SignInActivity : AppCompatActivity() {
             // Log and toast
             val msg = token.toString()
             Log.d(TAG, msg)
+            currentToken = msg
             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
         // broadcast receiver
