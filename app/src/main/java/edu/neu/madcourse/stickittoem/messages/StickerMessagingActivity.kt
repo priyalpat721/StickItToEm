@@ -68,7 +68,7 @@ class StickerMessagingActivity : AppCompatActivity() {
             override fun onReceive(context: Context, intent: Intent) {
 
                 //do something based on the intent's action
-                stickerImage = intent.getIntExtra("image" ,0)
+                stickerImage = intent.getIntExtra("image", 0)
                 stringStickerImg = stickerIDMap[stickerImage]
                 stickerDescription = intent?.getStringExtra("description")
                 receiver = intent?.getStringExtra("receiver").toString()
@@ -89,10 +89,10 @@ class StickerMessagingActivity : AppCompatActivity() {
         adapter?.notifyDataSetChanged()
 
         stickerDisplayButton.setOnClickListener {
-                bottomStickerSheetDialog.name = receiverName
-                bottomStickerSheetDialog.receiver = receiver
-                bottomStickerSheetDialog.sender = senderId
-                bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
+            bottomStickerSheetDialog.name = receiverName
+            bottomStickerSheetDialog.receiver = receiver
+            bottomStickerSheetDialog.sender = senderId
+            bottomStickerSheetDialog.show(supportFragmentManager, "sticker sheet")
 
         }
 
@@ -100,10 +100,7 @@ class StickerMessagingActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
 
             addToDB()
-
-            //adapter?.notifyDataSetChanged()
-            //adapter?.notifyItemInserted(stickerMessageList.size - 1)
-
+            
             stringStickerImg?.let { it1 ->
 
                 db.child("users").child(senderId).child("totalSent").child(it1)
@@ -117,6 +114,7 @@ class StickerMessagingActivity : AppCompatActivity() {
                             return Transaction.success(currentData)
 
                         }
+
                         override fun onComplete(
                             error: DatabaseError?,
                             committed: Boolean,
@@ -131,8 +129,8 @@ class StickerMessagingActivity : AppCompatActivity() {
             //adapter?.notifyDataSetChanged()
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            unregisterReceiver(broadcast)
             startActivity(intent)
-
         }
     }
 
@@ -203,6 +201,26 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         db.child("chatLog").child("$receiver-$sender").child("messages")
             .push().setValue(newMessage)
+
+        db.child("users").child(receiver).child("totalReceived")
+            .runTransaction(object : Transaction.Handler {
+                override fun doTransaction(currentData: MutableData): Transaction.Result {
+                    val currentValue = currentData.value
+                    val newValue = currentValue.toString()
+                    val longVal = newValue.toInt() + 1
+
+                    currentData.value = longVal
+                    return Transaction.success(currentData)
+                }
+
+                override fun onComplete(
+                    error: DatabaseError?,
+                    committed: Boolean,
+                    currentData: DataSnapshot?
+                ) {
+                    //Not implemented
+                }
+            })
     }
 
 }
