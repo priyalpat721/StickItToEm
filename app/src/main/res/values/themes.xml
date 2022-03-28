@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.StickItToEm" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#6445A1</item>
-        <item name="colorPrimaryVariant">#3949AB</item>
+        <item name="colorPrimary">#CD0228B1</item>
+        <item name="colorPrimaryVariant">#020413</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
