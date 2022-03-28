@@ -34,6 +34,7 @@ import java.util.*
 
 class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
+    private lateinit var senderName: String
     private lateinit var sender: String
     private lateinit var receiver: String
     private lateinit var receiverToken: String
@@ -108,6 +109,12 @@ class StickerMessagingActivity : AppCompatActivity() {
         }.addOnFailureListener{
             Log.e("firebaseGetToken", "Error getting data", it)
         }
+        db.child("users").child(senderId).child("name").get().addOnSuccessListener {
+            Log.i("firebaseUserName", "Got value ${it.value}")
+            senderName = it.value.toString()
+        }.addOnFailureListener{
+            Log.e("firebaseUserName", "Error getting data", it)
+        }
 
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
@@ -140,10 +147,11 @@ class StickerMessagingActivity : AppCompatActivity() {
                     })
             }
 
-            val title = receiverName
+            val title = "Sender: $senderName"
+            println(title)
             val message = "You've received a sticker!"
             PushNotification(
-                NotificationData(title,message, R.drawable.exercisedino),
+                NotificationData(title, message, R.drawable.exercisedino),
                 receiverToken
             ).also {
                 sendNotification(it)

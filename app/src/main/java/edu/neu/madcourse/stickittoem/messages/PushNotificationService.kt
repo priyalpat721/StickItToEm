@@ -11,7 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -44,13 +43,16 @@ class PushNotificationService : FirebaseMessagingService() {
         // pending intent can only be used once
         val replyIntent = PendingIntent.getActivity(
             this, System.currentTimeMillis().toInt(),
-            Intent(this, StickerMessagingActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            Intent(this, StickerMessagingActivity::class.java), FLAG_IMMUTABLE
         )
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE)
         var icon : Bitmap = BitmapFactory.decodeResource(context.getResources(),
         R.drawable.exercisedino)
+        println("Message message data: " + message.data["message"])
+        println("Message title data: " + message.data["title"])
+        println("Message image data: " + message.data["image"])
         val notification = NotificationCompat.Builder(this, channelId)
-            .setContentText(message.data["title"])
+            .setContentTitle(message.data["title"])
             .setContentText(message.data["message"])
             .setSmallIcon(R.drawable.exercisedino)
             .setLargeIcon(icon)
@@ -112,7 +114,7 @@ class PushNotificationService : FirebaseMessagingService() {
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
-        val builder = NotificationCompat.Builder(this, channelId)
+        /*val builder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.exercisedino)
             /*.setLargeIcon(
                 BitmapFactory.decodeResource(
@@ -129,7 +131,7 @@ class PushNotificationService : FirebaseMessagingService() {
         //.setContentIntent(pIntent)
         with(NotificationManagerCompat.from(this)) {
             notify(System.currentTimeMillis().toInt(), builder.build())
-        }
+        }*/
     }
 
 

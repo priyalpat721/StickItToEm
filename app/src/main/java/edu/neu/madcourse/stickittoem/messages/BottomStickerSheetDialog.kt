@@ -1,18 +1,16 @@
 package edu.neu.madcourse.stickittoem.messages
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.Button
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerGridAdapter
 
@@ -28,7 +26,7 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
     private var stringStickerImg: String? = null
     private var stickerImage: Int? = null
     private var stickerDescription: String? = null
-    private lateinit var sendButton: ImageButton
+    private lateinit var doneButton: Button
     private lateinit var receiverName: String
 
     override fun onCreateView(
@@ -59,25 +57,10 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         imageList.add(StickerModel(R.drawable.sleepdino2, "sleepy"))
         adapter?.setDataList(imageList)
 
-        /*var sticker : ImageView? = activity?.findViewById(R.id.sticker_image)
-        sticker?.setOnClickListener {
-            dismiss()
-        }*/
-
-        // clicking the send button gives us the info for which sticker is clicked
         // dismisses the dialog
-        sendButton = view.findViewById(R.id.send_button)
-        sendButton.setOnClickListener {
-
+        doneButton = view.findViewById(R.id.button)
+        doneButton.setOnClickListener {
             dismiss()
-
-            // refresh items in recycler view
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            //sendNotification()
-
-
         }
     }
 

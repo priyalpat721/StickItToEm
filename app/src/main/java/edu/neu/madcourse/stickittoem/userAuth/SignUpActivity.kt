@@ -47,7 +47,7 @@ class SignUpActivity : AppCompatActivity() {
             val msg = token.toString()
             Log.d(TAG, msg)
             currentToken = msg
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
         })
 
         name = findViewById(R.id.name)

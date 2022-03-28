@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             val msg = token.toString()
             Log.i(TAG, msg)
             currentToken = msg
-            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             Log.i(TAG, "Currentuser ID: " + Firebase.auth.currentUser!!.uid)
             Firebase.auth.currentUser?.let { db.child("users").child(it.uid).child("token").setValue(currentToken) }
 //            db.child("users").orderByChild("email").equalTo(usernameOrEmail.text.toString()).get().addOnSuccessListener {
