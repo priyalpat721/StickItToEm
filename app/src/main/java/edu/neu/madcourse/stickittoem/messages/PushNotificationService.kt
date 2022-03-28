@@ -3,7 +3,7 @@ package edu.neu.madcourse.stickittoem.messages
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_ONE_SHOT
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -46,7 +46,7 @@ class PushNotificationService : FirebaseMessagingService() {
             this, System.currentTimeMillis().toInt(),
             Intent(this, StickerMessagingActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE)
         var icon : Bitmap = BitmapFactory.decodeResource(context.getResources(),
         R.drawable.exercisedino)
         val notification = NotificationCompat.Builder(this, channelId)

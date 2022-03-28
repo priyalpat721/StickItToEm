@@ -36,6 +36,7 @@ class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
     private lateinit var sender: String
     private lateinit var receiver: String
+    private lateinit var receiverToken: String
     private val TAG = "StickerAppMessage"
     private var stickerMessageList: ArrayList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
@@ -101,6 +102,13 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         }
 
+        db.child("users").child(receiver).child("token").get().addOnSuccessListener {
+            Log.i("firebaseGetToken", "Got value ${it.value}")
+            receiverToken = it.value.toString()
+        }.addOnFailureListener{
+            Log.e("firebaseGetToken", "Error getting data", it)
+        }
+
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
 
@@ -135,13 +143,12 @@ class StickerMessagingActivity : AppCompatActivity() {
             val title = receiverName
             val message = "You've received a sticker!"
             PushNotification(
-                // TODO try to get the selected sticker
                 NotificationData(title,message, R.drawable.exercisedino),
-                // TODO get receiver's token from the database
-                db.child("users").child(receiver).child("token").get().toString()
-            )
-            Toast.makeText(context, db.child("users").child(receiver).child("token").get().toString(), Toast.LENGTH_SHORT).show()
-            println(db.child("users").child(receiver).child("token").get().toString())
+                receiverToken
+            ).also {
+                sendNotification(it)
+            }
+            Toast.makeText(context, "sticker sent", Toast.LENGTH_SHORT).show()
         }
     }
 
