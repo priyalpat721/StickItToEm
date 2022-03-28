@@ -2,8 +2,13 @@ package edu.neu.madcourse.stickittoem.messages
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -11,34 +16,75 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import edu.neu.madcourse.stickittoem.R
+import kotlin.random.Random
 
 class PushNotificationService : FirebaseMessagingService() {
+
+    companion object {
+        var sharedPreferences : SharedPreferences? = null
+        var token : String?
+        get() {
+            return sharedPreferences?.getString("token", "")
+        }
+        set(value) {
+            sharedPreferences?.edit()?.putString("token", value)?.apply()
+        }
+    }
+
+    var context: Context = this
     lateinit var currentToken : String
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        val intent = Intent(this, StickerMessagingActivity::class.java)
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // show multiple notifications
+        val notificationID = Random.nextInt()
+        // makes activity on top of the stack
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        // pending intent can only be used once
+        val replyIntent = PendingIntent.getActivity(
+            this, System.currentTimeMillis().toInt(),
+            Intent(this, StickerMessagingActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+        )
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
+        var icon : Bitmap = BitmapFactory.decodeResource(context.getResources(),
+        R.drawable.exercisedino)
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentText(message.data["title"])
+            .setContentText(message.data["message"])
+            .setSmallIcon(R.drawable.exercisedino)
+            .setLargeIcon(icon)
+            //high priority for messages
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .addAction(R.drawable.exercisedino, "Reply", replyIntent)
+            .setContentIntent(pendingIntent)
+            .build()
+        notificationManager.notify(notificationID,notification)
+
+
+
         val messageReceived : String = message.data["message"]!!
         Log.d("TAG", "Message received: $messageReceived")
-        passMessageToActivity(messageReceived)
+        // passMessageToActivity(messageReceived)
         //passMessageToActivity(currentToken)
         createNotificationChannel()
     }
 
     private fun passMessageToActivity(messageReceived: String) {
         val intent : Intent = Intent().apply {
-            action = INTENT_ACTION_SEND_MESSAGE
+            action = "INTENT_ACTION_SEND_MESSAGE"
             putExtra("message", messageReceived)
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
-    companion object {
-        const val INTENT_ACTION_SEND_MESSAGE = "INTENT_ACTION_SEND_MESSAGE"
-    }
+
 
     override fun onNewToken(token: String) {
         Log.d("TAG", "The token refreshed: $token")
+        super.onNewToken(token)
         currentToken = token
-        //super.onNewToken(token)
         // need to save this token somewhere
         //passTokenToActivity(token)
 
@@ -46,7 +92,7 @@ class PushNotificationService : FirebaseMessagingService() {
     }
     private fun passTokenToActivity(token: String) {
         val intent : Intent = Intent().apply {
-            action = INTENT_ACTION_SEND_MESSAGE
+            action = "INTENT_ACTION_SEND_MESSAGE"
             putExtra("token", token)
         }
         //startActivity(intent)
@@ -85,6 +131,7 @@ class PushNotificationService : FirebaseMessagingService() {
             notify(System.currentTimeMillis().toInt(), builder.build())
         }
     }
+
 
     /*override fun onCreate() {
         passTokenToActivity(currentToken)

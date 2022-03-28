@@ -20,9 +20,16 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
+import edu.neu.madcourse.stickittoem.messages.notifications.NotificationData
+import edu.neu.madcourse.stickittoem.messages.notifications.PushNotification
+import edu.neu.madcourse.stickittoem.messages.notifications.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class StickerMessagingActivity : AppCompatActivity() {
@@ -46,8 +53,8 @@ class StickerMessagingActivity : AppCompatActivity() {
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
 
-    private val SERVER_KEY: String = "key = AAAAmT9eZxc:APA91bEUzh4cD0qqeNqzvMQv4EScFoTOcwBllfKVMjuPHWPkD5F8EVng6wE3UGxrpVAapsD336oGzp6dNUuK3rMYb1ZY7AQIjp0wo0cZEhAujwlnukmXTQQVQMoZ-vLaa6Zrq0GbY0xF"
-    private val CLIENT_REGISTRATION_TOKEN: String? = null
+    //private val SERVER_KEY: String = "key = AAAAmT9eZxc:APA91bEUzh4cD0qqeNqzvMQv4EScFoTOcwBllfKVMjuPHWPkD5F8EVng6wE3UGxrpVAapsD336oGzp6dNUuK3rMYb1ZY7AQIjp0wo0cZEhAujwlnukmXTQQVQMoZ-vLaa6Zrq0GbY0xF"
+    //private val CLIENT_REGISTRATION_TOKEN: String? = null
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -124,7 +131,17 @@ class StickerMessagingActivity : AppCompatActivity() {
 
                     })
             }
-            Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
+
+            val title = receiverName
+            val message = "You've received a sticker!"
+            PushNotification(
+                // TODO try to get the selected sticker
+                NotificationData(title,message, R.drawable.exercisedino),
+                // TODO get receiver's token from the database
+                db.child("users").child(receiver).child("token").get().toString()
+            )
+            Toast.makeText(context, db.child("users").child(receiver).child("token").get().toString(), Toast.LENGTH_SHORT).show()
+            println(db.child("users").child(receiver).child("token").get().toString())
         }
     }
 
@@ -201,7 +218,19 @@ class StickerMessagingActivity : AppCompatActivity() {
         adapter?.notifyDataSetChanged()
     }
 
-    // TODO pull the token from the message receiver from the database
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch (e : Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
 
 //    public fun sendNotificationToDevice(view : View) {
 //        val t = Thread()

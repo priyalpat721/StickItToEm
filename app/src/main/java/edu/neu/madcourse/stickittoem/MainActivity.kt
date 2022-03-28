@@ -1,5 +1,6 @@
 package edu.neu.madcourse.stickittoem
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import edu.neu.madcourse.stickittoem.adapters.Adapter
+import edu.neu.madcourse.stickittoem.messages.PushNotificationService
 import edu.neu.madcourse.stickittoem.userAuth.SignInActivity
 
 class MainActivity : AppCompatActivity() {
@@ -41,12 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(tabLayout, viewPager2){ tab, position-> tab.text = tabs[position] }.attach()
 
+        PushNotificationService.sharedPreferences = getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-
             // Get new FCM registration token
             val token = task.result
 

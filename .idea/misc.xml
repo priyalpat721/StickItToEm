@@ -20,8 +20,8 @@
         <entry key="..\:/Users/priya/AndroidStudioProjects/StickItToEm/app/src/main/res/menu/menu.xml" value="0.23796296296296296" />
         <entry key="app/src/main/res/layout/activity_messaging.xml" value="0.24947916666666667" />
         <entry key="app/src/main/res/layout/activity_sigin_in.xml" value="0.17046203613281252" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.12997007268063274" />
-        <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/bottom_sticker_sheet.xml" value="0.22031250000000002" />
         <entry key="app/src/main/res/layout/chat_info_layout.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/contact_info_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />
@@ -36,7 +36,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
