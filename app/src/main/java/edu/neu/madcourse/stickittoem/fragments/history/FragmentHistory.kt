@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
@@ -23,11 +24,13 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
     private var recyclerView: RecyclerView? = null
     var adapter: HistoryAdapter? = null
     private var db = Firebase.database.reference
+    private var userName: TextView?= null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.history_recycler_view)
+        userName = view.findViewById(R.id.user_email)
 
         setUpResources()
         listenForChanges()
@@ -44,6 +47,8 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
                     val totalSent = snap.child("totalSent").value as Map<String, Long>
 
                     if (Firebase.auth.currentUser?.uid == snap.key) {
+                        val name = snap.child("name").getValue(String::class.java)
+                        userName?.text = name
                         val newHistoryFrustrated =
                             totalSent["frustratedino"]?.let { HistoryCard("frustratedino", it) }
                         val newHistoryHappy =
