@@ -41,10 +41,6 @@ class PushNotificationService : FirebaseMessagingService() {
         )
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE)
 
-        println("Message message data: " + message.data["message"])
-        println("Message title data: " + message.data["title"])
-        println("Message image data: " + message.data["image"])
-
         var path = R.drawable.exercisedino
         when (message.data["image"]) {
             "exercisedino" -> {
@@ -73,7 +69,7 @@ class PushNotificationService : FirebaseMessagingService() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(message.data["title"])
             .setContentText(message.data["message"])
-            .setSmallIcon(R.drawable.exercisedino)
+            .setSmallIcon(path)
             .setLargeIcon(icon)
             //high priority for messages
             .setPriority(NotificationCompat.PRIORITY_HIGH)
