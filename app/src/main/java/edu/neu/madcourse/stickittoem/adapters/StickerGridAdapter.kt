@@ -46,9 +46,7 @@ class StickerGridAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = dataList[position]
 
-        //holder.image.setImageResource(context.getResources().getIdentifier(data.image,"drawable",getPackageName()));
         holder.image.setImageResource(data.image)
-        //holder.image = data.image.toString()
         holder.description = data.description
 
         holder.image.setOnClickListener(){

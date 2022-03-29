@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteX="0dp"
+    android:background="@drawable/chat_background"
     tools:layout_editor_absoluteY="14dp">
 
     <TextView
         android:id="@+id/receiver_name_box"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#037BCD"
+        android:background="#024573"
         android:hint="@string/name"
         android:paddingStart="10dp"
         android:textAlignment="textStart"
@@ -42,15 +43,14 @@
         android:id="@+id/sticker_btn"
         android:layout_width="215dp"
         android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
         android:background="#075EEF"
         android:backgroundTint="#075EEF"
         android:text="@string/stickers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.262"
+        app:layout_constraintHorizontal_bias="0.27"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_recycler_view"
-        app:layout_constraintVertical_bias="0.932"
         tools:ignore="TextContrastCheck" />
 
     <ImageButton
@@ -58,16 +58,16 @@
         android:layout_width="59dp"
         android:layout_height="48dp"
         android:layout_marginBottom="28dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
+        android:background="#C3CCCBCB"
+        android:backgroundTint="#D7FFFFFF"
         android:contentDescription="@string/send_the_sticker"
         android:src="@drawable/send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toEndOf="@+id/sticker_btn"
         app:layout_constraintTop_toBottomOf="@+id/message_recycler_view"
-        app:layout_constraintVertical_bias="0.993"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck" />
 
     <TextView
