@@ -19,8 +19,8 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
     private val imageList: MutableList<StickerModel> = ArrayList()
     private var recyclerView: RecyclerView? = null
     private var adapter: StickerGridAdapter? = null
-    lateinit var receiver : String
-    lateinit var sender : String
+    var receiver : String? = null
+    var sender : String? = null
     private var receiverId: String? = null
     private var senderId = Firebase.auth.currentUser?.uid!!
     private var stringStickerImg: String? = null
@@ -44,7 +44,12 @@ class BottomStickerSheetDialog : BottomSheetDialogFragment(){
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.sticker_recycler_view)
 
-        adapter = this.context?.let { StickerGridAdapter(view.context, receiver, sender, name) }
+        adapter = this.context?.let { sender?.let { it1 ->
+            receiver?.let { it2 ->
+                StickerGridAdapter(view.context, it2,
+                    it1, name)
+            }
+        } }
         recyclerView!!.adapter = adapter
         recyclerView!!.layoutManager = GridLayoutManager(context,4,
             LinearLayoutManager.VERTICAL,false)

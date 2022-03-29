@@ -7,8 +7,8 @@
     <string name="total_stickers_sent">Total Stickers Sent</string>
     <string name="welcome">Welcome!</string>
     <string name="sign_up">Sign Up</string>
-    <string name="name"> Name</string>
-    <string name="email"> Email</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="todo">TODO</string>
     <string name="already_have_an_account">Already have an account? \n\n Click here</string>
@@ -32,7 +32,7 @@
     <string name="signed_in_as">Signed in as:</string>
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="email_username">Email</string>
-    <string name="sign_in">SIGN IN</string>
+    <string name="sign_in">Sign In</string>
     <string name="msg_token_fmt">token</string>
     <string name="done">Done</string>
 </resources>

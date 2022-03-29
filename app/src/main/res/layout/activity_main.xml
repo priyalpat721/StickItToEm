@@ -54,7 +54,7 @@
         android:id="@+id/fragmentContainerView"
         android:name="edu.neu.madcourse.stickittoem.fragments.BlankFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/sign_out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

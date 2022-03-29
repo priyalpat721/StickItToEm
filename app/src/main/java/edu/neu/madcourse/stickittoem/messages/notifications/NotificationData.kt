@@ -1,7 +1,5 @@
 package edu.neu.madcourse.stickittoem.messages.notifications
 
-
-// used: https://www.youtube.com/watch?v=HoFWPPv1ih8
 data class NotificationData(
     val title: String,
     val message: String,

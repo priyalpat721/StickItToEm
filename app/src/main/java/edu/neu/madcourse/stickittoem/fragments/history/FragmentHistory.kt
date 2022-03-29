@@ -30,7 +30,7 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.history_recycler_view)
-        userName = view.findViewById(R.id.user_email)
+        userName = view.findViewById(R.id.signed_in_user)
 
         setUpResources()
         listenForChanges()
@@ -41,6 +41,7 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
     private fun listenForChanges() {
         historyList.clear()
         db.child("users").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
                 historyList.clear()
                 for (snap in snapshot.children) {
@@ -48,7 +49,7 @@ class FragmentHistory : Fragment(R.layout.fragment_history) {
 
                     if (Firebase.auth.currentUser?.uid == snap.key) {
                         val name = snap.child("name").getValue(String::class.java)
-                        userName?.text = name
+                        userName?.text = "Signed in as: $name"
                         val newHistoryFrustrated =
                             totalSent["frustratedino"]?.let { HistoryCard("frustratedino", it) }
                         val newHistoryHappy =

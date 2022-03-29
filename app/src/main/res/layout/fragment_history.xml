@@ -7,28 +7,16 @@
     tools:context=".fragments.history.FragmentHistory">
 
     <TextView
-        android:id="@+id/Signed_in_placeholder"
+        android:id="@+id/signed_in_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/signed_in_as"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.058" />
-
-    <TextView
-        android:id="@+id/user_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/example_gmail_com"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/Signed_in_placeholder"
-        app:layout_constraintStart_toEndOf="@+id/Signed_in_placeholder"
-        app:layout_constraintTop_toTopOf="@+id/Signed_in_placeholder" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_recycler_view"
@@ -38,5 +26,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Signed_in_placeholder" />
+        app:layout_constraintTop_toBottomOf="@+id/signed_in_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>

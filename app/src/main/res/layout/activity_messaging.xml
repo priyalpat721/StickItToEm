@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/receiver_name_box"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="50dp"
         android:background="#024573"
         android:hint="@string/name"
         android:paddingStart="10dp"
@@ -18,29 +18,30 @@
         android:textColor="@color/white"
         android:textColorHint="#FFFFFF"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/message_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:ignore="RtlSymmetry" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="609dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/sticker_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/receiver_name_box" />
+        app:layout_constraintTop_toBottomOf="@+id/receiver_name_box"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/sticker_btn"
         android:layout_width="215dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:background="#075EEF"
         android:backgroundTint="#075EEF"
         android:text="@string/stickers"
@@ -54,31 +55,16 @@
         android:id="@+id/send_btn"
         android:layout_width="59dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="28dp"
         android:background="#C3CCCBCB"
         android:backgroundTint="#D7FFFFFF"
         android:contentDescription="@string/send_the_sticker"
         android:src="@drawable/send"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/sticker_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toEndOf="@+id/sticker_btn"
-        app:layout_constraintTop_toBottomOf="@+id/message_recycler_view"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="@+id/sticker_btn"
         tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:text="@string/send_the_sticker"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.832"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send_btn"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
