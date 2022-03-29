@@ -80,10 +80,10 @@ class StickerMessagingActivity : AppCompatActivity() {
                 //do something based on the intent's action
                 stickerImage = intent.getIntExtra("image", 0)
                 stringStickerImg = stickerIDMap[stickerImage]
-                stickerDescription = intent?.getStringExtra("description")
-                receiver = intent?.getStringExtra("receiver").toString()
-                sender = intent?.getStringExtra("sender").toString()
-                receiverName = intent?.getStringExtra("name").toString()
+                stickerDescription = intent.getStringExtra("description")
+                receiver = intent.getStringExtra("receiver").toString()
+                sender = intent.getStringExtra("sender").toString()
+                receiverName = intent.getStringExtra("name").toString()
             }
         }
 
@@ -104,13 +104,13 @@ class StickerMessagingActivity : AppCompatActivity() {
         }
 
         db.child("users").child(receiver).child("token").get().addOnSuccessListener {
-            Log.i("firebaseGetToken", "Got value ${it.value}")
+            //Log.i("firebaseGetToken", "Got value ${it.value}")
             receiverToken = it.value.toString()
         }.addOnFailureListener{
             Log.e("firebaseGetToken", "Error getting data", it)
         }
         db.child("users").child(senderId).child("name").get().addOnSuccessListener {
-            Log.i("firebaseUserName", "Got value ${it.value}")
+            //Log.i("firebaseUserName", "Got value ${it.value}")
             senderName = it.value.toString()
         }.addOnFailureListener{
             Log.e("firebaseUserName", "Error getting data", it)
@@ -149,11 +149,12 @@ class StickerMessagingActivity : AppCompatActivity() {
 
             val title = "Sender: $senderName"
             val message = "You've received a sticker!"
-            val image = stickerImage
+            //val image = stickerImage
             PushNotification(
-                NotificationData(title, message, image),
+                NotificationData(title, message, stringStickerImg.toString()),
                 receiverToken
             ).also {
+                Log.i(TAG,"Sticker image string: $stringStickerImg")
                 sendNotification(it)
             }
             Toast.makeText(context, "sticker sent", Toast.LENGTH_SHORT).show()
@@ -206,7 +207,6 @@ class StickerMessagingActivity : AppCompatActivity() {
             receiverId = intent.getStringExtra("receiverId").toString()
             receiver = receiverId.toString()
 
-            Log.i(TAG, extras.toString())
             nameBox = findViewById(R.id.receiver_name_box)
             nameBox.text = receiverName
         }
@@ -245,79 +245,4 @@ class StickerMessagingActivity : AppCompatActivity() {
             Log.e(TAG, e.toString())
         }
     }
-
-
-//    public fun sendNotificationToDevice(view : View) {
-//        val t = Thread()
-//        Thread {
-//            if (CLIENT_REGISTRATION_TOKEN != null) {
-//                sendMessageToDevice(CLIENT_REGISTRATION_TOKEN)
-//            }
-//        }
-//        t.start()
-//    }
-
-//    public fun sendMessageToDevice(token : String) {
-//        // Prepare data
-//
-//
-//        // Prepare data
-//        val jPayload = JSONObject()
-//        val jNotification = JSONObject()
-//        val jdata = JSONObject()
-//        try {
-//            jNotification.put("title", "Message Title from 'SEND MESSAGE TO CLIENT BUTTON'")
-//            jNotification.put("body", "Message body from 'SEND MESSAGE TO CLIENT BUTTON'")
-//            jNotification.put("sound", "default")
-//            jNotification.put("badge", "1")
-//            /*
-//            // We can add more details into the notification if we want.
-//            // We happen to be ignoring them for this demo.
-//            jNotification.put("click_action", "OPEN_ACTIVITY_1");
-//            */jdata.put("title", "data title from 'SEND MESSAGE TO CLIENT BUTTON'")
-//            jdata.put("content", "data content from 'SEND MESSAGE TO CLIENT BUTTON'")
-//            /***
-//             * The Notification object is now populated.
-//             * Next, build the Payload that we send to the server.
-//             */
-//
-//            // If sending to a single client
-//            jPayload.put("to", token) // CLIENT_REGISTRATION_TOKEN);
-//
-//            jPayload.put("priority", "high")
-//            jPayload.put("notification", jNotification)
-//            jPayload.put("data", jdata)
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        }
-//
-//        try {
-//
-//            // Open the HTTP connection and send the payload
-//            val url = URL("https://fcm.googleapis.com/fcm/send")
-//            val conn = url.openConnection() as HttpURLConnection
-//            conn.requestMethod = "POST"
-//            conn.setRequestProperty("Content-Type", "application/json")
-//            conn.setRequestProperty("Authorization", token)
-//            conn.doOutput = true
-//
-//            // Send FCM message content.
-//            val outputStream = conn.outputStream
-//            outputStream.write(jsonObject.toString().toByteArray())
-//            outputStream.close()
-//
-//            // Read FCM response.
-//            val inputStream = conn.inputStream
-//            edu.neu.madcourse.firebasedemo.utils.Utils.convertStreamToString(inputStream)
-//        } catch (e: IOException) {
-//            "NULL"
-//        }
-//        val resp: String = Utils.fcmHttpConnection(
-//            edu.neu.madcourse.firebasedemo.fcm.FCMActivity.SERVER_KEY,
-//            jPayload
-//        )
-//        Utils.postToastMessage("Status from Server: $resp", applicationContext)
-//
-//    }
-
 }

@@ -9,11 +9,9 @@ import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
-import java.util.HashMap
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
@@ -22,17 +20,17 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
-    private lateinit var warning_sign_up: TextView
+    private lateinit var warningSignUp: TextView
     private var db = Firebase.database.reference
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        warning_sign_up = findViewById(R.id.warning_sign_up)
-        warning_sign_up.text = ""
+        warningSignUp = findViewById(R.id.warning_sign_up)
+        warningSignUp.text = ""
 
-        warning_sign_up = findViewById(R.id.warning_sign_up)
-        warning_sign_up.text = ""
+        warningSignUp = findViewById(R.id.warning_sign_up)
+        warningSignUp.text = ""
         name = findViewById(R.id.name)
         email = findViewById(R.id.email)
         signUp = findViewById(R.id.sign_up)
@@ -56,17 +54,17 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signup(emailAddress: String, password: String, nameText: String) {
-        warning_sign_up.text = ""
+        warningSignUp.text = ""
 
         if(emailAddress == "" || nameText == ""){
             Thread.sleep(1000)
             progressBar.visibility = View.GONE
-            if(nameText.equals("") && emailAddress == ""){
-                warning_sign_up.text = "Name and email fields empty. Please provide above information"
-            } else if (emailAddress.equals("")){
-                warning_sign_up.text = "Email Field empty. Please enter your Email."
+            if(nameText == "" && emailAddress == ""){
+                warningSignUp.text = "Name and email fields empty. Please provide above information"
+            } else if (emailAddress == ""){
+                warningSignUp.text = "Email Field empty. Please enter your Email."
             } else {
-                warning_sign_up.text = "Name Field empty. Please enter your Name."
+                warningSignUp.text = "Name Field empty. Please enter your Name."
             }
 
             return
