@@ -1,23 +1,19 @@
 package edu.neu.madcourse.stickittoem.userAuth
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
+import java.util.HashMap
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var name: EditText
@@ -26,30 +22,17 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var switchToLogIn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
-    private var fireStore = Firebase.firestore
+    private lateinit var warning_sign_up: TextView
     private var db = Firebase.database.reference
-    lateinit var currentToken : String
     val TAG = "StickApp"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            val msg = token.toString()
-            Log.d(TAG, msg)
-            currentToken = msg
-            //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-        })
-
+        warning_sign_up = findViewById(R.id.warning_sign_up)
+        warning_sign_up.text = ""
         name = findViewById(R.id.name)
         email = findViewById(R.id.email)
         signUp = findViewById(R.id.sign_up)
@@ -73,12 +56,27 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signup(emailAddress: String, password: String, nameText: String) {
+        warning_sign_up.text = ""
+
+        if(emailAddress == "" || nameText == ""){
+            Thread.sleep(1000)
+            progressBar.visibility = View.GONE
+            if(nameText.equals("") && emailAddress == ""){
+                warning_sign_up.text = "Name and email fields empty. Please provide above information"
+            } else if (emailAddress.equals("")){
+                warning_sign_up.text = "Email Field empty. Please enter your Email."
+            } else {
+                warning_sign_up.text = "Name Field empty. Please enter your Name."
+            }
+
+            return
+        }
+
         auth.createUserWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(this@SignUpActivity) { task ->
                 if (task.isSuccessful) {
                     val newUser = hashMapOf(
                         "name" to nameText,
-                        "token" to currentToken,
                         "password" to password,
                         "email" to emailAddress,
                         "totalReceived" to 0,
