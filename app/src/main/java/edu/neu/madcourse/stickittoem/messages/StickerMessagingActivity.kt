@@ -20,16 +20,24 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.ktx.Firebase
-import edu.neu.madcourse.stickittoem.MainActivity
+import com.google.gson.Gson
 import edu.neu.madcourse.stickittoem.R
 import edu.neu.madcourse.stickittoem.adapters.StickerMessagingAdapter
 import edu.neu.madcourse.stickittoem.cards.StickerCard
+import edu.neu.madcourse.stickittoem.messages.notifications.NotificationData
+import edu.neu.madcourse.stickittoem.messages.notifications.PushNotification
+import edu.neu.madcourse.stickittoem.messages.notifications.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class StickerMessagingActivity : AppCompatActivity() {
     private lateinit var receiverName: String
+    private lateinit var senderName: String
     private lateinit var sender: String
     private lateinit var receiver: String
+    private lateinit var receiverToken: String
     private val TAG = "StickerAppMessage"
     private var stickerMessageList: ArrayList<StickerCard> = ArrayList()
     private var recyclerView: RecyclerView? = null
@@ -46,6 +54,9 @@ class StickerMessagingActivity : AppCompatActivity() {
     private val sorter = ComparatorTime()
     private var db = Firebase.database.reference
     private var stickerIDMap = HashMap<Int, String>()
+
+    //private val SERVER_KEY: String = "key = AAAAmT9eZxc:APA91bEUzh4cD0qqeNqzvMQv4EScFoTOcwBllfKVMjuPHWPkD5F8EVng6wE3UGxrpVAapsD336oGzp6dNUuK3rMYb1ZY7AQIjp0wo0cZEhAujwlnukmXTQQVQMoZ-vLaa6Zrq0GbY0xF"
+    //private val CLIENT_REGISTRATION_TOKEN: String? = null
 
     @ServerTimestamp
     lateinit var time: Timestamp
@@ -92,6 +103,19 @@ class StickerMessagingActivity : AppCompatActivity() {
 
         }
 
+        db.child("users").child(receiver).child("token").get().addOnSuccessListener {
+            Log.i("firebaseGetToken", "Got value ${it.value}")
+            receiverToken = it.value.toString()
+        }.addOnFailureListener{
+            Log.e("firebaseGetToken", "Error getting data", it)
+        }
+        db.child("users").child(senderId).child("name").get().addOnSuccessListener {
+            Log.i("firebaseUserName", "Got value ${it.value}")
+            senderName = it.value.toString()
+        }.addOnFailureListener{
+            Log.e("firebaseUserName", "Error getting data", it)
+        }
+
         sendButton = findViewById(R.id.send_btn)
         sendButton.setOnClickListener {
 
@@ -122,7 +146,17 @@ class StickerMessagingActivity : AppCompatActivity() {
 
                     })
             }
-            Toast.makeText(context, "$stickerDescription sticker sent", Toast.LENGTH_SHORT).show()
+
+            val title = "Sender: $senderName"
+            println(title)
+            val message = "You've received a sticker!"
+            PushNotification(
+                NotificationData(title, message, R.drawable.exercisedino),
+                receiverToken
+            ).also {
+                sendNotification(it)
+            }
+            Toast.makeText(context, "sticker sent", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -198,5 +232,92 @@ class StickerMessagingActivity : AppCompatActivity() {
             .push().setValue(newMessage)
         adapter?.notifyDataSetChanged()
     }
+
+    private fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitInstance.api.postNotification(notification)
+            if(response.isSuccessful) {
+                Log.d(TAG, "Response: ${Gson().toJson(response)}")
+            } else {
+                Log.e(TAG, response.errorBody().toString())
+            }
+        } catch (e : Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
+
+//    public fun sendNotificationToDevice(view : View) {
+//        val t = Thread()
+//        Thread {
+//            if (CLIENT_REGISTRATION_TOKEN != null) {
+//                sendMessageToDevice(CLIENT_REGISTRATION_TOKEN)
+//            }
+//        }
+//        t.start()
+//    }
+
+//    public fun sendMessageToDevice(token : String) {
+//        // Prepare data
+//
+//
+//        // Prepare data
+//        val jPayload = JSONObject()
+//        val jNotification = JSONObject()
+//        val jdata = JSONObject()
+//        try {
+//            jNotification.put("title", "Message Title from 'SEND MESSAGE TO CLIENT BUTTON'")
+//            jNotification.put("body", "Message body from 'SEND MESSAGE TO CLIENT BUTTON'")
+//            jNotification.put("sound", "default")
+//            jNotification.put("badge", "1")
+//            /*
+//            // We can add more details into the notification if we want.
+//            // We happen to be ignoring them for this demo.
+//            jNotification.put("click_action", "OPEN_ACTIVITY_1");
+//            */jdata.put("title", "data title from 'SEND MESSAGE TO CLIENT BUTTON'")
+//            jdata.put("content", "data content from 'SEND MESSAGE TO CLIENT BUTTON'")
+//            /***
+//             * The Notification object is now populated.
+//             * Next, build the Payload that we send to the server.
+//             */
+//
+//            // If sending to a single client
+//            jPayload.put("to", token) // CLIENT_REGISTRATION_TOKEN);
+//
+//            jPayload.put("priority", "high")
+//            jPayload.put("notification", jNotification)
+//            jPayload.put("data", jdata)
+//        } catch (e: JSONException) {
+//            e.printStackTrace()
+//        }
+//
+//        try {
+//
+//            // Open the HTTP connection and send the payload
+//            val url = URL("https://fcm.googleapis.com/fcm/send")
+//            val conn = url.openConnection() as HttpURLConnection
+//            conn.requestMethod = "POST"
+//            conn.setRequestProperty("Content-Type", "application/json")
+//            conn.setRequestProperty("Authorization", token)
+//            conn.doOutput = true
+//
+//            // Send FCM message content.
+//            val outputStream = conn.outputStream
+//            outputStream.write(jsonObject.toString().toByteArray())
+//            outputStream.close()
+//
+//            // Read FCM response.
+//            val inputStream = conn.inputStream
+//            edu.neu.madcourse.firebasedemo.utils.Utils.convertStreamToString(inputStream)
+//        } catch (e: IOException) {
+//            "NULL"
+//        }
+//        val resp: String = Utils.fcmHttpConnection(
+//            edu.neu.madcourse.firebasedemo.fcm.FCMActivity.SERVER_KEY,
+//            jPayload
+//        )
+//        Utils.postToastMessage("Status from Server: $resp", applicationContext)
+//
+//    }
 
 }

@@ -33,4 +33,6 @@
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="email_username">Email</string>
     <string name="sign_in">SIGN IN</string>
+    <string name="msg_token_fmt">token</string>
+    <string name="done">Done</string>
 </resources>
