@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         val signOut = findViewById<Button>(R.id.sign_out)
         signOut.setOnClickListener {
+            Firebase.auth.currentUser?.let { db.child("users").child(it.uid).child("token").setValue("") }
             Toast.makeText(
                 baseContext, "Sign out was successfully.",
                 Toast.LENGTH_SHORT
@@ -72,5 +73,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }
 
