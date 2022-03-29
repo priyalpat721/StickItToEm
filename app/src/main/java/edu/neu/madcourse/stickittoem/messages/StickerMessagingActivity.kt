@@ -65,6 +65,12 @@ class StickerMessagingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messaging)
+
+        var backButton : ImageButton = findViewById(R.id.back_btn)
+        backButton.setOnClickListener {
+            finish()
+        }
+
         stickerIDMap[R.drawable.exercisedino] = "exercisedino"
         stickerIDMap[R.drawable.frustratedino] = "frustratedino"
         stickerIDMap[R.drawable.happydino] = "happydino"
