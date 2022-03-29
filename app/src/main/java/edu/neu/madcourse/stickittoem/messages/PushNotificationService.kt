@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import edu.neu.madcourse.stickittoem.MainActivity
 import edu.neu.madcourse.stickittoem.R
 import kotlin.random.Random
 
@@ -43,11 +44,13 @@ class PushNotificationService : FirebaseMessagingService() {
         // pending intent can only be used once
         val replyIntent = PendingIntent.getActivity(
             this, System.currentTimeMillis().toInt(),
-            Intent(this, StickerMessagingActivity::class.java), FLAG_IMMUTABLE
+            Intent(this, MainActivity::class.java), FLAG_IMMUTABLE
         )
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_IMMUTABLE)
+
+
         var icon : Bitmap = BitmapFactory.decodeResource(context.getResources(),
-        R.drawable.exercisedino)
+            Integer.parseInt(message.data["image"]))
         println("Message message data: " + message.data["message"])
         println("Message title data: " + message.data["title"])
         println("Message image data: " + message.data["image"])
@@ -59,7 +62,7 @@ class PushNotificationService : FirebaseMessagingService() {
             //high priority for messages
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-            .addAction(R.drawable.exercisedino, "Reply", replyIntent)
+            .addAction(Integer.parseInt(message.data["image"]), "OPEN APP", replyIntent)
             .setContentIntent(pendingIntent)
             .build()
         notificationManager.notify(notificationID,notification)

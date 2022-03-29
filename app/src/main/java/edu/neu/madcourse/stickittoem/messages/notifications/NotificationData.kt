@@ -5,7 +5,7 @@ package edu.neu.madcourse.stickittoem.messages.notifications
 data class NotificationData (
     val title : String,
     val message : String,
-    val image : Int
+    val image : Int?
 )
 
 // for sending notification to a specific device

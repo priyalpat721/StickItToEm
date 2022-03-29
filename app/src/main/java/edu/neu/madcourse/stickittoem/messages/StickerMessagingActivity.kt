@@ -148,10 +148,10 @@ class StickerMessagingActivity : AppCompatActivity() {
             }
 
             val title = "Sender: $senderName"
-            println(title)
             val message = "You've received a sticker!"
+            val image = stickerImage
             PushNotification(
-                NotificationData(title, message, R.drawable.exercisedino),
+                NotificationData(title, message, image),
                 receiverToken
             ).also {
                 sendNotification(it)
